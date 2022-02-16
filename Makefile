@@ -1,25 +1,30 @@
 SHELL = /bin/sh
 NAME = minishell
-FILES = main.c
+CC		=	gcc
+RM		=	rm -rf
+FLAGS	=	-Wall -Wextra -Werror -g -lreadline -g3 #-fsanitize=address
+SRC		=	main.c
+LIB		=	libft/libft.a
 
-CC = cc
-FLAGS = -Wall -Werror -Wextra -fsanitize=address -g3
-RM = rm -rf
+$(NAME): all
 
-OBJS = $(FILES:.c=.o)
-
-all: $(NAME)
-
-$(NAME): $(OBJS)
-	$(CC) $(FLAGS) -c $(OBJS) -o $@
-
-%.o:%.c
-	$(CC) $(FLAGS) -c $< -o $@
+all: $(SRC)
+	@$(MAKE) -C libft/
+	@ $(CC) $(FLAGS) $(SRC) $(LIB) -o $(NAME)
+	@ echo "compilation OK"
 
 clean:
-	$(RM) $(OBJS)
+
+	$(RM) $(NAME)
+	$(RM) libft/*.o
+	@ echo "clean done"
 
 fclean: clean
-	$(RM) $(NAME)
+	@$(RM) minishell.dSYM
+	@$(RM) minishell
+	@$(MAKE) clean -C libft/
+	@ echo "fclean done"
 
-.PHONY: all clean fclean re
+re: clean all
+
+.PHONY: all clean fclean re all
