@@ -2,7 +2,7 @@ SHELL = /bin/sh
 NAME = minishell
 CC		=	gcc
 RM		=	rm -rf
-FLAGS	=	-Wall -Wextra -Werror -g -lreadline -g3 #-fsanitize=address
+FLAGS	=	-Wall -Wextra -Werror -g -lreadline -g3 -fsanitize=address
 SRC		=	main.c
 LIB		=	libft/libft.a
 
