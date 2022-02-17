@@ -14,15 +14,14 @@ all: $(SRC)
 	@ echo "compilation OK"
 
 clean:
-
-	$(RM) $(NAME)
-	$(RM) libft/*.o
+	@$(RM) libft/*.o
+	@$(RM) *.o
 	@ echo "clean done"
 
 fclean: clean
+	@$(MAKE) fclean -C libft/
 	@$(RM) minishell.dSYM
-	@$(RM) minishell
-	@$(MAKE) clean -C libft/
+	@$(RM) $(NAME)
 	@ echo "fclean done"
 
 re: clean all
