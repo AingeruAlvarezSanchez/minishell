@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:10:04 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/02/17 17:31:16 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/02/17 17:41:15 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,71 +30,17 @@ C-K Delete the cursor and all characters from the cursor to the end of the line
 C-U Delete all characters from the cursor to the beginning of the line
 */
 
-typedef struct s_data
-{
-	char **env;
-	char **path;
-}t_data;
-
-void	ft_execute(t_data *Data, char * str, __attribute__((unused)) char **envp)
-{
-	char * tmp;
-	int i = 0;
-	
-	while (Data->path[i])
-	{
-		tmp = ft_strjoin(Data->path[i], str);
-		if (access(tmp, X_OK) == 0)
-		{
-			printf("HELLO\n");
-			execve(tmp, &str, envp);////////////////
-		}
-		else
-			free(tmp);
-		i++;
-	}
-}
-
-int	main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, char **envp)
+int	main(int argc, __attribute__((unused)) char **argv, char **envp)
 {
 	char *str;
-	char **path;
 	t_data Data;
 
 	Data.env = envp;
-
-	int	a = 0;	
-	int i = 0;
-	while(ft_strncmp(envp[i],"PATH=", 5))
-		i++;
-		
-	path = malloc(sizeof(char *) * i);
-	path[i] = ft_strtrim(envp[i], "PATH=");
-	
-	Data.path = ft_split(path[i], ':');
-
-	i = 0;
-	while(path[i])
-	{
-		free(path[i++]);
-	}
-	
-	i = 0;
-	while(Data.path[i])
-	{
-		path[i] = ft_strjoin(Data.path[i], "/");
-		free(Data.path[i]);
-		Data.path[i] = path[i];
-		i++;
-	}
-
 	while(1)
 	{
 		str = readline("ejemoplo1 ₺ ");
-		ft_execute( &Data, str, Data.env);
-
 		add_history(str);
-
+		pipex(argc, &str, envp);
 		free(str);
 	}
 	
