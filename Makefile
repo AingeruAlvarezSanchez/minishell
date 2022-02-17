@@ -3,9 +3,7 @@ NAME = minishell
 CC		=	gcc
 RM		=	rm -rf
 FLAGS	=	-Wall -Wextra -Werror -g -lreadline -g3 #-fsanitize=address
-SRC		=	main.c	\
-			pipex.c
-
+SRC		=	main.c
 LIB		=	libft/libft.a
 
 $(NAME): all
