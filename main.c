@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:10:04 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/02/16 21:41:34 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/02/17 17:31:16 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, 
 
 	Data.env = envp;
 
-	
+	int	a = 0;	
 	int i = 0;
 	while(ft_strncmp(envp[i],"PATH=", 5))
 		i++;
