@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:10:04 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/02/17 20:59:15 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/02/20 16:14:51by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,6 @@
 #include <readline/readline.h>
 #include <string.h>
 #include "libft/libft.h"
-
-/*
-https://www.cnblogs.com/hazir/p/instruction_to_readline.html
-
-TAB keys can be used for command completion
-↑ The or  ↓ key can be used to quickly enter historical commands
-There are also some interactive line editing shortcuts:
-C-A /  C-E move cursor to start/end of line
-C-B /  C-F move the cursor one position left/right
-C-D delete a character under the cursor
-C-K Delete the cursor and all characters from the cursor to the end of the line
-C-U Delete all characters from the cursor to the beginning of the line
-*/
 
 void	ft_initialize_data(t_data *Data)
 {
@@ -49,25 +36,24 @@ void	ft_initialize_data(t_data *Data)
 	i = 0;
 }
 
-void	ft_get_commands(char *str, t_cmds Cmds)
+void	ft_commands_n(char *str, t_cmds *cmds)
 {
 	int	i;
 	int	j;
 
 	i = 0;
 	j = -1;
-	ft_commands_n(str, Cmds);
-	Cmds.n_cmds = 0;
+	cmds->n_cmds = 0;
 	while (str[i])
 	{
 		if (str[i] == '-')
 		{
-			while (str[i] != ' ' && str[i] )
-			i++;	
+			while (str[i] != ' ' && str[i])
+				i++;	
 		}
 		if (ft_isalpha(str[i]))
 		{
-			Cmds.n_cmds += 1;
+			cmds->n_cmds += 1;
 			while (str[i] != ' ' && str[i])
 				i++;
 		}
@@ -78,16 +64,16 @@ void	ft_get_commands(char *str, t_cmds Cmds)
 int	main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, char **envp)
 {
 	char	*str;
-	t_data	Data;
-	t_cmds	Cmds;
+	t_data	data;
+	t_cmds	cmds;
 
-	Data.env = envp;
-	ft_initialize_data(&Data);
+	data.env = envp;
+	ft_initialize_data(&data);
 	while (1)
 	{
-		str = readline("ejemoplo1 ₺ ");
+		str = readline("ejemplo1 ₺ ");
 		add_history(str);
-		ft_get_commands(str, &Cmds);
+		ft_commands_n(str, &cmds);
 		free(str);
 	}
 	return (0);
