@@ -1,0 +1,1 @@
+gcc main.c ./libft/libft.a -L/usr/include -lreadline -o filename

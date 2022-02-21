@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <readline/readline.h>
+#include <readline/history.h>
 #include <string.h>
 #include "libft/libft.h"
 
@@ -46,8 +47,7 @@ void	ft_execute(t_data *Data, char * str, __attribute__((unused)) char **envp)
 		tmp = ft_strjoin(Data->path[i], str);
 		if (access(tmp, X_OK) == 0)
 		{
-			printf("HELLO\n");
-			execve(tmp, &str, envp);////////////////
+			execve(tmp, &str, envp);
 		}
 		else
 			free(tmp);

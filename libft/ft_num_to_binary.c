@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 11:49:13 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/01/15 11:54:03 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/02/17 17:29:52 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	ft_num_to_binary(int num)
 		str[i] = content % 2 + 48;
 		content = content / 2;
 	}
-	result = ft_atoi(str);	
+	result = ft_atoi(str);
 	free (str);
 	return (result);
 }
