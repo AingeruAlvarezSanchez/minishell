@@ -12,7 +12,14 @@
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-
 # include <stdio.h>
+
+typedef struct s_data
+{
+	char **env;
+	char **path;
+}t_data;
+
+
 
 #endif
