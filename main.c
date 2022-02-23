@@ -67,7 +67,7 @@ int	main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, 
 		str = readline("ejemplo1 ₺ ");
 		add_history(str);
 		ft_commands_n(str, &Cmds);
-		ft_execute(&Data, str);
+		ft_exec_routine(&Data, &Cmds, str);
 		free(str);
 	}
 	return (0);

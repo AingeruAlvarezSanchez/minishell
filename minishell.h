@@ -13,6 +13,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <unistd.h>
 # include <stdio.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -30,10 +31,11 @@ typedef struct s_data
 
 typedef struct s_cmds
 {
+	pid_t	pid;
 	char	**cmds;
-	int		n_cmds;
+	int	n_cmds;
 }	t_cmds;
 
-void	ft_execute(t_data *Data, char * str, char **envp);
+void	ft_exec_routine(t_data *Data, t_cmds *Cmds, char *str);
 
 #endif
