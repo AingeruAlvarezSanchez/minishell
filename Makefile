@@ -2,7 +2,7 @@ SHELL = /bin/sh
 NAME = minishell
 CC		=	gcc
 RM		=	rm -rf
-FLAGS	=	-Wall -Wextra -Werror -g -lreadline -g3 -fsanitize=address
+FLAGS	=	-Wall -Wextra -Werror -g  -g3 #-fsanitize=address
 SRC		=	main.c
 LIB		=	libft/libft.a
 
@@ -10,7 +10,7 @@ $(NAME): all
 
 all: $(SRC)
 	@$(MAKE) -C libft/
-	@ $(CC) $(FLAGS) $(SRC) $(LIB) -o $(NAME)
+	@ $(CC) $(FLAGS) $(SRC) $(LIB) -lreadline -o $(NAME)
 	@ echo "compilation OK"
 
 clean:

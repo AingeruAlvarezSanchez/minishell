@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <readline/readline.h>
+#include <readline/history.h>
 #include <string.h>
 #include "libft/libft.h"
 
@@ -39,10 +40,8 @@ void	ft_initialize_data(t_data *Data)
 void	ft_commands_n(char *str, t_cmds *cmds)
 {
 	int	i;
-	int	j;
 
 	i = 0;
-	j = -1;
 	cmds->n_cmds = 0;
 	while (str[i])
 	{
@@ -59,6 +58,7 @@ void	ft_commands_n(char *str, t_cmds *cmds)
 		}
 		i++;
 	}
+	printf("The number of used commands is %d\n", cmds->n_cmds);
 }
 
 int	main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, char **envp)
