@@ -14,6 +14,13 @@
 # define MINISHELL_H
 
 # include <stdio.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <string.h>
+# include "libft/libft.h"
+
 
 typedef struct s_data
 {
@@ -26,5 +33,7 @@ typedef struct s_cmds
 	char	**cmds;
 	int		n_cmds;
 }	t_cmds;
+
+void	ft_execute(t_data *Data, char * str, char **envp);
 
 #endif

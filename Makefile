@@ -3,7 +3,8 @@ NAME = minishell
 CC		=	gcc
 RM		=	rm -rf
 FLAGS	=	-Wall -Wextra -Werror -g  -g3 #-fsanitize=address
-SRC		=	main.c
+SRC		=	main.c	\
+			commands.c
 LIB		=	libft/libft.a
 
 $(NAME): all
