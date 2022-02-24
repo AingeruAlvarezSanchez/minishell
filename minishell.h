@@ -32,10 +32,11 @@ typedef struct s_data
 typedef struct s_cmds
 {
 	pid_t	pid;
-	char	**cmds;
+	char	**commands;
+	char	**p_command;
 	int	n_cmds;
 }	t_cmds;
 
-void	ft_exec_routine(t_data *Data, t_cmds *Cmds, char *str);
+void	ft_commands(char *str, t_cmds *Cmds, t_data *Data);
 
 #endif

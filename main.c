@@ -31,29 +31,6 @@ void	ft_initialize_data(t_data *Data)
 	i = 0;
 }
 
-void	ft_commands_n(char *str, t_cmds *Cmds)
-{
-	int	i;
-
-	i = 0;
-	Cmds->n_cmds = 0;
-	while (str[i])
-	{
-		if (str[i] == '-')
-		{
-			while (str[i] != ' ' && str[i])
-				i++;	
-		}
-		if (ft_isalpha(str[i]))
-		{
-			Cmds->n_cmds += 1;
-			while (str[i] != ' ' && str[i])
-				i++;
-		}
-		i++;
-	}
-}
-
 int	main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, char **envp)
 {
 	char	*str;
@@ -66,8 +43,8 @@ int	main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, 
 	{
 		str = readline("ejemplo1 ₺ ");
 		add_history(str);
-		ft_commands_n(str, &Cmds);
-		ft_exec_routine(&Data, &Cmds, str);
+		ft_commands(str, &Cmds, &Data);
+		//ft_exec_routine(&Data, &Cmds, str);
 		free(str);
 	}
 	return (0);
