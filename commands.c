@@ -46,27 +46,24 @@ void	ft_execute(t_data *Data, t_cmds *Cmds, char *command)
 	
 	i = -1;
 	Cmds->p_command = ft_split(command, ' ');
+	if (!Cmds->p_command[0])
+		exit (0);	
 	while (Data->path[++i])
 	{
-		tmp = ft_strjoin(Data->path[i], command);
+		tmp = ft_strjoin(Data->path[i], Cmds->p_command[0]);
 		if (access(tmp, X_OK) == 0)
-		{
-			printf("Access was sucessfull\n");
 			execve(tmp, Cmds->p_command, Data->env);
-		}
 		free(tmp);
 	}
-	printf("Command not found\n");
+	printf("%s: Command not found\n", Cmds->p_command[0]);
 	exit(0);
 }
 
-void	ft_init_exec(t_cmds *Cmds, __attribute__((unused)) t_data *Data)
+void	ft_init_exec(t_cmds *Cmds, t_data *Data)
 {
 	int	i;
 
 	i = 0;
-	if (!Cmds->commands[i])
-		return ;
 	while (i < Cmds->n_cmds)
 	{
 		Cmds->pid = fork();
