@@ -43,11 +43,9 @@ void	ft_isbuiltin(t_cmds *Cmds)
 {
 	if (!ft_strncmp(Cmds->p_command[0], "pwd", 3))
 		ft_pwd();
-	/* ------------- Este fragmento de codigo esta incompleto -------------*/
-	/*if (!ft_strncmp(Cmds->p_command[1], "-n", 2))
-		printf("CMD: %s FLAG: %s STR: %s\n", Cmds->p_command[0], Cmds->p_command[1], Cmds->p_command[2]);
-	else if (
-	else if (!ft_strncmp(Cmds->p_command[0], "echo", 4))*/
+	else if (!ft_strncmp(Cmds->p_command[0], "echo", 4))
+		ft_check_echo(Cmds);
+	
 }
 
 void	ft_execute(t_data *Data, t_cmds *Cmds, char *command)

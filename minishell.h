@@ -38,7 +38,7 @@ typedef struct s_cmds
 }	t_cmds;
 
 /* builtin functions */
-void	ft_echo(char *str, char *flag);
+void	ft_check_echo(t_cmds *Cmds);
 void	ft_pwd(void);
 void	ft_commands(char *str, t_cmds *Cmds, t_data *Data);
 
