@@ -3,45 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:10:04 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/02/16 21:41:34 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/02/20 16:14:51by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <string.h>
-#include "libft/libft.h"
-
-/*
-https://www.cnblogs.com/hazir/p/instruction_to_readline.html
-*/
-
-void	ft_execute(t_data *Data, char * str, char **envp)
-{
-	char * tmp;
-	int i = 0;
-	
-	while (Data->path[i])
-	{
-		tmp = ft_strjoin(Data->path[i], str);
-		printf("temp = %s\n", tmp);
-		if (access(tmp, X_OK) == 0)
-		{
-			printf("access 0\n");
-			int ret = execve(tmp, &str, envp);
-			printf("ret = %d\n",ret);
-		}
-		else
-			free(tmp);
-		i++;
-	}
-}
 
 /**
  * @brief get route of path from *envp[]
@@ -69,29 +38,19 @@ void	ft_get_path(t_data *Data)
 
 int	main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, char **envp)
 {
-	char *str;
-
-	t_data Data;
+	char	*str;
+	t_data	Data;
+	t_cmds	Cmds;
 
 	Data.env = envp;
-
 	ft_get_path(&Data);
-
-	//int i = 0;
-	//while(Data.path[i])
-		//printf("%s\n",Data.path[i++]);
-
-
-	while(1)
+	while (1)
 	{
-		str = readline("ejemoplo1 ₺ ");
-			printf("%s\n",str);
-		ft_execute( &Data, str, Data.env);
-			
+		str = readline("ejemplo1 ₺ ");
 		add_history(str);
-
+		ft_commands(str, &Cmds, &Data);
+		//ft_exec_routine(&Data, &Cmds, str);
 		free(str);
 	}
-	
-	return(0);
+	return (0);
 }

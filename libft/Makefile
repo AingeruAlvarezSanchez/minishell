@@ -64,7 +64,7 @@ OBJ = $(SRC:.c=.o)
 
 CC = gcc
 AR = ar rc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra #-Werror
 RM = /bin/rm -f
 
 all: $(NAME)
