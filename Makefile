@@ -6,6 +6,7 @@ FLAGS	=	-Wall -Wextra -Werror -g  -g3 -fsanitize=address
 SRC		=	main.c	\
 			echo.c	\
 			pwd.c	\
+			env.c	\
 			commands.c
 LIB		=	libft/libft.a
 

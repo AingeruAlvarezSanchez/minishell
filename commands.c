@@ -39,12 +39,14 @@ void	ft_fill_commands(char *str, t_cmds *Cmds)
 	}
 }
 
-void	ft_isbuiltin(t_cmds *Cmds)
+void	ft_isbuiltin(t_cmds *Cmds, t_data *Data)
 {
 	if (!ft_strncmp(Cmds->p_command[0], "pwd", 3))
 		ft_pwd();
 	else if (!ft_strncmp(Cmds->p_command[0], "echo", 4))
 		ft_check_echo(Cmds);
+	else if (!ft_strncmp(Cmds->p_command[0], "env", 3))
+		ft_env(Data);
 	
 }
 
@@ -57,7 +59,7 @@ void	ft_execute(t_data *Data, t_cmds *Cmds, char *command)
 	Cmds->p_command = ft_split(command, ' ');
 	if (!Cmds->p_command[0])
 		exit (0);	
-	ft_isbuiltin(Cmds);
+	ft_isbuiltin(Cmds, Data);
 	while (Data->path[++i])
 	{
 		tmp = ft_strjoin(Data->path[i], Cmds->p_command[0]);
