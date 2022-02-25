@@ -11,8 +11,12 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	ft_initialize_data(t_data *Data)
+#include <sys/wait.h>
+/**
+ * @brief get route of path from *envp[]
+ * @param Data routes saved in **Data.path with '/' at end of route
+ */
+void	ft_get_path(t_data *Data)
 {
 	int		i;
 	char	*tmp;
@@ -20,15 +24,16 @@ void	ft_initialize_data(t_data *Data)
 	i = 0;
 	while (ft_strncmp(Data->env[i], "PATH=", 5))
 		i++;
+	Data->env[i] = ft_strtrim(Data->env[i], "PATH=");
 	Data->path = ft_split(Data->env[i], ':');
-	i = -1;
-	while (Data->path[++i])
+	i = 0;
+	while (Data->path[i])
 	{
 		tmp = ft_strjoin(Data->path[i], "/");
 		free(Data->path[i]);
 		Data->path[i] = tmp;
+		i++;
 	}
-	i = 0;
 }
 
 int	main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, char **envp)
@@ -38,13 +43,13 @@ int	main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, 
 	t_cmds	Cmds;
 
 	Data.env = envp;
-	ft_initialize_data(&Data);
+	ft_get_path(&Data);
 	while (1)
-	{
+	{	
 		str = readline("ejemplo1 ₺ ");
 		add_history(str);
 		ft_commands(str, &Cmds, &Data);
-		//ft_exec_routine(&Data, &Cmds, str);
+		waitpid(Cmds.pid, NULL, WUNTRACED);
 		free(str);
 	}
 	return (0);
