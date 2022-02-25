@@ -39,15 +39,27 @@ void	ft_fill_commands(char *str, t_cmds *Cmds)
 	}
 }
 
+void	ft_isbuiltin(t_cmds *Cmds)
+{
+	if (!ft_strncmp(Cmds->p_command[0], "pwd", 3))
+		ft_pwd();
+	/* ------------- Este fragmento de codigo esta incompleto -------------*/
+	/*if (!ft_strncmp(Cmds->p_command[1], "-n", 2))
+		printf("CMD: %s FLAG: %s STR: %s\n", Cmds->p_command[0], Cmds->p_command[1], Cmds->p_command[2]);
+	else if (
+	else if (!ft_strncmp(Cmds->p_command[0], "echo", 4))*/
+}
+
 void	ft_execute(t_data *Data, t_cmds *Cmds, char *command)
 {
-	char * tmp;
-	int i;
+	char	*tmp;
+	int 	i;
 	
 	i = -1;
 	Cmds->p_command = ft_split(command, ' ');
 	if (!Cmds->p_command[0])
 		exit (0);	
+	ft_isbuiltin(Cmds);
 	while (Data->path[++i])
 	{
 		tmp = ft_strjoin(Data->path[i], Cmds->p_command[0]);
