@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+#include <sys/wait.h>
 /**
  * @brief get route of path from *envp[]
  * @param Data routes saved in **Data.path with '/' at end of route
@@ -45,11 +45,11 @@ int	main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, 
 	Data.env = envp;
 	ft_get_path(&Data);
 	while (1)
-	{
+	{	
 		str = readline("ejemplo1 ₺ ");
 		add_history(str);
 		ft_commands(str, &Cmds, &Data);
-		//ft_exec_routine(&Data, &Cmds, str);
+		waitpid(Cmds.pid, NULL, WUNTRACED);
 		free(str);
 	}
 	return (0);
