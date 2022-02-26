@@ -7,6 +7,8 @@ SRC		=	main.c	\
 			echo.c	\
 			pwd.c	\
 			env.c	\
+			cd.c	\
+			exit.c	\
 			commands.c
 LIB		=	libft/libft.a
 

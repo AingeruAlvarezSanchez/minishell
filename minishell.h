@@ -41,6 +41,8 @@ typedef struct s_cmds
 void	ft_check_echo(t_cmds *Cmds);
 void	ft_pwd(void);
 void	ft_env(t_data *Data);
+void	ft_cd(t_cmds *Cmds, t_data *Data);
+void	ft_exit(void);
 void	ft_commands(char *str, t_cmds *Cmds, t_data *Data);
 
 #endif
