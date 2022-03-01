@@ -3,12 +3,13 @@ NAME = minishell
 CC		=	gcc
 RM		=	rm -rf
 FLAGS	=	-Wall -Wextra -Werror -g  -g3 -fsanitize=address
-SRC		=	main.c	\
-			echo.c	\
-			pwd.c	\
-			env.c	\
-			cd.c	\
-			exit.c	\
+SRC		=	main.c		\
+			echo.c		\
+			pwd.c		\
+			env.c		\
+			cd.c		\
+			exit.c		\
+			export.c	\
 			commands.c
 LIB		=	libft/libft.a
 

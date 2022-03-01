@@ -16,6 +16,7 @@
  * @brief get route of path from *envp[]
  * @param Data routes saved in **Data.path with '/' at end of route
  */
+
 void	ft_get_path(t_data *Data)
 {
 	int		i;
@@ -36,13 +37,34 @@ void	ft_get_path(t_data *Data)
 	}
 }
 
+void	ft_setenv(t_data *Data, char **envp)
+{
+	int	i;
+	char	*pwd;
+
+	i = 0;
+	pwd = getcwd(NULL, 0);
+	while (envp[i])
+		i++;
+	Data->env = (char **)malloc(sizeof(char *) * (i + 1));
+	i = -1;
+	while (ft_strncmp(envp[++i], "OLDPWD=", 7))
+	{
+		//esta linea da leaks cada vez que se ejecuta un comando, pero no se por que
+		Data->env[i] = ft_strdup(envp[i]);
+	}
+	Data->env[i] = ft_strjoin("OLDPWD=", pwd);
+	Data->env[i + 1] = NULL;
+	free(pwd);
+}	
+
 int	main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, char **envp)
 {
 	char	*str;
-	t_data	Data;
 	t_cmds	Cmds;
+	t_data	Data;
 
-	Data.env = envp;
+	ft_setenv(&Data, envp);
 	ft_get_path(&Data);
 	while (1)
 	{	

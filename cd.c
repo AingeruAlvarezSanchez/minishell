@@ -1,30 +1,39 @@
 #include "minishell.h"
 
-void	ft_set_env(t_data *Data)
+void	ft_oldpwd(t_data *Data)
 {
 	int	i;
-	char	*route;
+	char	*old_pwd;
 
 	i = 0;
-	route = getcwd(NULL, 0);
-	while (ft_strncmp(Data->env[i], "OLDPWD=", 7))
+	old_pwd = getcwd(NULL, 0);
+	while (Data->env[i])
 		i++;
-	//la linea de codigo de justo debajo da leaks a partir del segundo uso de un comando
-	Data->env[i] = ft_strjoin("OLDPWD=", route);
-	free(route);
+	Data->env[i] = ft_strjoin("OLDPWD=", old_pwd);
+	free(old_pwd);
 }
 
 void	ft_cd(t_cmds *Cmds, t_data *Data)
 {
-	ft_set_env(Data);
+	int	i;
+	char	*old_pwd;
+
+	i = 0;
+	ft_oldpwd(Data);
 	if (!Cmds->p_command[1])
 	{
 		chdir("/");
 		return ;
 	}
-	/*if (!ft_strncmp(Cmds->p_command[1], "-", 1))
-		chdir(old_route);*/
-	//else
+	if (!ft_strncmp(Cmds->p_command[1], "-", 1))
+	{
+		while (ft_strncmp(Data->env[i], "OLDPWD=", 7))
+			i++;
+		old_pwd = ft_strtrim(Data->env[i], "OLDPWD=");
+		chdir(old_pwd);
+	}
+	else
 		chdir(Cmds->p_command[1]);
+	free(old_pwd);
 }
 

@@ -47,6 +47,8 @@ void	ft_ischild_builtin(t_cmds *Cmds, t_data *Data)
 		ft_check_echo(Cmds);
 	else if (!ft_strncmp(Cmds->p_command[0], "env", 3))
 		ft_env(Data);
+	else if (!ft_strncmp(Cmds->p_command[0], "export", 6))
+		ft_export(Data, Cmds);
 }
 
 void	ft_isparent_builtin(t_cmds *Cmds, t_data *Data)
