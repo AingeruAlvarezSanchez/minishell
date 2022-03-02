@@ -46,17 +46,30 @@ void	ft_setenv(t_data *Data, char **envp)
 	pwd = getcwd(NULL, 0);
 	while (envp[i])
 		i++;
+	printf("envp de i: %d\n", i);
 	Data->env = (char **)malloc(sizeof(char *) * (i + 1));
 	i = -1;
-	while (ft_strncmp(envp[++i], "OLDPWD=", 7))
-	{
-		//esta linea da leaks cada vez que se ejecuta un comando, pero no se por que
+	while (envp[++i])
 		Data->env[i] = ft_strdup(envp[i]);
-	}
-	Data->env[i] = ft_strjoin("OLDPWD=", pwd);
-	Data->env[i + 1] = NULL;
+	Data->env[i - 1] = ft_strjoin("OLDPWD=", pwd);
+	Data->env[i] = 0;
+	printf("I + 1: %d\n", i);
 	free(pwd);
 }	
+
+void	ft_free_data(t_data *Data)
+{
+	int	i;
+
+	i = -1;
+	while (Data->path[++i])
+		free(Data->path[i]);
+	free(Data->path);
+	i = -1;
+	while (Data->env[++i])
+		free(Data->env[i]);
+	free(Data->env);
+}
 
 int	main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, char **envp)
 {
@@ -64,14 +77,15 @@ int	main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, 
 	t_cmds	Cmds;
 	t_data	Data;
 
-	ft_setenv(&Data, envp);
-	ft_get_path(&Data);
 	while (1)
 	{	
+		ft_setenv(&Data, envp);
+		ft_get_path(&Data);
 		str = readline("ejemplo1 ₺ ");
 		add_history(str);
 		ft_commands(str, &Cmds, &Data);
 		waitpid(Cmds.pid, NULL, WUNTRACED);
+		ft_free_data(&Data);
 		free(str);
 	}
 	return (0);

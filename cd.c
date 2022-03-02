@@ -7,7 +7,7 @@ void	ft_oldpwd(t_data *Data)
 
 	i = 0;
 	old_pwd = getcwd(NULL, 0);
-	while (Data->env[i])
+	while (ft_strncmp(Data->env[i], "OLDPWD=", 7))
 		i++;
 	Data->env[i] = ft_strjoin("OLDPWD=", old_pwd);
 	free(old_pwd);
@@ -31,9 +31,9 @@ void	ft_cd(t_cmds *Cmds, t_data *Data)
 			i++;
 		old_pwd = ft_strtrim(Data->env[i], "OLDPWD=");
 		chdir(old_pwd);
+		free(old_pwd);
 	}
 	else
 		chdir(Cmds->p_command[1]);
-	free(old_pwd);
 }
 
