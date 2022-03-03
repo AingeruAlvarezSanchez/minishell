@@ -3,21 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 18:38:08 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/03/03 18:48:50 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/03/03 20:06:09 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	ft_realloc(__attribute__((unused)) t_data *Data)
+void	ft_export(__attribute__((unused)) t_data *Data, __attribute__((unused)) t_cmds *Cmds)
 {
+	printf("LLEGO\n");
 	return ;
 }
 
-void	ft_export(__attribute__((unused))t_data *Data, __attribute__((unused)) t_cmds *Cmds)
+void	ft_check_export(__attribute__((unused))t_data *Data, __attribute__((unused)) t_cmds *Cmds)
 {
-	return ;
+	int	i;
+
+	if (!Cmds->p_command[1])
+	{
+		i = -1;
+		while (Data->env[++i])
+			printf("declare -x %s\n", Data->env[i]);
+		exit (0);
+	}
+	i = -1;
+	while (Cmds->p_command[1][++i])
+	{
+		if (Cmds->p_command[1][i] == '=')
+		{
+			if (!Cmds->p_command[1][i + 1])
+				break ;
+			ft_export(Data, Cmds);
+		}
+	}
+	exit (0);
 }

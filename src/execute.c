@@ -6,11 +6,11 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 12:39:27 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/03 12:49:47 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/03 20:02:00 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../inc/minishell.h"
 
 void	ft_ischild_builtin(t_cmds *Cmds, t_data *Data)
 {
@@ -21,7 +21,7 @@ void	ft_ischild_builtin(t_cmds *Cmds, t_data *Data)
 	else if (!ft_strncmp(Cmds->p_command[0], "env", 3))
 		ft_env(Data);
 	else if (!ft_strncmp(Cmds->p_command[0], "export", 6))
-		ft_export(Data, Cmds);
+		ft_check_export(Data, Cmds);
 }
 
 void	ft_isparent_builtin(t_cmds *Cmds, t_data *Data)
@@ -38,7 +38,9 @@ void	ft_isparent_builtin(t_cmds *Cmds, t_data *Data)
 		return ;
 	}
 	if (!ft_strncmp(Cmds->p_command[0], "cd", 2))
+	{
 		ft_cd(Cmds, Data);
+	}
 	else if (!ft_strncmp(Cmds->p_command[0], "exit", 4))
 		ft_exit();
 	if (Cmds->p_command)
