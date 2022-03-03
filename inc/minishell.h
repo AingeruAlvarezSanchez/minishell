@@ -20,8 +20,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <string.h>
-# include "libft/libft.h"
-
+# include "../libft/libft.h"
 
 typedef struct s_data
 {

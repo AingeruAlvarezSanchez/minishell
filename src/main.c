@@ -10,8 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../inc/minishell.h"
 #include <sys/wait.h>
+
 /**
  * @brief get route of path from *envp[]
  * @param Data routes saved in **Data.path with '/' at end of route

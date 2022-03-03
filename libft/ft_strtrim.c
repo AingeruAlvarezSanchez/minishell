@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-static int	char_check(char c, char const *set)
+static int	char_in_str(char c, char const *set)
 {
 	int	i;
 
@@ -37,10 +37,10 @@ char	*ft_strtrim(char const *s1, char const *set)
 		return (NULL);
 	front = 0;
 	i = 0;
-	while (s1[front] != '\0' && char_check(s1[front], set) != 0)
+	while (s1[front] != '\0' && char_in_str(s1[front], set) != 0)
 		front++;
 	back = ft_strlen(s1);
-	while (char_check(s1[back - 1], set) != 0 && back > front)
+	while (char_in_str(s1[back - 1], set) != 0 && back > front)
 		back--;
 	str = (char *)malloc((*s1) * ((back - front) * sizeof(char) + 1));
 	if (str == NULL)
