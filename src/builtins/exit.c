@@ -1,23 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/03 12:44:33 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/03 12:44:44 by aalvarez         ###   ########.fr       */
+/*   Created: 2022/03/03 18:38:39 by ecorreia          #+#    #+#             */
+/*   Updated: 2022/03/03 18:38:44 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../inc/minishell.h"
 
-void	ft_pwd(void)
+void	ft_exit(void)
 {
-	char	*route;
-
-	route = getcwd(NULL, 0);
-	printf("%s\n", route);
-	free(route);
 	exit(0);
 }

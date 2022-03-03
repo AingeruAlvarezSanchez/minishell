@@ -1,29 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/03 12:45:53 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/03 12:45:54 by aalvarez         ###   ########.fr       */
+/*   Created: 2022/03/03 18:38:08 by ecorreia          #+#    #+#             */
+/*   Updated: 2022/03/03 18:48:50 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../inc/minishell.h"
 
-void	ft_env(t_data *Data)
+void	ft_realloc(__attribute__((unused)) t_data *Data)
 {
-	int	i;
-	int	j;
+	return ;
+}
 
-	i = -1;
-	while (Data->env[++i])
-	{
-		j = -1;
-		while (Data->env[i][++j])
-			write(1, &Data->env[i][j], 1);
-		write(1, "\n", 1);
-	}
-	exit(0);
+void	ft_export(__attribute__((unused))t_data *Data, __attribute__((unused)) t_cmds *Cmds)
+{
+	return ;
 }

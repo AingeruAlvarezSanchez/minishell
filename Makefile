@@ -2,16 +2,18 @@ SHELL = /bin/sh
 NAME = minishell
 CC		=	gcc
 RM		=	rm -rf
-FLAGS	=	-Wall -Wextra -Werror -g #-fsanitize=address -g3
-SRC		=	main.c		\
-			commands.c			\
-			execute.c			\
-			builtins/echo.c		\
-			builtins/pwd.c		\
-			builtins/env.c		\
-			builtins/cd.c		\
-			builtins/exit.c		\
-			builtins/export.c
+FLAGS	=	-Wall -Wextra -Werror -g  -g3 -fsanitize=address
+SRC		=	src/main.c	\
+			src/builtins/echo.c	\
+			src/builtins/pwd.c	\
+			src/builtins/env.c	\
+			src/builtins/cd.c	\
+			src/builtins/exit.c	\
+			src/builtins/export.c\
+			src/quotes.c\
+			src/commands.c
+
+INCLUDE =	inc/minishell.h
 LIB		=	libft/libft.a
 
 $(NAME): all
@@ -34,4 +36,4 @@ fclean: clean
 
 re: clean all
 
-.PHONY: all clean fclean re all
+.PHONY: all clean fclean re

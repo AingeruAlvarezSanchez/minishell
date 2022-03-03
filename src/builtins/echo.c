@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/03 12:45:43 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/03 12:45:47 by aalvarez         ###   ########.fr       */
+/*   Created: 2022/03/03 18:39:08 by ecorreia          #+#    #+#             */
+/*   Updated: 2022/03/03 18:39:12 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../inc/minishell.h"
 
 void	ft_echo(t_cmds *Cmds, char *flag)
 {

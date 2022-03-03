@@ -5,13 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/03 12:47:06 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/03 12:47:29 by aalvarez         ###   ########.fr       */
+/*   Created: 2022/02/16 15:10:04 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/03/03 18:54:34 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../inc/minishell.h"
 #include <sys/wait.h>
+
 /**
  * @brief get route of path from *envp[]
  * @param Data routes saved in **Data.path with '/' at end of route
@@ -51,8 +52,11 @@ void	ft_setenv(t_data *Data, char **envp)
 	i = -1;
 	while (envp[++i])
 		Data->env[i] = ft_strdup(envp[i]);
-	Data->env[i - 1] = ft_strjoin("OLDPWD=", pwd);
 	Data->env[i] = 0;
+	i = 0;
+	while (ft_strncmp(Data->env[i], "OLDPWD=", 7))
+		i++;
+	Data->env[i] = ft_strjoin("OLDPWD=", pwd);
 	free(pwd);
 }	
 
@@ -70,21 +74,20 @@ void	ft_free_data(t_data *Data)
 	free(Data->env);
 }
 
-int	main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
 	char	*str;
 	t_cmds	Cmds;
 	t_data	Data;
 
-	while (1)
+	ft_setenv(&Data, envp);
+	ft_get_path(&Data);
+	while (1 && argc && argv)
 	{	
-		ft_setenv(&Data, envp);
-		ft_get_path(&Data);
 		str = readline("ejemplo1 ₺ ");
 		add_history(str);
 		ft_commands(str, &Cmds, &Data);
 		waitpid(Cmds.pid, NULL, WUNTRACED);
-		ft_free_data(&Data);
 		free(str);
 	}
 	return (0);
