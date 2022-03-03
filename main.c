@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/16 15:10:04 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/02/20 16:14:51by aalvarez         ###   ########.fr       */
+/*   Created: 2022/03/03 12:47:06 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/03/03 12:47:29 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,23 +37,22 @@ void	ft_get_path(t_data *Data)
 	}
 }
 
+/* this function creates a copy of the envp variable with malloc */
 void	ft_setenv(t_data *Data, char **envp)
 {
-	int	i;
+	int		i;
 	char	*pwd;
 
 	i = 0;
 	pwd = getcwd(NULL, 0);
 	while (envp[i])
 		i++;
-	printf("envp de i: %d\n", i);
 	Data->env = (char **)malloc(sizeof(char *) * (i + 1));
 	i = -1;
 	while (envp[++i])
 		Data->env[i] = ft_strdup(envp[i]);
 	Data->env[i - 1] = ft_strjoin("OLDPWD=", pwd);
 	Data->env[i] = 0;
-	printf("I + 1: %d\n", i);
 	free(pwd);
 }	
 

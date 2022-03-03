@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:08:14 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/02/17 18:54:52 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/03 12:53:13 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # include <string.h>
 # include "libft/libft.h"
 
-
 typedef struct s_data
 {
 	char	**env;
@@ -34,7 +33,8 @@ typedef struct s_cmds
 	pid_t	pid;
 	char	**commands;
 	char	**p_command;
-	int	n_cmds;
+	char	*old_pwd;
+	int		n_cmds;
 }	t_cmds;
 
 /* builtin functions */
@@ -44,6 +44,8 @@ void	ft_env(t_data *Data);
 void	ft_cd(t_cmds *Cmds, t_data *Data);
 void	ft_exit(void);
 void	ft_export(t_data *Data, t_cmds *Cmds);
+/* Command execution functions */
 void	ft_commands(char *str, t_cmds *Cmds, t_data *Data);
+void	ft_init_exec(t_cmds *Cmds, t_data *Data);
 
 #endif
