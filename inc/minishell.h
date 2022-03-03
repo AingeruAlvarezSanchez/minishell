@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:08:14 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/02/17 18:54:52 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/03 18:46:20 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct s_cmds
 	pid_t	pid;
 	char	**commands;
 	char	**p_command;
-	int	n_cmds;
+	int		n_cmds;
 }	t_cmds;
 
 /* builtin functions */
@@ -44,5 +44,6 @@ void	ft_cd(t_cmds *Cmds, t_data *Data);
 void	ft_exit(void);
 void	ft_export(t_data *Data, t_cmds *Cmds);
 void	ft_commands(char *str, t_cmds *Cmds, t_data *Data);
-char	*ft_manage_quotes(char * command);
+char	*ft_manage_quotes(char *command);
+
 #endif

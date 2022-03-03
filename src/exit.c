@@ -1,7 +1,0 @@
-#include "../inc/minishell.h"
-
-void	ft_exit(void)
-{
-	exit(0);
-}
-

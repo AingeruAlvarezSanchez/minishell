@@ -1,10 +1,21 @@
-#include "../inc/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   quotes.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/03 18:41:03 by ecorreia          #+#    #+#             */
+/*   Updated: 2022/03/03 18:45:04 by ecorreia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "../inc/minishell.h"
 
 int	ft_ncinstr(char c, char *str)
 {
 	int	i;
-	int q;
+	int	q;
 
 	q = 0;
 	i = 0;
@@ -43,41 +54,41 @@ int	ft_cinstr(char c, char *str)
  * 
  * @param str       This is the string in which to search for quotes
  * @param c         this is the quote type to delete 
- * @return char*    returns string without quotes or str if no coincidence or not closed
+ * @return char*    returns string without quotes or str if no 
+ * coincidence or not closed
  */
-int ft_check_quotes(char * str, char c)
+int	ft_check_quotes(char *str, char c)
 {
-    int i = -1;
-    char * s;
-    
-    i = ft_cinstr(c, str);
-    if(i >= 0)
-    {
-        s = ft_substr(str, ft_cinstr(c, str), ft_strlen(str + i));
-        if (s) 
-            return 1;
-    }
-    return 0;
+	int		i;
+	char	*s;
+
+	i = -1;
+	i = ft_cinstr(c, str);
+	if (i >= 0)
+	{
+		s = ft_substr(str, ft_cinstr(c, str), ft_strlen(str + i));
+		if (s)
+			return (1);
+	}
+	return (0);
 }
 
 //es inpar
-int isOdd(int n)
+int	isodd(int n)
 {
-    return n & 1;
+	return (n & 1);
 }
 
-char *ft_manage_quotes(char * command)
+char	*ft_manage_quotes(char *command)
 {	
-		if(isOdd(ft_ncinstr('\'', command)))
-		{
-			printf("quotes no cerradas\n");
-			return command;
-		}
-
-		if(ft_check_quotes(command, '\''))
-			return (ft_strtrim(command, "\'"));
-		if(ft_check_quotes(command, '\"'))
-			return (ft_strtrim(command, "\""));
-		return command;
-
+	if (isodd(ft_ncinstr('\'', command)))
+	{
+		printf("quotes no cerradas\n");
+		return (command);
+	}
+	if (ft_check_quotes(command, '\''))
+		return (ft_strtrim(command, "\'"));
+	if (ft_check_quotes(command, '\"'))
+		return (ft_strtrim(command, "\""));
+	return (command);
 }

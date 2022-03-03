@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:10:04 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/02/20 16:14:51by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/03 18:40:46 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_get_path(t_data *Data)
 
 void	ft_setenv(t_data *Data, char **envp)
 {
-	int	i;
+	int		i;
 	char	*pwd;
 
 	i = 0;
@@ -51,8 +51,11 @@ void	ft_setenv(t_data *Data, char **envp)
 	i = -1;
 	while (envp[++i])
 		Data->env[i] = ft_strdup(envp[i]);
-	Data->env[i - 1] = ft_strjoin("OLDPWD=", pwd);
 	Data->env[i] = 0;
+	i = 0;
+	while (ft_strncmp(Data->env[i], "OLDPWD=", 7))
+		i++;
+	Data->env[i] = ft_strjoin("OLDPWD=", pwd);
 	free(pwd);
 }	
 
@@ -70,21 +73,20 @@ void	ft_free_data(t_data *Data)
 	free(Data->env);
 }
 
-int	main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
 	char	*str;
 	t_cmds	Cmds;
 	t_data	Data;
 
-	while (1)
+	ft_setenv(&Data, envp);
+	ft_get_path(&Data);
+	while (1 && argc && argv)
 	{	
-		ft_setenv(&Data, envp);
-		ft_get_path(&Data);
 		str = readline("ejemplo1 ₺ ");
 		add_history(str);
 		ft_commands(str, &Cmds, &Data);
 		waitpid(Cmds.pid, NULL, WUNTRACED);
-		ft_free_data(&Data);
 		free(str);
 	}
 	return (0);

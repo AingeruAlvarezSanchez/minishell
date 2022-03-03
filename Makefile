@@ -2,15 +2,15 @@ SHELL = /bin/sh
 NAME = minishell
 CC		=	gcc
 RM		=	rm -rf
-FLAGS	=	-Wall -Wextra -Werror #-g  -g3 -fsanitize=address
+FLAGS	=	-Wall -Wextra -Werror -g  -g3 -fsanitize=address
 SRC		=	src/main.c	\
-			src/echo.c	\
-			src/pwd.c	\
-			src/env.c	\
-			src/cd.c	\
-			src/exit.c	\
+			src/builtins/echo.c	\
+			src/builtins/pwd.c	\
+			src/builtins/env.c	\
+			src/builtins/cd.c	\
+			src/builtins/exit.c	\
+			src/builtins/export.c\
 			src/quotes.c\
-			src/export.c\
 			src/commands.c
 
 INCLUDE =	inc/minishell.h
@@ -20,7 +20,7 @@ $(NAME): all
 
 all: $(SRC)
 	@$(MAKE) -C libft/
-	@ $(CC) $(FLAGS) $(SRC) $(INCLUDE) $(LIB) -lreadline -o $(NAME)
+	@ $(CC) $(FLAGS) $(SRC) $(LIB) -lreadline -o $(NAME)
 	@ echo "compilation OK"
 
 clean:
