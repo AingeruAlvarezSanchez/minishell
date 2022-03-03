@@ -34,7 +34,8 @@ void	ft_fill_commands(char *str, t_cmds *Cmds)
 	}
 	else
 	{
-		Cmds->commands[0] = ft_manage_quotes(str);
+		Cmds->commands = (char **)malloc(sizeof(char *) * 2);
+		Cmds->commands[0] = ft_strdup(str);
 		Cmds->commands[1] = NULL;
 	}
 }
@@ -47,6 +48,8 @@ void	ft_ischild_builtin(t_cmds *Cmds, t_data *Data)
 		ft_check_echo(Cmds);
 	else if (!ft_strncmp(Cmds->p_command[0], "env", 3))
 		ft_env(Data);
+	else if (!ft_strncmp(Cmds->p_command[0], "export", 6))
+		ft_export(Data, Cmds);
 }
 
 void	ft_isparent_builtin(t_cmds *Cmds, t_data *Data)
@@ -110,6 +113,10 @@ void	ft_init_exec(t_cmds *Cmds, t_data *Data)
 			ft_execute(Data, Cmds, Cmds->commands[i]);
 		i++;
 	}
+	i = -1;
+	while (Cmds->commands[++i])
+		free(Cmds->commands[i]);
+	free(Cmds->commands);
 }
 
 void	ft_commands(char *str, t_cmds *Cmds, t_data *Data)
