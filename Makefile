@@ -9,6 +9,7 @@ SRC		=	src/main.c	\
 			src/env.c	\
 			src/cd.c	\
 			src/exit.c	\
+			src/quotes.c\
 			src/commands.c
 
 INCLUDE =	inc/minishell.h

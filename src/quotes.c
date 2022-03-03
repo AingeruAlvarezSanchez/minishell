@@ -1,5 +1,22 @@
 #include "../inc/minishell.h"
 
+
+int	ft_ncinstr(char c, char *str)
+{
+	int	i;
+	int q;
+
+	q = 0;
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == c)
+			q++;
+		i++;
+	}
+	return (q);
+}
+
 /**
  * @brief Checks if char is inside str and returns position
  * 
@@ -28,7 +45,7 @@ int	ft_cinstr(char c, char *str)
  * @param c         this is the quote type to delete 
  * @return char*    returns string without quotes or str if no coincidence or not closed
  */
-char * check_quotes(char * str, char c)
+int ft_check_quotes(char * str, char c)
 {
     int i = -1;
     char * s;
@@ -38,12 +55,29 @@ char * check_quotes(char * str, char c)
     {
         s = ft_substr(str, ft_cinstr(c, str), ft_strlen(str + i));
         if (s) 
-            return (ft_strtrim(s, "\'")); //esto endria que ser c pero no me deja castear
+            return 1;
     }
-    return str;
+    return 0;
 }
 
-char *manage_quotes(char * command)
+//es inpar
+int isOdd(int n)
 {
-	return 1;
+    return n & 1;
+}
+
+char *ft_manage_quotes(char * command)
+{	
+		if(isOdd(ft_ncinstr('\'', command)))
+		{
+			printf("quotes no cerradas\n");
+			return command;
+		}
+
+		if(ft_check_quotes(command, '\''))
+			return (ft_strtrim(command, "\'"));
+		if(ft_check_quotes(command, '\"'))
+			return (ft_strtrim(command, "\""));
+		return command;
+
 }

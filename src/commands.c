@@ -34,7 +34,7 @@ void	ft_fill_commands(char *str, t_cmds *Cmds)
 	}
 	else
 	{
-		Cmds->commands[0] = str;
+		Cmds->commands[0] = ft_manage_quotes(str);
 		Cmds->commands[1] = NULL;
 	}
 }
