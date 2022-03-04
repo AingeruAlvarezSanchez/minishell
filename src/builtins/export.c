@@ -50,9 +50,30 @@ void	ft_alreadyenv(t_data *Data, char *value, char *find, int x)
 	}
 }
 
-void	ft_newenv(__attribute__((unused)) t_data *Data, __attribute__((unused))char *value, __attribute__((unused))char *find)
+char	**ft_newenv(t_data *Data, char *value, char *find)
 {
-	printf("THE ENV DOESNT EXIST\n");
+	int	i;
+	char	**tmp;
+
+	i = 0;
+	while (Data->env[i])
+		i++;
+	tmp = (char **)malloc(sizeof(char *) * (i + 2));
+	i = -1;
+	while (Data->env[++i])
+		tmp[i] = ft_strdup(Data->env[i]);
+	ft_doublefree(Data->env);
+	if (!value)
+	{
+		tmp[i] = ft_strdup(find);
+		tmp[i + 1] = 0;
+	}
+	else
+	{
+		tmp[i] = ft_strjoin(find, value);
+		tmp[i + 1] = 0;
+	}
+	return (tmp);
 }
 
 void	ft_export(t_data *Data, t_cmds *Cmds, int i, int j)
@@ -78,7 +99,7 @@ void	ft_export(t_data *Data, t_cmds *Cmds, int i, int j)
 			return ;
 		}
 	}
-	ft_newenv(Data, value, find);
+	Data->env = ft_newenv(Data, value, find);
 	free(value);
 	free(find);
 }

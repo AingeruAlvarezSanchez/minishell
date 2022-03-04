@@ -43,6 +43,7 @@ void	ft_env(t_data *Data);
 void	ft_cd(t_cmds *Cmds, t_data *Data);
 void	ft_exit(void);
 void	ft_check_export(t_data *Data, t_cmds *Cmds);
+void	ft_check_unset(t_data *Data, t_cmds *Cmds);
 /* Command execution functions */
 void	ft_commands(char *str, t_cmds *Cmds, t_data *Data);
 void	ft_init_exec(t_cmds *Cmds, t_data *Data);

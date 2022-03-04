@@ -10,6 +10,7 @@ SRC		=	src/main.c	\
 			src/builtins/cd.c	\
 			src/builtins/exit.c	\
 			src/builtins/export.c\
+			src/builtins/unset.c\
 			src/quotes.c\
 			src/execute.c\
 			src/commands.c
