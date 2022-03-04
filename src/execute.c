@@ -20,8 +20,6 @@ void	ft_ischild_builtin(t_cmds *Cmds, t_data *Data)
 		ft_check_echo(Cmds);
 	else if (!ft_strncmp(Cmds->p_command[0], "env", 3))
 		ft_env(Data);
-	else if (!ft_strncmp(Cmds->p_command[0], "export", 6))
-		ft_check_export(Data, Cmds);
 }
 
 void	ft_isparent_builtin(t_cmds *Cmds, t_data *Data)
@@ -38,26 +36,24 @@ void	ft_isparent_builtin(t_cmds *Cmds, t_data *Data)
 		return ;
 	}
 	if (!ft_strncmp(Cmds->p_command[0], "cd", 2))
-	{
 		ft_cd(Cmds, Data);
-	}
 	else if (!ft_strncmp(Cmds->p_command[0], "exit", 4))
 		ft_exit();
+	else if (!ft_strncmp(Cmds->p_command[0], "export", 6))
+		ft_check_export(Data, Cmds);
 	if (Cmds->p_command)
-	{
-		while (Cmds->p_command[++i])
-			free(Cmds->p_command[i]);
-		free(Cmds->p_command);
-	}
+		ft_doublefree(Cmds->p_command);
 }
 
 void	ft_execute(t_data *Data, t_cmds *Cmds, char *command)
 {
-	char	*tmp;
+	char		*tmp;
 	int		i;
 
 	i = -1;
 	Cmds->p_command = ft_split(command, ' ');
+	if (!ft_strncmp(Cmds->p_command[0], "export", 6))
+		exit (0);
 	if (!Cmds->p_command[0])
 		exit (0);
 	if (!ft_strncmp(Cmds->p_command[0], "cd", 2))
@@ -88,7 +84,5 @@ void	ft_init_exec(t_cmds *Cmds, t_data *Data)
 		i++;
 	}
 	i = -1;
-	while (Cmds->commands[++i])
-		free(Cmds->commands[i]);
-	free(Cmds->commands);
+	ft_doublefree(Cmds->commands);
 }

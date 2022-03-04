@@ -39,7 +39,7 @@ void	ft_get_path(t_data *Data)
 }
 
 /* this function creates a copy of the envp variable with malloc */
-void	ft_setenv(t_data *Data, char **envp)
+void	ft_cpyenv(t_data *Data, char **envp)
 {
 	int		i;
 	char	*pwd;
@@ -69,9 +69,7 @@ void	ft_free_data(t_data *Data)
 		free(Data->path[i]);
 	free(Data->path);
 	i = -1;
-	while (Data->env[++i])
-		free(Data->env[i]);
-	free(Data->env);
+	ft_doublefree(Data->path);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -80,7 +78,7 @@ int	main(int argc, char **argv, char **envp)
 	t_cmds	Cmds;
 	t_data	Data;
 
-	ft_setenv(&Data, envp);
+	ft_cpyenv(&Data, envp);
 	ft_get_path(&Data);
 	while (1 && argc && argv)
 	{	
