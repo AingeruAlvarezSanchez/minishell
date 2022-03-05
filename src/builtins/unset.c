@@ -1,6 +1,6 @@
 #include "../../inc/minishell.h"
 
-char	**ft_unset_env(t_data *Data, __attribute__((unused))char *find, int j)
+char	**ft_unset_env(t_data *Data, int j)
 {
 	char	**new;
 	int	i;
@@ -25,7 +25,7 @@ char	**ft_unset_env(t_data *Data, __attribute__((unused))char *find, int j)
 	return (new);
 }
 
-void	ft_unset(__attribute__((unused)) t_data *Data,__attribute__((unused)) t_cmds *Cmds,__attribute__((unused)) int i)
+void	ft_unset(t_data *Data, t_cmds *Cmds, int i)
 {
 	char	*find;
 	size_t	len;
@@ -38,7 +38,7 @@ void	ft_unset(__attribute__((unused)) t_data *Data,__attribute__((unused)) t_cmd
 	{
 		if (!ft_strncmp(Data->env[j], find, len))
 		{
-			Data->env = ft_unset_env(Data, find, j);
+			Data->env = ft_unset_env(Data, j);
 			break ;
 		}
 	}
