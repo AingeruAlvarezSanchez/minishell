@@ -12,58 +12,86 @@
 
 #include "../../inc/minishell.h"
 
-void	ft_oldpwd(t_data *Data)
+char	**ft_oldpwd(t_data *Data)
 {
-	int		i;
-	char	*old_pwd;
+	char	**new_env;
+	char	*pwd;
+	int	i;
 
 	i = 0;
-	old_pwd = getcwd(NULL, 0);
-	while (ft_strncmp(Data->env[i], "OLDPWD=", 7))
+	pwd = getcwd(NULL, 0);
+	while (Data->env[i])
 		i++;
-	Data->env[i] = ft_strjoin("OLDPWD=", old_pwd);
-	free(old_pwd);
+	new_env = (char **)malloc(sizeof(char *) * (i + 1));
+	i = -1;
+	while (Data->env[++i])
+	{
+		if (!ft_strncmp(Data->env[i], "OLDPWD=", 7))
+			new_env[i] = ft_strjoin("OLDPWD=", pwd);
+		new_env[i] = ft_strdup(Data->env[i]);
+	}
+	new_env[i] = 0;
+	ft_doublefree(Data->env);
+	free(pwd);
+	return (new_env);
 }
 
-void	ft_newpwd(t_data *Data)
+char	**ft_newpwd(t_data *Data)
 {
-	int		i;
+	char	**new_env;
+	int	i;
 	char	*pwd;
 
 	i = 0;
 	pwd = getcwd(NULL, 0);
-	while (ft_strncmp(Data->env[i], "PWD=", 3))
+	while (Data->env[i])
 		i++;
-	Data->env[i] = ft_strjoin("PWD=", pwd);
+	new_env = (char **)malloc(sizeof(char *) * (i + 1));
+	i = -1;
+	while (Data->env[++i])
+	{
+		if (!ft_strncmp(Data->env[i], "PWD=", 4))
+			new_env[i] = ft_strjoin("PWD=", pwd);
+		new_env[i] = ft_strdup(Data->env[i]);
+	}
+	new_env[i] = 0;
+	ft_doublefree(Data->env);
 	free(pwd);
+	return (new_env);
+}
+
+void	ft_minusflag(t_data *Data)
+{
+	int	i;
+	char	*oldpwd;
+
+	i = -1;
+	oldpwd = 0;
+	while (Data->env[++i])
+	{
+		if (!ft_strncmp(Data->env[i], "OLDPWD=", 7))
+			oldpwd = ft_strtrim(Data->env[i], "OLDPWD=");
+	}
+	Data->env = ft_oldpwd(Data);
+	chdir(oldpwd);
+	Data->env = ft_newpwd(Data);
+	free(oldpwd);
 }
 
 void	ft_cd(t_cmds *Cmds, t_data *Data)
 {
-	int		i;
-	char	*old_pwd;
-
-	i = 0;
 	if (!Cmds->p_command[1])
 	{
-		ft_oldpwd(Data);
+		Data->env = ft_oldpwd(Data);
 		chdir("/");
-		ft_newpwd(Data);
+		Data->env = ft_newpwd(Data);
 	}
-	else if (!ft_strncmp(Cmds->p_command[1], "-", 1))
-	{
-		while (ft_strncmp(Data->env[i], "OLDPWD=", 7))
-			i++;
-		old_pwd = ft_strtrim(Data->env[i], "OLDPWD=");
-		ft_oldpwd(Data);
-		chdir(old_pwd);
-		ft_newpwd(Data);
-		free(old_pwd);
-	}
+	else if (Cmds->p_command[1][0] == '-')
+		ft_minusflag(Data);
 	else
 	{
-		ft_oldpwd(Data);
+		Data->env = ft_oldpwd(Data);
 		chdir(Cmds->p_command[1]);
-		ft_newpwd(Data);
+		Data->env = ft_newpwd(Data);
 	}
 }

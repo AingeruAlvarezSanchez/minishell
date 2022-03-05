@@ -19,6 +19,8 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/types.h>
+# include <dirent.h>
 # include <string.h>
 # include "../libft/libft.h"
 
