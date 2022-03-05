@@ -54,13 +54,13 @@ void	ft_execute(t_data *Data, t_cmds *Cmds, char *command)
 
 	i = -1;
 	Cmds->p_command = ft_split(command, ' ');
-	if (!ft_strncmp(Cmds->p_command[0], "export", 6))
+	if (!Cmds->p_command[0])
+		exit (0);
+	else if (!ft_strncmp(Cmds->p_command[0], "export", 6))
 		exit (0);
 	else if (!ft_strncmp(Cmds->p_command[0], "unset", 5))
 		exit (0);
 	else if (!ft_strncmp(Cmds->p_command[0], "cd", 2))
-		exit (0);
-	else if (!Cmds->p_command[0])
 		exit (0);
 	ft_ischild_builtin(Cmds, Data);
 	while (Data->path[++i])
