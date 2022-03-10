@@ -47,12 +47,18 @@ void	ft_isparent_builtin(t_cmds *Cmds, t_data *Data)
 		ft_doublefree(Cmds->p_command);
 }
 
+void	ft_concat_cmds(__attribute__((unused)) t_cmds *Cmds)
+{
+	printf("entered concat cmds\n");
+}
+
 void	ft_execute(t_data *Data, t_cmds *Cmds, char *command)
 {
 	char	*tmp;
 	int		i;
 
 	i = -1;
+	ft_concat_cmds(Cmds);
 	Cmds->p_command = ft_split(command, ' ');
 	if (!Cmds->p_command[0])
 		exit (0);

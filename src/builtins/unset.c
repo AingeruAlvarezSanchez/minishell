@@ -6,13 +6,13 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 16:03:58 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/10 16:04:32 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/10 16:08:45 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-char	**ft_unset_env(t_data *Data, char *find, int j)
+char	**ft_unset_env(t_data *Data, int j)
 {
 	char	**new;
 	int		i;
@@ -50,7 +50,7 @@ void	ft_unset(t_data *Data, t_cmds *Cmds, int i)
 	{
 		if (!ft_strncmp(Data->env[j], find, len))
 		{
-			Data->env = ft_unset_env(Data, find, j);
+			Data->env = ft_unset_env(Data, j);
 			break ;
 		}
 	}
