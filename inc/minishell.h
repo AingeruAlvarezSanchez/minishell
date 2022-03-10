@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:08:14 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/03 20:00:14 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/10 16:11:42 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,7 @@ typedef struct s_cmds
 	pid_t	pid;
 	char	**commands;
 	char	**p_command;
-	int	n_cmds;
-	int	**pipefds;
+	int		n_cmds;
 }	t_cmds;
 
 /* builtin functions */

@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:10:04 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/10 15:51:29 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/10 16:17:16 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	ft_get_path(t_data *Data)
 /* this function creates a copy of the envp variable with malloc */
 void	ft_cpyenv(t_data *Data, char **envp)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	while (envp[i])
@@ -52,7 +52,9 @@ void	ft_cpyenv(t_data *Data, char **envp)
 	Data->env = (char **)malloc(sizeof(char *) * (i + 1));
 	i = -1;
 	while (envp[++i])
+	{
 		Data->env[i] = ft_strdup(envp[i]);
+	}
 	Data->env[i] = 0;
 }	
 
