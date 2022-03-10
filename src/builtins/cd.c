@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 18:36:22 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/03/03 19:49:28 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/10 16:05:23 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,12 @@ char	**ft_oldpwd(t_data *Data)
 {
 	char	**new_env;
 	char	*pwd;
-	int	i;
+	int		i;
+	char	*tmp;
 
 	i = 0;
 	pwd = getcwd(NULL, 0);
+	tmp = ft_strjoin("PWD=", pwd);
 	while (Data->env[i])
 		i++;
 	new_env = (char **)malloc(sizeof(char *) * (i + 1));
@@ -27,23 +29,26 @@ char	**ft_oldpwd(t_data *Data)
 	while (Data->env[++i])
 	{
 		if (!ft_strncmp(Data->env[i], "OLDPWD=", 7))
-			new_env[i] = ft_strjoin("OLDPWD=", pwd);
+			new_env[i] = tmp;
 		new_env[i] = ft_strdup(Data->env[i]);
 	}
 	new_env[i] = 0;
 	ft_doublefree(Data->env);
 	free(pwd);
+	free(tmp);
 	return (new_env);
 }
 
 char	**ft_newpwd(t_data *Data)
 {
 	char	**new_env;
-	int	i;
+	int		i;
 	char	*pwd;
+	char	*tmp;
 
 	i = 0;
 	pwd = getcwd(NULL, 0);
+	tmp = ft_strjoin("PWD=", pwd);
 	while (Data->env[i])
 		i++;
 	new_env = (char **)malloc(sizeof(char *) * (i + 1));
@@ -51,18 +56,19 @@ char	**ft_newpwd(t_data *Data)
 	while (Data->env[++i])
 	{
 		if (!ft_strncmp(Data->env[i], "PWD=", 4))
-			new_env[i] = ft_strjoin("PWD=", pwd);
+			new_env[i] = tmp;
 		new_env[i] = ft_strdup(Data->env[i]);
 	}
 	new_env[i] = 0;
 	ft_doublefree(Data->env);
+	free(tmp);
 	free(pwd);
 	return (new_env);
 }
 
 void	ft_minusflag(t_data *Data)
 {
-	int	i;
+	int		i;
 	char	*oldpwd;
 
 	i = -1;

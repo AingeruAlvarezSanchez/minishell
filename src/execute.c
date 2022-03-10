@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 12:39:27 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/03 20:02:00 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/10 16:06:30 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	ft_isparent_builtin(t_cmds *Cmds, t_data *Data)
 
 void	ft_execute(t_data *Data, t_cmds *Cmds, char *command)
 {
-	char		*tmp;
+	char	*tmp;
 	int		i;
 
 	i = -1;

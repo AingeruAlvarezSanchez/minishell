@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:10:04 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/03 18:54:34 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/10 15:51:29 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,13 @@ void	ft_get_path(t_data *Data)
 {
 	int		i;
 	char	*tmp;
+	char	*tmp2;
 
 	i = 0;
 	while (ft_strncmp(Data->env[i], "PATH=", 5))
 		i++;
-	Data->env[i] = ft_strtrim(Data->env[i], "PATH=");
-	Data->path = ft_split(Data->env[i], ':');
+	tmp2 = ft_strtrim(Data->env[i], "PATH=");
+	Data->path = ft_split(tmp2, ':');
 	i = 0;
 	while (Data->path[i])
 	{
@@ -36,6 +37,8 @@ void	ft_get_path(t_data *Data)
 		Data->path[i] = tmp;
 		i++;
 	}
+	free (tmp2);
+	free (tmp);
 }
 
 /* this function creates a copy of the envp variable with malloc */

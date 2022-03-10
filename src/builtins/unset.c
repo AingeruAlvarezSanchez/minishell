@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/10 16:03:58 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/03/10 16:04:32 by aalvarez         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
-char	**ft_unset_env(t_data *Data, __attribute__((unused))char *find, int j)
+char	**ft_unset_env(t_data *Data, char *find, int j)
 {
 	char	**new;
-	int	i;
-	int	x;
+	int		i;
+	int		x;
 
 	i = 0;
 	while (Data->env[i])
@@ -25,11 +37,11 @@ char	**ft_unset_env(t_data *Data, __attribute__((unused))char *find, int j)
 	return (new);
 }
 
-void	ft_unset(__attribute__((unused)) t_data *Data,__attribute__((unused)) t_cmds *Cmds,__attribute__((unused)) int i)
+void	ft_unset(t_data *Data, t_cmds *Cmds, int i)
 {
 	char	*find;
 	size_t	len;
-	int	j;
+	int		j;
 
 	find = Cmds->p_command[i];
 	len = ft_strlen(find);
@@ -59,7 +71,8 @@ void	ft_check_unset(t_data *Data, t_cmds *Cmds)
 		{
 			if (Cmds->p_command[i][j] == '=')
 			{
-				printf("unset: '%s': not a valid identifier\n", Cmds->p_command[i]);
+				printf("unset: '%s': not a valid identifier\n",
+					Cmds->p_command[i]);
 				check = 0;
 			}
 		}
@@ -68,4 +81,3 @@ void	ft_check_unset(t_data *Data, t_cmds *Cmds)
 		check = 1;
 	}
 }
-

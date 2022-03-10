@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 18:38:08 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/03/03 20:06:09 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/10 16:04:59 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 char	*ft_create_value(t_cmds *Cmds, int x, int i)
 {
 	char	*value;
-	int	size;
-	int	ref;
+	int		size;
+	int		ref;
 
 	size = 0;
 	ref = x;
@@ -52,7 +52,7 @@ void	ft_alreadyenv(t_data *Data, char *value, char *find, int x)
 
 char	**ft_newenv(t_data *Data, char *value, char *find)
 {
-	int	i;
+	int		i;
 	char	**tmp;
 
 	i = 0;
@@ -78,7 +78,7 @@ char	**ft_newenv(t_data *Data, char *value, char *find)
 
 void	ft_export(t_data *Data, t_cmds *Cmds, int i, int j)
 {
-	int	x;
+	int		x;
 	char	*find;
 	char	*value;
 
@@ -127,4 +127,3 @@ void	ft_check_export(t_data *Data, t_cmds *Cmds)
 		}
 	}
 }
-
