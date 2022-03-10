@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 12:39:27 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/10 16:12:13 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/10 21:47:57 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,20 +47,13 @@ void	ft_isparent_builtin(t_cmds *Cmds, t_data *Data)
 		ft_doublefree(Cmds->p_command);
 }
 
-void	ft_execute(t_data *Data, t_cmds *Cmds, char *command)
+void	ft_execute(t_data *Data, t_cmds *Cmds)
 {
 	char	*tmp;
 	int		i;
 
 	i = -1;
-	Cmds->p_command = ft_split(command, ' ');
 	if (!Cmds->p_command[0])
-		exit (0);
-	else if (!ft_strncmp(Cmds->p_command[0], "export", 6))
-		exit (0);
-	else if (!ft_strncmp(Cmds->p_command[0], "unset", 5))
-		exit (0);
-	else if (!ft_strncmp(Cmds->p_command[0], "cd", 2))
 		exit (0);
 	ft_ischild_builtin(Cmds, Data);
 	while (Data->path[++i])
@@ -74,17 +67,36 @@ void	ft_execute(t_data *Data, t_cmds *Cmds, char *command)
 	exit(0);
 }
 
+int	ft_check_builtin(t_cmds *Cmds)
+{
+	if (!ft_strncmp(Cmds->p_command[0], "export", 6))
+		return (1);
+	else if (!ft_strncmp(Cmds->p_command[0], "unset", 5))
+		return (1);
+	else if (!ft_strncmp(Cmds->p_command[0], "cd", 2))
+		return (1);
+	return (0);
+}
+
 void	ft_init_exec(t_cmds *Cmds, t_data *Data)
 {
 	int	i;
+	int	status;
 
 	i = 0;
-	ft_isparent_builtin(Cmds, Data);
 	while (i < Cmds->n_cmds)
 	{
-		Cmds->pid = fork();
-		if (Cmds->pid == 0)
-			ft_execute(Data, Cmds, Cmds->commands[i]);
+		Cmds->p_command = ft_split(Cmds->commands[i], ' '); 
+		if (!ft_check_builtin(Cmds)) // checkear aqui el numero de la vuelta en la que se encuentra el comando, si el comando padre no esta en la primera vuelta, no debe eejcutarse
+		{
+			Cmds->pid = fork();
+			if (Cmds->pid == 0)
+				ft_execute(Data, Cmds);
+			else
+				waitpid(Cmds->pid, &status, 0);
+		}
+		else
+			ft_isparent_builtin(Cmds, Data);
 		i++;
 	}
 	i = -1;
