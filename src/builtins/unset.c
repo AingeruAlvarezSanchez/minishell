@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+#include <stdio.h>
 
 char	**ft_unset_env(t_data *Data, int j)
 {
@@ -56,7 +57,7 @@ void	ft_unset(t_data *Data, t_cmds *Cmds, int i)
 	}
 }
 
-void	ft_check_unset(t_data *Data, t_cmds *Cmds)
+void	ft_check_unset(t_data *Data, t_cmds *Cmds, int cmd_pos)
 {
 	int	i;
 	int	j;
@@ -77,7 +78,11 @@ void	ft_check_unset(t_data *Data, t_cmds *Cmds)
 			}
 		}
 		if (check == 1)
+		{
+			if (cmd_pos != 0)
+				return ;
 			ft_unset(Data, Cmds, i);
+		}
 		check = 1;
 	}
 }

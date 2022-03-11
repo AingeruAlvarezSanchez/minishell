@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include <sys/wait.h>
+#include <stdio.h>
 
 void	ft_ischild_builtin(t_cmds *Cmds, t_data *Data)
 {
@@ -22,27 +24,22 @@ void	ft_ischild_builtin(t_cmds *Cmds, t_data *Data)
 		ft_env(Data);
 }
 
-void	ft_isparent_builtin(t_cmds *Cmds, t_data *Data)
+void	ft_isparent_builtin(t_cmds *Cmds, t_data *Data, int cmd_pos)
 {
-	int	i;
-
-	i = -1;
 	Cmds->p_command = ft_split(Cmds->commands[0], ' ');
 	if (!Cmds->p_command[0])
 	{
-		while (Cmds->p_command[++i])
-			free(Cmds->p_command[i]);
-		free(Cmds->p_command);
+		ft_doublefree(Cmds->p_command);
 		return ;
 	}
 	if (!ft_strncmp(Cmds->p_command[0], "cd", 2))
-		ft_cd(Cmds, Data);
+		ft_cd(Cmds, Data, cmd_pos);
 	else if (!ft_strncmp(Cmds->p_command[0], "exit", 4))
-		ft_exit();
+		ft_exit(Cmds, cmd_pos);
 	else if (!ft_strncmp(Cmds->p_command[0], "export", 6))
-		ft_check_export(Data, Cmds);
+		ft_check_export(Data, Cmds, cmd_pos);
 	else if (!ft_strncmp(Cmds->p_command[0], "unset", 5))
-		ft_check_unset(Data, Cmds);
+		ft_check_unset(Data, Cmds, cmd_pos);
 	if (Cmds->p_command)
 		ft_doublefree(Cmds->p_command);
 }
@@ -69,11 +66,13 @@ void	ft_execute(t_data *Data, t_cmds *Cmds)
 
 int	ft_check_builtin(t_cmds *Cmds)
 {
-	if (!ft_strncmp(Cmds->p_command[0], "export", 6))
+	if (!ft_strncmp(Cmds->p_command[0], "cd", 2))
+		return (1);
+	else if (!ft_strncmp(Cmds->p_command[0], "exit", 4))
+		return (1);
+	else if (!ft_strncmp(Cmds->p_command[0], "export", 6))
 		return (1);
 	else if (!ft_strncmp(Cmds->p_command[0], "unset", 5))
-		return (1);
-	else if (!ft_strncmp(Cmds->p_command[0], "cd", 2))
 		return (1);
 	return (0);
 }
@@ -82,12 +81,14 @@ void	ft_init_exec(t_cmds *Cmds, t_data *Data)
 {
 	int	i;
 	int	status;
+	char	**tmp;
 
 	i = 0;
 	while (i < Cmds->n_cmds)
 	{
-		Cmds->p_command = ft_split(Cmds->commands[i], ' '); 
-		if (!ft_check_builtin(Cmds)) // checkear aqui el numero de la vuelta en la que se encuentra el comando, si el comando padre no esta en la primera vuelta, no debe eejcutarse
+		tmp = ft_split(Cmds->commands[i], ' ');
+		Cmds->p_command = ft_split(Cmds->commands[i], ' ');
+		if (!ft_check_builtin(Cmds))
 		{
 			Cmds->pid = fork();
 			if (Cmds->pid == 0)
@@ -96,8 +97,9 @@ void	ft_init_exec(t_cmds *Cmds, t_data *Data)
 				waitpid(Cmds->pid, &status, 0);
 		}
 		else
-			ft_isparent_builtin(Cmds, Data);
+			ft_isparent_builtin(Cmds, Data, i);
 		i++;
+		free (tmp);
 	}
 	i = -1;
 	ft_doublefree(Cmds->commands);

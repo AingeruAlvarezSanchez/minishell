@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+#include <stdio.h>
 
 char	*ft_create_value(t_cmds *Cmds, int x, int i)
 {
@@ -104,7 +105,7 @@ void	ft_export(t_data *Data, t_cmds *Cmds, int i, int j)
 	free(find);
 }
 
-void	ft_check_export(t_data *Data, t_cmds *Cmds)
+void	ft_check_export(t_data *Data, t_cmds *Cmds, int cmd_pos)
 {
 	int	i;
 	int	j;
@@ -123,7 +124,11 @@ void	ft_check_export(t_data *Data, t_cmds *Cmds)
 		while (Cmds->p_command[i][++j])
 		{
 			if (Cmds->p_command[i][j] == '=')
+			{
+				if (cmd_pos != 0)
+					return ;
 				ft_export(Data, Cmds, i, j);
+			}
 		}
 	}
 }

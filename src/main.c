@@ -12,6 +12,8 @@
 
 #include "../inc/minishell.h"
 #include <sys/wait.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 /**
  * @brief get route of path from *envp[]
