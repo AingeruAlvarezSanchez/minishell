@@ -37,7 +37,7 @@ char	**ft_oldpwd(t_data *Data)
 	}
 	new_env[i] = 0;
 	i = -1;
-	ft_doublefree(Data->env);
+	ft_doublefree((void **)Data->env);
 	free(pwd);
 	free(tmp);
 	return (new_env);
@@ -65,7 +65,7 @@ char	**ft_newpwd(t_data *Data)
 			new_env[i] = ft_strdup(Data->env[i]);
 	}
 	new_env[i] = 0;
-	ft_doublefree(Data->env);
+	ft_doublefree((void **)Data->env);
 	free(tmp);
 	free(pwd);
 	return (new_env);

@@ -34,7 +34,7 @@ char	**ft_unset_env(t_data *Data, int j)
 		new[x++] = ft_strdup(Data->env[i]);
 	}
 	new[x] = 0;
-	ft_doublefree(Data->env);
+	ft_doublefree((void **)Data->env);
 	return (new);
 }
 

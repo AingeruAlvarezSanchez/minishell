@@ -27,11 +27,6 @@ void	ft_ischild_builtin(t_cmds *Cmds, t_data *Data)
 void	ft_isparent_builtin(t_cmds *Cmds, t_data *Data, int cmd_pos)
 {
 	Cmds->p_command = ft_split(Cmds->commands[0], ' ');
-	if (!Cmds->p_command[0])
-	{
-		ft_doublefree(Cmds->p_command);
-		return ;
-	}
 	if (!ft_strncmp(Cmds->p_command[0], "cd", 2))
 		ft_cd(Cmds, Data, cmd_pos);
 	else if (!ft_strncmp(Cmds->p_command[0], "exit", 4))
@@ -41,7 +36,7 @@ void	ft_isparent_builtin(t_cmds *Cmds, t_data *Data, int cmd_pos)
 	else if (!ft_strncmp(Cmds->p_command[0], "unset", 5))
 		ft_check_unset(Data, Cmds, cmd_pos);
 	if (Cmds->p_command)
-		ft_doublefree(Cmds->p_command);
+		ft_doublefree((void **)Cmds->p_command);
 }
 
 void	ft_execute(t_data *Data, t_cmds *Cmds)
@@ -104,5 +99,5 @@ void	ft_init_exec(t_cmds *Cmds, t_data *Data)
 		free (tmp);
 	}
 	i = -1;
-	ft_doublefree(Cmds->commands);
+	ft_doublefree((void **)Cmds->commands);
 }

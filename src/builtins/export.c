@@ -63,7 +63,7 @@ char	**ft_newenv(t_data *Data, char *value, char *find)
 	i = -1;
 	while (Data->env[++i])
 		tmp[i] = ft_strdup(Data->env[i]);
-	ft_doublefree(Data->env);
+	ft_doublefree((void **)Data->env);
 	if (!value)
 	{
 		tmp[i] = ft_strdup(find);
@@ -115,7 +115,6 @@ void	ft_check_export(t_data *Data, t_cmds *Cmds, int cmd_pos)
 		i = -1;
 		while (Data->env[++i])
 			printf("declare -x %s\n", Data->env[i]);
-		exit (0);
 	}
 	i = -1;
 	while (Cmds->p_command[++i])

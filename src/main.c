@@ -67,7 +67,7 @@ void	ft_free_data(t_data *Data)
 		free(Data->path[i]);
 	free(Data->path);
 	i = -1;
-	ft_doublefree(Data->path);
+	ft_doublefree((void **)Data->path);
 }
 
 int	main(int argc, char **argv, char **envp)

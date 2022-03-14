@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-void	ft_doublefree(char **str)
+void	ft_doublefree(void **str)
 {
 	int	i;
 
