@@ -66,6 +66,8 @@ void	ft_execute(t_data *Data, t_cmds *Cmds)
 
 int	ft_check_builtin(t_cmds *Cmds)
 {
+	if (!Cmds->p_command[0])
+		return (0);
 	if (!ft_strncmp(Cmds->p_command[0], "cd", 2))
 		return (1);
 	else if (!ft_strncmp(Cmds->p_command[0], "exit", 4))
