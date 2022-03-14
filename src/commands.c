@@ -23,6 +23,17 @@ void	ft_commands_n(char *str, t_cmds *Cmds)
 		if (str[i] == '|')
 			Cmds->n_cmds++;
 	}
+	Cmds->pipefd = (int **)malloc(sizeof(int *) * (Cmds->n_cmds + 1));
+	i = -1;
+	while (++i < Cmds->n_cmds + 1)
+	{
+		Cmds->pipefd[i] = (int *)malloc(sizeof(int) * 2);
+		pipe(Cmds->pipefd[i]);
+	}
+	i = -1;
+	/* while (++i < Cmds->n_cmds + 1)
+		free(Cmds->pipefd[i]);
+	free(Cmds->pipefd); */ //No usar doublefree para liberar esta variable, da segfault porque no encuentra un NULL
 }
 
 void	ft_fill_commands(char *str, t_cmds *Cmds)
