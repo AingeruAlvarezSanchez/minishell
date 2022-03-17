@@ -12,6 +12,11 @@
 
 #include "../inc/minishell.h"
 
+/**
+ * @brief counts number of comands in line and prepares the pipes for interconnection
+ * 
+ * @param str this is the string got from readline in terminal
+ */
 void	ft_commands_n(char *str, t_cmds *Cmds)
 {
 	int	i;
@@ -36,6 +41,12 @@ void	ft_commands_n(char *str, t_cmds *Cmds)
 	free(Cmds->pipefd); */ //No usar doublefree para liberar esta variable, da segfault porque no encuentra un NULL
 }
 
+/**
+ * @brief separate the commands that are between pipes,
+ *  save each command with flags in an array position
+ * 
+ * @param str this is the string with comands got from readline in terminal
+ */
 void	ft_fill_commands(char *str, t_cmds *Cmds)
 {
 	int	i;
