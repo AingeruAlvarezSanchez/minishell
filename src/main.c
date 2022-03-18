@@ -19,7 +19,6 @@
  * @brief get route of path from *envp[]
  * @param Data routes saved in **Data.path with '/' at end of route
  */
-
 void	ft_get_path(t_data *Data)
 {
 	int		i;
@@ -69,6 +68,7 @@ void	ft_free_data(t_data *Data)
 	i = -1;
 	ft_doublefree((void **)Data->path);
 }
+
 
 int	main(int argc, char **argv, char **envp)
 {

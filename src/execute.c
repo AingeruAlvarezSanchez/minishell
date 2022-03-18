@@ -14,6 +14,9 @@
 #include <sys/wait.h>
 #include <stdio.h>
 
+/**
+ * @brief runs the command in a new proccess if one of following builtins
+ */
 void	ft_ischild_builtin(t_cmds *Cmds, t_data *Data)
 {
 	if (!ft_strncmp(Cmds->p_command[0], "pwd", 3))
@@ -24,6 +27,10 @@ void	ft_ischild_builtin(t_cmds *Cmds, t_data *Data)
 		ft_env(Data);
 }
 
+/**
+ * @brief executes command if one of following builtins
+ * @param cmd_pos position of the comand in the terminal line
+ */
 void	ft_isparent_builtin(t_cmds *Cmds, t_data *Data, int cmd_pos)
 {
 	Cmds->p_command = ft_split(Cmds->commands[0], ' ');
@@ -39,6 +46,11 @@ void	ft_isparent_builtin(t_cmds *Cmds, t_data *Data, int cmd_pos)
 		ft_doublefree((void **)Cmds->p_command);
 }
 
+/**
+ * @brief 
+ * 
+ * @param cmd_n position of the comand in terminal line
+ */
 void	ft_pipes(t_cmds *Cmds, int cmd_n)
 {
 	int	i;
@@ -57,6 +69,10 @@ void	ft_pipes(t_cmds *Cmds, int cmd_n)
 	close(Cmds->pipefd[cmd_n + 1][1]);
 }
 
+/**
+ * @brief executes builtin in new proccess and updates enviroment
+ * @param cmd_n position of the comand in terminal line
+ */
 void	ft_execute(t_data *Data, t_cmds *Cmds, int cmd_n)
 {
 	char	*tmp;
@@ -79,6 +95,12 @@ void	ft_execute(t_data *Data, t_cmds *Cmds, int cmd_n)
 	exit(0);
 }
 
+/**
+ * @brief check if need to create new process to execute builtin
+ * 
+ * @return 0 if process creation needed for builtin 
+ * return 1 if no need to fork();
+ */
 int	ft_check_builtin(t_cmds *Cmds)
 {
 	if (!Cmds->p_command[0])
@@ -94,6 +116,9 @@ int	ft_check_builtin(t_cmds *Cmds)
 	return (0);
 }
 
+/**
+ * @brief checks if need to create a new process to execute comand or not
+ */
 void	ft_init_exec(t_cmds *Cmds, t_data *Data)
 {
 	int	i;
