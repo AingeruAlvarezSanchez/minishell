@@ -26,7 +26,8 @@ typedef struct s_cmds
 	pid_t	pid;
 	char	**commands;
 	char	**p_command;
-	int		n_cmds;
+	int	n_cmds;
+	int	**pipefd;
 }	t_cmds;
 
 /* builtin functions */

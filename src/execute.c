@@ -39,14 +39,23 @@ void	ft_isparent_builtin(t_cmds *Cmds, t_data *Data, int cmd_pos)
 		ft_doublefree((void **)Cmds->p_command);
 }
 
-void	ft_execute(t_data *Data, t_cmds *Cmds)
+void	ft_execute(t_data *Data, t_cmds *Cmds, int cnum)
 {
 	char	*tmp;
-	int		i;
+	int	i;
 
 	i = -1;
 	if (!Cmds->p_command[0])
 		exit (0);
+	if (Cmds->n_cmds > 1)
+	{
+		dup8(Cmds->pipefd[cnum][1], 1);
+		dup2(Cmds->pipefd[cnum + 1][0], 0);
+		close(Cmds->pipefd[cnum][0]);
+		close(Cmds->pipefd[cnum][1]);
+		close(Cmds->pipefd[cnum + 1][0]);
+		close(Cmds->pipefd[cnum + 1][1]);
+	}
 	ft_ischild_builtin(Cmds, Data);
 	while (Data->path[++i])
 	{
@@ -74,6 +83,19 @@ int	ft_check_builtin(t_cmds *Cmds)
 	return (0);
 }
 
+void	ft_pipesmem(t_cmds *Cmds)
+{
+	int	i;
+
+	i = -1;
+	Cmds->pipefd = (int **)malloc(sizeof(int *) * (Cmds->n_cmds + 1));
+	while (++i < Cmds->n_cmds + 1)
+	{
+		Cmds->pipefd[i] = (int *)malloc(sizeof(int) * 2);
+		pipe(Cmds->pipefd[i]);
+	}
+}
+
 void	ft_init_exec(t_cmds *Cmds, t_data *Data)
 {
 	int	i;
@@ -82,6 +104,8 @@ void	ft_init_exec(t_cmds *Cmds, t_data *Data)
 	int	j;
 
 	i = 0;
+	if (Cmds->n_cmds > 1)
+		ft_pipesmem(Cmds);
 	while (i < Cmds->n_cmds)
 	{
 		tmp = ft_split(Cmds->commands[i], ' ');
@@ -96,7 +120,7 @@ void	ft_init_exec(t_cmds *Cmds, t_data *Data)
 		{
 			Cmds->pid = fork();
 			if (Cmds->pid == 0)
-				ft_execute(Data, Cmds);
+				ft_execute(Data, Cmds, i);
 			else
 				waitpid(Cmds->pid, &status, 0);
 		}
@@ -105,6 +129,5 @@ void	ft_init_exec(t_cmds *Cmds, t_data *Data)
 		i++;
 		ft_doublefree((void **)Cmds->p_command);
 	}
-	i = -1;
 	ft_doublefree((void **)Cmds->commands);
 }
