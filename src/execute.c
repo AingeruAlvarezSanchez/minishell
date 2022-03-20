@@ -79,12 +79,19 @@ void	ft_init_exec(t_cmds *Cmds, t_data *Data)
 	int	i;
 	int	status;
 	char	**tmp;
+	int	j;
 
 	i = 0;
 	while (i < Cmds->n_cmds)
 	{
 		tmp = ft_split(Cmds->commands[i], ' ');
-		Cmds->p_command = ft_split(Cmds->commands[i], ' ');
+		j = ft_doublestrlen((const char **)tmp);
+		Cmds->p_command = (char **)malloc(sizeof(char *) * (j + 1));
+		j = -1;
+		while (tmp[++j])
+			Cmds->p_command[j] = ft_strdup(tmp[j]);
+		Cmds->p_command[j] = 0;
+		ft_doublefree((void **)tmp);
 		if (!ft_check_builtin(Cmds))
 		{
 			Cmds->pid = fork();
@@ -96,7 +103,7 @@ void	ft_init_exec(t_cmds *Cmds, t_data *Data)
 		else
 			ft_isparent_builtin(Cmds, Data, i);
 		i++;
-		free (tmp);
+		ft_doublefree((void **)Cmds->p_command);
 	}
 	i = -1;
 	ft_doublefree((void **)Cmds->commands);
