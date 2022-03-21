@@ -83,7 +83,7 @@ int	main(int argc, char **argv, char **envp)
 		str = readline("ejemplo1 ₺ ");
 		add_history(str);
 		ft_commands(str, &Cmds, &Data);
-		waitpid(Cmds.pid, NULL, WUNTRACED);
+		waitpid(Cmds.pid, NULL, 0);
 		free(str);
 	}
 	return (0);

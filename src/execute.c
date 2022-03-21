@@ -46,43 +46,23 @@ void	ft_isparent_builtin(t_cmds *Cmds, t_data *Data, int cmd_pos)
 		ft_doublefree((void **)Cmds->p_command);
 }
 
-/**
- * @brief 
- * 
- * @param cmd_n position of the comand in terminal line
- */
-void	ft_pipes(t_cmds *Cmds, int cmd_n)
-{
-	int	i;
-
-	i = -1;
-	while (++i < Cmds->n_cmds + 1)
-	{
-		if (i != cmd_n)
-			close(Cmds->pipefd[i][0]);
-		if (i != cmd_n + 1)
-			close(Cmds->pipefd[i][1]);
-	}
-	dup2(Cmds->pipefd[cmd_n][0], 0);
-	dup2(Cmds->pipefd[cmd_n + 1][1], 1);
-	close(Cmds->pipefd[cmd_n][0]);
-	close(Cmds->pipefd[cmd_n + 1][1]);
-}
-
-/**
- * @brief executes builtin in new proccess and updates enviroment
- * @param cmd_n position of the comand in terminal line
- */
-void	ft_execute(t_data *Data, t_cmds *Cmds, int cmd_n)
+void	ft_execute(t_data *Data, t_cmds *Cmds, int cnum)
 {
 	char	*tmp;
-	int		i;
+	int	i;
 
 	i = -1;
 	if (!Cmds->p_command[0])
 		exit (0);
 	if (Cmds->n_cmds > 1)
-		ft_pipes(Cmds, cmd_n);
+	{
+		dup2(Cmds->pipefd[cnum][1], 1);
+		dup2(Cmds->pipefd[cnum + 1][0], 0);
+		close(Cmds->pipefd[cnum][0]);
+		close(Cmds->pipefd[cnum][1]);
+		close(Cmds->pipefd[cnum + 1][0]);
+		close(Cmds->pipefd[cnum + 1][1]);
+	}
 	ft_ischild_builtin(Cmds, Data);
 	while (Data->path[++i])
 	{
@@ -116,19 +96,29 @@ int	ft_check_builtin(t_cmds *Cmds)
 	return (0);
 }
 
-/**
- * @brief checks if need to create a new process to execute comand or not
- */
+void	ft_pipesmem(t_cmds *Cmds)
+{
+	int	i;
+
+	i = -1;
+	Cmds->pipefd = (int **)malloc(sizeof(int *) * (Cmds->n_cmds + 1));
+	while (++i < Cmds->n_cmds + 1)
+	{
+		Cmds->pipefd[i] = (int *)malloc(sizeof(int) * 2);
+		pipe(Cmds->pipefd[i]);
+	}
+}
+
 void	ft_init_exec(t_cmds *Cmds, t_data *Data)
 {
 	int	i;
 	int	status;
-	char	**tmp;
 
 	i = 0;
+	if (Cmds->n_cmds > 1)
+		ft_pipesmem(Cmds);
 	while (i < Cmds->n_cmds)
 	{
-		tmp = ft_split(Cmds->commands[i], ' ');
 		Cmds->p_command = ft_split(Cmds->commands[i], ' ');
 		if (!ft_check_builtin(Cmds))
 		{
@@ -141,8 +131,7 @@ void	ft_init_exec(t_cmds *Cmds, t_data *Data)
 		else
 			ft_isparent_builtin(Cmds, Data, i);
 		i++;
-		free (tmp);
+		ft_doublefree((void **)Cmds->p_command);
 	}
-	i = -1;
 	ft_doublefree((void **)Cmds->commands);
 }
