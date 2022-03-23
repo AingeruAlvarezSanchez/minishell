@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:10:04 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/10 16:57:26 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/23 16:57:10 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ int	main(int argc, char **argv, char **envp)
 
 	ft_cpyenv(&Data, envp);
 	ft_get_path(&Data);
+	ft_signals();
+
 	while (1 && argc && argv)
 	{	
 		str = readline("ejemplo1 ₺ ");

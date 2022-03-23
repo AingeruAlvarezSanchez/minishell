@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:08:14 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/10 16:11:42 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/23 16:54:49 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,5 @@ void	ft_commands(char *str, t_cmds *Cmds, t_data *Data);
 void	ft_init_exec(t_cmds *Cmds, t_data *Data);
 /* simple and multiquotes managing */
 char	*ft_manage_quotes(char *command);
-
+void	ft_signals();
 #endif
