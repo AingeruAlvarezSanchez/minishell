@@ -15,6 +15,9 @@
 
 # include "../libft/libft.h"
 
+
+int interactive;
+
 typedef struct s_data
 {
 	char	**env;
@@ -43,5 +46,6 @@ void	ft_commands(char *str, t_cmds *Cmds, t_data *Data);
 void	ft_init_exec(t_cmds *Cmds, t_data *Data);
 /* simple and multiquotes managing */
 char	*ft_manage_quotes(char *command);
-void	ft_signals();
+void	ft_signals_inter();
+void ft_signals();
 #endif

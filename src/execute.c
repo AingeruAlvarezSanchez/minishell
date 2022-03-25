@@ -64,7 +64,10 @@ void	ft_execute(t_data *Data, t_cmds *Cmds, int cnum)
 
 	i = -1;
 	if (!Cmds->p_command[0])
+	{
 		exit (0);
+	}
+
 	if (Cmds->n_cmds > 1)
 	{
 		dup2(Cmds->pipefd[cnum][1], 1);
@@ -128,15 +131,20 @@ void	ft_init_exec(t_cmds *Cmds, t_data *Data)
 		if (!ft_check_builtin(Cmds))
 		{
 			Cmds->pid = fork();
+			interactive = 0;
+
 			if (Cmds->pid == 0)
 				ft_execute(Data, Cmds, i);
+				
 			else
 				waitpid(Cmds->pid, &status, 0);
 		}
 		else
+		{
 			ft_isparent_builtin(Cmds, Data, i);
+		}
 		i++;
-		ft_doublefree((void **)Cmds->p_command);
 	}
 	ft_doublefree((void **)Cmds->commands);
+	interactive = 1;
 }

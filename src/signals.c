@@ -16,15 +16,15 @@
 #include <sys/time.h>
 #include <readline/readline.h>
 
-void	signal_handler(int signal)
+void	interact_signal(int signal)
 {
-	if(signal == SIGQUIT)
+	if (signal == SIGQUIT)
 	{
-		printf("\33[2K\r");
+		printf("\33[2K\r\n");
 		rl_on_new_line();
 		rl_redisplay();
 	}
-	if(signal == SIGINT)
+	else if (signal == SIGINT)
 	{
 		write(1,"\n", 1);
 		rl_on_new_line();
@@ -33,8 +33,31 @@ void	signal_handler(int signal)
 	}
 }
 
+void	signal_handler(int signal)
+{
+	if (interactive == 1)
+	{
+		interact_signal(signal);
+	}
+	else if (interactive == 0)
+	{
+		if (signal == SIGQUIT)
+		{
+			interactive = 1;
+			printf("interactive = %d\n", interactive);
+		}
+		if (signal == SIGINT)
+		{
+			interactive = 1;
+			write(1,"\n", 1);
+			rl_on_new_line();
+		}
+	}
+}
+
 void ft_signals()
 {
     signal(SIGINT, signal_handler);
 	signal(SIGQUIT, signal_handler);
 }
+

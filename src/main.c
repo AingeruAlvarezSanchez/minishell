@@ -75,6 +75,7 @@ int	main(int argc, char **argv, char **envp)
 	char	*str;
 	t_cmds	Cmds;
 	t_data	Data;
+	interactive = 1;
 
 	ft_cpyenv(&Data, envp);
 	ft_get_path(&Data);
