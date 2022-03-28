@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:10:04 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/23 16:57:10 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/03/28 22:46:37 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	main(int argc, char **argv, char **envp)
 	char	*str;
 	t_cmds	Cmds;
 	t_data	Data;
-	interactive = 1;
+	ft_interactive(1);
 
 	ft_cpyenv(&Data, envp);
 	ft_get_path(&Data);

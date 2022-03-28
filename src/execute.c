@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 12:39:27 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/10 21:47:57 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/28 22:46:37 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void	ft_init_exec(t_cmds *Cmds, t_data *Data)
 		if (!ft_check_builtin(Cmds))
 		{
 			Cmds->pid = fork();
-			interactive = 0;
+			ft_interactive(0);
 
 			if (Cmds->pid == 0)
 				ft_execute(Data, Cmds, i);
@@ -146,5 +146,5 @@ void	ft_init_exec(t_cmds *Cmds, t_data *Data)
 		i++;
 	}
 	ft_doublefree((void **)Cmds->commands);
-	interactive = 1;
+	ft_interactive(1);
 }

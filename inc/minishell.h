@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:08:14 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/23 16:54:49 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/03/28 22:46:37 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 
 # include "../libft/libft.h"
 
-
-int interactive;
 
 typedef struct s_data
 {
@@ -49,4 +47,6 @@ char	*ft_manage_quotes(char *command);
 void	ft_signals_inter();
 void	ft_signals();
 void	ft_signal_exit();
+int		ft_interactive(int inter);
+
 #endif
