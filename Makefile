@@ -2,7 +2,11 @@ SHELL = /bin/sh
 NAME = minishell
 CC		=	gcc
 RM		=	rm -rf
+<<<<<<< HEAD
 FLAGS	=	-Wall -Wextra -Werror -g #-g3 -fsanitize=address 
+=======
+FLAGS	=	-Wall -Wextra -Werror -g -g3 -fsanitize=address
+>>>>>>> b8409178d1ba548bd4c2cb63beead5a382a848a9
 SRC		=	src/main.c	\
 			src/builtins/echo.c	\
 			src/builtins/pwd.c	\

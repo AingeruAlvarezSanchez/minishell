@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+#include <stdio.h>
 
 char	*ft_create_value(t_cmds *Cmds, int x, int i)
 {
@@ -62,7 +63,7 @@ char	**ft_newenv(t_data *Data, char *value, char *find)
 	i = -1;
 	while (Data->env[++i])
 		tmp[i] = ft_strdup(Data->env[i]);
-	ft_doublefree(Data->env);
+	ft_doublefree((void **)Data->env);
 	if (!value)
 	{
 		tmp[i] = ft_strdup(find);
@@ -104,7 +105,7 @@ void	ft_export(t_data *Data, t_cmds *Cmds, int i, int j)
 	free(find);
 }
 
-void	ft_check_export(t_data *Data, t_cmds *Cmds)
+void	ft_check_export(t_data *Data, t_cmds *Cmds, int cmd_pos)
 {
 	int	i;
 	int	j;
@@ -114,7 +115,6 @@ void	ft_check_export(t_data *Data, t_cmds *Cmds)
 		i = -1;
 		while (Data->env[++i])
 			printf("declare -x %s\n", Data->env[i]);
-		exit (0);
 	}
 	i = -1;
 	while (Cmds->p_command[++i])
@@ -123,7 +123,11 @@ void	ft_check_export(t_data *Data, t_cmds *Cmds)
 		while (Cmds->p_command[i][++j])
 		{
 			if (Cmds->p_command[i][j] == '=')
+			{
+				if (cmd_pos != 0)
+					return ;
 				ft_export(Data, Cmds, i, j);
+			}
 		}
 	}
 }

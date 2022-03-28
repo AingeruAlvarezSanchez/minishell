@@ -6,11 +6,12 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 18:36:57 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/03/28 10:45:54 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/28 11:03:15 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include <stdio.h>
 
 void	ft_commands_n(char *str, t_cmds *Cmds)
 {
@@ -25,13 +26,15 @@ void	ft_commands_n(char *str, t_cmds *Cmds)
 	}
 }
 
-void	ft_fill_commands(char *str, t_cmds *Cmds)
+void	ft_fill_commands(char *str, t_cmds *Cmds, t_data *Data)
 {
 	int	i;
 	int	check;
 
 	i = -1;
 	check = 0;
+	ft_minishell_split(Cmds, Data, str);
+	exit(0);
 	while (str[++i])
 	{
 		if (str[i] == '|')

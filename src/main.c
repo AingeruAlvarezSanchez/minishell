@@ -6,12 +6,14 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:10:04 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/10 16:17:16 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/10 16:57:26 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 #include <sys/wait.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 /**
  * @brief get route of path from *envp[]
@@ -52,9 +54,7 @@ void	ft_cpyenv(t_data *Data, char **envp)
 	Data->env = (char **)malloc(sizeof(char *) * (i + 1));
 	i = -1;
 	while (envp[++i])
-	{
 		Data->env[i] = ft_strdup(envp[i]);
-	}
 	Data->env[i] = 0;
 }	
 
@@ -67,7 +67,7 @@ void	ft_free_data(t_data *Data)
 		free(Data->path[i]);
 	free(Data->path);
 	i = -1;
-	ft_doublefree(Data->path);
+	ft_doublefree((void **)Data->path);
 }
 
 int	main(int argc, char **argv, char **envp)

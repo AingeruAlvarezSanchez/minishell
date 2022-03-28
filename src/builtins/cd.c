@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+#include <stdio.h>
+#include <dirent.h>
 
 char	**ft_oldpwd(t_data *Data)
 {
@@ -35,7 +37,7 @@ char	**ft_oldpwd(t_data *Data)
 	}
 	new_env[i] = 0;
 	i = -1;
-	ft_doublefree(Data->env);
+	ft_doublefree((void **)Data->env);
 	free(pwd);
 	free(tmp);
 	return (new_env);
@@ -63,7 +65,7 @@ char	**ft_newpwd(t_data *Data)
 			new_env[i] = ft_strdup(Data->env[i]);
 	}
 	new_env[i] = 0;
-	ft_doublefree(Data->env);
+	ft_doublefree((void **)Data->env);
 	free(tmp);
 	free(pwd);
 	return (new_env);
@@ -88,8 +90,9 @@ void	ft_minusflag(t_data *Data)
 	free(oldpwd);
 }
 
-void	ft_cd(t_cmds *Cmds, t_data *Data)
+void	ft_cd(t_cmds *Cmds, t_data *Data, int cmd_pos)
 {
+	
 	if (!Cmds->p_command[1])
 	{
 		Data->env = ft_oldpwd(Data);
@@ -101,6 +104,10 @@ void	ft_cd(t_cmds *Cmds, t_data *Data)
 	else
 	{
 		Data->env = ft_oldpwd(Data);
+		if (!opendir(Cmds->p_command[1]))
+			perror("cd");
+		if (cmd_pos != 0)
+			return ;
 		chdir(Cmds->p_command[1]);
 		Data->env = ft_newpwd(Data);
 	}
