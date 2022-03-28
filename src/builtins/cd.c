@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 18:36:22 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/03/10 16:43:12 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/28 23:13:56 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ void	ft_minusflag(t_data *Data)
 
 void	ft_cd(t_cmds *Cmds, t_data *Data, int cmd_pos)
 {
-	
 	if (!Cmds->p_command[1])
 	{
 		Data->env = ft_oldpwd(Data);

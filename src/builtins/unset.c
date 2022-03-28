@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 16:03:58 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/10 16:08:45 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/28 23:13:14 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,12 @@ void	ft_unset(t_data *Data, t_cmds *Cmds, int i)
 	}
 }
 
+void	ft_unset_error(t_cmds *Cmds, int i)
+{
+	printf("unset: '%s': not a valid identifier\n",
+		Cmds->p_command[i]);
+}
+
 void	ft_check_unset(t_data *Data, t_cmds *Cmds, int cmd_pos)
 {
 	int	i;
@@ -72,8 +78,7 @@ void	ft_check_unset(t_data *Data, t_cmds *Cmds, int cmd_pos)
 		{
 			if (Cmds->p_command[i][j] == '=')
 			{
-				printf("unset: '%s': not a valid identifier\n",
-					Cmds->p_command[i]);
+				ft_unset_error(Cmds, i);
 				check = 0;
 			}
 		}

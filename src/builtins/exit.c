@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 18:38:39 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/03/10 21:33:20 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/28 23:13:38 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	ft_checkargs(t_cmds *Cmds, int cmd_pos)
 			if (!ft_isstrdigit(Cmds->p_command[1]))
 			{
 				printf("chain is: %s\n", Cmds->p_command[1]);
-				printf("exit: %s: numeric argument required\n", 
+				printf("exit: %s: numeric argument required\n",
 					Cmds->p_command[1]);
 				if (cmd_pos != 0)
 					return ;

@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 12:39:27 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/10 21:47:57 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/28 23:16:31 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,22 @@ int	ft_check_builtin(t_cmds *Cmds)
 	return (0);
 }
 
+void	ft_create_forks(t_cmds *Cmds, t_data *Data)
+{
+	int	status;
+
+	Cmds->pid = fork();
+	if (Cmds->pid == 0)
+		ft_execute(Data, Cmds);
+	else
+		waitpid(Cmds->pid, &status, 0);
+}
+
 void	ft_init_exec(t_cmds *Cmds, t_data *Data)
 {
-	int	i;
-	int	status;
+	int		i;
 	char	**tmp;
-	int	j;
+	int		j;
 
 	i = 0;
 	while (i < Cmds->n_cmds)
@@ -93,13 +103,7 @@ void	ft_init_exec(t_cmds *Cmds, t_data *Data)
 		Cmds->p_command[j] = 0;
 		ft_doublefree((void **)tmp);
 		if (!ft_check_builtin(Cmds))
-		{
-			Cmds->pid = fork();
-			if (Cmds->pid == 0)
-				ft_execute(Data, Cmds);
-			else
-				waitpid(Cmds->pid, &status, 0);
-		}
+			ft_create_forks(Cmds, Data);
 		else
 			ft_isparent_builtin(Cmds, Data, i);
 		i++;

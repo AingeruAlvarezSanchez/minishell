@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 18:36:57 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/03/28 21:12:00 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/28 23:18:33 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,36 +26,29 @@ void	ft_commands_n(char *str, t_cmds *Cmds)
 	}
 }
 
-void	ft_fill_commands(char *str, t_cmds *Cmds)
+void	ft_check_separators(t_cmds *Cmds, t_data *Data)
 {
-	int	i;
-	int	check;
+	int	j;
 
-	i = -1;
-	check = 0;
-	while (str[++i])
+	j = -1;
+	while (Cmds->commands[0][++j])
 	{
-		if (str[i] == '|')
-			check = 1;
+		if (Cmds->commands[0][j] == '|')
+			Cmds->pipes = 1;
+		else if (Cmds->commands[0][j] == '$')
+			Cmds->dollar = 1;
+		/*else if (Cmds->commands[i][j] == '"' || str[i] == '\'')
+			Cmds->quotes = 1;*/
 	}
-	i = -1;
-	if (check == 1)
-	{
-		Cmds->commands = ft_split(str, '|');
-		while (Cmds->commands[++i])
-			Cmds->commands[i] = ft_strtrim(Cmds->commands[i], " ");
-	}
-	else
-	{
-		Cmds->commands = (char **)malloc(sizeof(char *) * 2);
-		Cmds->commands[0] = ft_strdup(str);
-		Cmds->commands[1] = NULL;
-	}
+	if (Cmds->pipes == 1)
+		Cmds->commands = ft_split(Cmds->commands[0], '|');
+	if (Cmds->dollar == 1)
+		ft_split_dollar(Cmds, Data);
+	/*else if (Cmds->quotes == 1)
+		ft_split_quotes();*/
 }
 
-
-
-void	ft_fill_cmds(char *str, t_cmds *Cmds, __attribute__((unused)) t_data *Data)
+void	ft_fill_cmds(char *str, t_cmds *Cmds, t_data *Data)
 {
 	int	i;
 
@@ -65,6 +58,7 @@ void	ft_fill_cmds(char *str, t_cmds *Cmds, __attribute__((unused)) t_data *Data)
 	Cmds->commands[1] = 0;
 	Cmds->dollar = 0;
 	Cmds->quotes = 0;
+	Data->last_out = 0;
 	ft_check_separators(Cmds, Data);
 	i = -1;
 	while (Cmds->commands[++i])
@@ -74,9 +68,9 @@ void	ft_fill_cmds(char *str, t_cmds *Cmds, __attribute__((unused)) t_data *Data)
 void	ft_commands(char *str, t_cmds *Cmds, t_data *Data)
 {
 	if (!str)
+		return ;
 	ft_commands_n(str, Cmds);
 	ft_fill_cmds(str, Cmds, Data);
-	exit(0);
 	//ft_fill_commands(str, Cmds);
 	ft_init_exec(Cmds, Data);
 }

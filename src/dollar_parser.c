@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   dollar_parser.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 21:12:02 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/28 21:15:26 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/28 23:18:01 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include <stdio.h>
 
 char	*ft_check_env(t_data *Data, char *to_find)
 {
@@ -26,7 +27,8 @@ char	*ft_check_env(t_data *Data, char *to_find)
 			j = 0;
 			while (Data->env[i][j] != '=')
 				j++;
-			full_value = ft_substr(Data->env[i], (j + 1), ft_strlen(Data->env[i]));
+			full_value = ft_substr(Data->env[i], (j + 1),
+					ft_strlen(Data->env[i]));
 			return (full_value);
 		}
 	}
@@ -89,33 +91,15 @@ void	ft_split_dollar(t_cmds *Cmds, t_data *Data)
 		{
 			if (Cmds->commands[i][j] == '$')
 			{
-				if (Cmds->commands[i][j + 1] != ' ' && Cmds->commands[i][j + 1] != '?')
+				if (Cmds->commands[i][j + 1] != ' ' &&
+						Cmds->commands[i][j + 1] != '?')
 					ft_getvalue(Cmds, Data, i, j);
-				/*else if (Cmds->commands[i][j + 1] == '?')
-					ft_last_output(Cmds);*/
+				else if (Cmds->commands[i][j + 1] == '?')
+				{
+					printf("%d:", Data->last_out);
+					//ft_question_reshape(Cmds, i, j);
+				}
 			}
 		}
 	}
-}
-
-void	ft_check_separators(t_cmds *Cmds, t_data *Data)
-{
-	int	j;
-
-	j = -1;
-	while (Cmds->commands[0][++j])
-	{
-		if (Cmds->commands[0][j] == '|')
-			Cmds->pipes = 1;
-		else if (Cmds->commands[0][j] == '$')
-			Cmds->dollar = 1;
-		/*else if (Cmds->commands[i][j] == '"' || str[i] == '\'')
-			Cmds->quotes = 1;*/
-	}
-	if (Cmds->pipes == 1)
-		Cmds->commands = ft_split(Cmds->commands[0], '|');
-	if (Cmds->dollar == 1)
-		ft_split_dollar(Cmds, Data);
-	/*else if (Cmds->quotes == 1)
-		ft_split_quotes();*/
 }

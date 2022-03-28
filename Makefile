@@ -4,7 +4,7 @@ CC		=	gcc
 RM		=	rm -rf
 FLAGS	=	-Wall -Wextra -Werror -g -g3 -fsanitize=address 
 SRC		=	src/main.c	\
-			src/parser.c	\
+			src/dollar_parser.c	\
 			src/builtins/echo.c	\
 			src/builtins/pwd.c	\
 			src/builtins/env.c	\

@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:08:14 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/28 21:14:42 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/28 23:10:39 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ typedef struct s_data
 {
 	char	**env;
 	char	**path;
+	int		last_out;
 }	t_data;
 
 typedef struct s_cmds
@@ -44,7 +45,7 @@ void	ft_check_unset(t_data *Data, t_cmds *Cmds, int cmd_pos);
 void	ft_commands(char *str, t_cmds *Cmds, t_data *Data);
 void	ft_init_exec(t_cmds *Cmds, t_data *Data);
 /* parser */
-void	ft_check_separators(t_cmds *Cmds, t_data *Data);
+void	ft_split_dollar(t_cmds *Cmds, t_data *Data);
 /* simple and multiquotes managing */
 char	*ft_manage_quotes(char *command);
 
