@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 18:36:22 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/03/28 23:13:56 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/29 00:23:47 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	**ft_oldpwd(t_data *Data)
 	}
 	new_env[i] = 0;
 	i = -1;
-	ft_doublefree((void **)Data->env);
+	ft_doublefree(Data->env);
 	free(pwd);
 	free(tmp);
 	return (new_env);
@@ -65,7 +65,7 @@ char	**ft_newpwd(t_data *Data)
 			new_env[i] = ft_strdup(Data->env[i]);
 	}
 	new_env[i] = 0;
-	ft_doublefree((void **)Data->env);
+	ft_doublefree(Data->env);
 	free(tmp);
 	free(pwd);
 	return (new_env);
@@ -86,6 +86,7 @@ void	ft_minusflag(t_data *Data)
 	Data->env = ft_oldpwd(Data);
 	printf("%s\n", oldpwd);
 	chdir(oldpwd);
+	Data->last_out = 0;
 	Data->env = ft_newpwd(Data);
 	free(oldpwd);
 }
@@ -96,6 +97,7 @@ void	ft_cd(t_cmds *Cmds, t_data *Data, int cmd_pos)
 	{
 		Data->env = ft_oldpwd(Data);
 		chdir("/");
+		Data->last_out = 0;
 		Data->env = ft_newpwd(Data);
 	}
 	else if (Cmds->p_command[1][0] == '-')
@@ -104,10 +106,14 @@ void	ft_cd(t_cmds *Cmds, t_data *Data, int cmd_pos)
 	{
 		Data->env = ft_oldpwd(Data);
 		if (!opendir(Cmds->p_command[1]))
+		{
 			perror("cd");
+			Data->last_out = 1;
+		}
 		if (cmd_pos != 0)
 			return ;
 		chdir(Cmds->p_command[1]);
+		Data->last_out = 0;
 		Data->env = ft_newpwd(Data);
 	}
 }

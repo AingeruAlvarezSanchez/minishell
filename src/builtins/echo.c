@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 18:39:08 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/03/03 18:39:12 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/03/29 00:16:41 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,12 @@ void	ft_echo(t_cmds *Cmds, char *flag)
 	exit(0);
 }
 
-void	ft_check_echo(t_cmds *Cmds)
+void	ft_check_echo(t_cmds *Cmds, t_data *Data)
 {
 	if (!Cmds->p_command[1])
 	{
 		write(1, "\n", 1);
+		Data->last_out = 0;
 		exit (0);
 	}
 	else
@@ -47,5 +48,6 @@ void	ft_check_echo(t_cmds *Cmds)
 			ft_echo(Cmds, Cmds->p_command[1]);
 		else
 			ft_echo(Cmds, NULL);
+		Data->last_out = 0;
 	}
 }

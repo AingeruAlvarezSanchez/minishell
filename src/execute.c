@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 12:39:27 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/28 23:16:31 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/29 00:21:04 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 void	ft_ischild_builtin(t_cmds *Cmds, t_data *Data)
 {
 	if (!ft_strncmp(Cmds->p_command[0], "pwd", 3))
-		ft_pwd();
+		ft_pwd(Data);
 	else if (!ft_strncmp(Cmds->p_command[0], "echo", 4))
-		ft_check_echo(Cmds);
+		ft_check_echo(Cmds, Data);
 	else if (!ft_strncmp(Cmds->p_command[0], "env", 3))
 		ft_env(Data);
 }
@@ -36,7 +36,7 @@ void	ft_isparent_builtin(t_cmds *Cmds, t_data *Data, int cmd_pos)
 	else if (!ft_strncmp(Cmds->p_command[0], "unset", 5))
 		ft_check_unset(Data, Cmds, cmd_pos);
 	if (Cmds->p_command)
-		ft_doublefree((void **)Cmds->p_command);
+		ft_doublefree(Cmds->p_command);
 }
 
 void	ft_execute(t_data *Data, t_cmds *Cmds)
@@ -101,14 +101,14 @@ void	ft_init_exec(t_cmds *Cmds, t_data *Data)
 		while (tmp[++j])
 			Cmds->p_command[j] = ft_strdup(tmp[j]);
 		Cmds->p_command[j] = 0;
-		ft_doublefree((void **)tmp);
+		ft_doublefree(tmp);
 		if (!ft_check_builtin(Cmds))
 			ft_create_forks(Cmds, Data);
 		else
 			ft_isparent_builtin(Cmds, Data, i);
 		i++;
-		ft_doublefree((void **)Cmds->p_command);
+		//ft_doublefree(Cmds->p_command);
 	}
 	i = -1;
-	ft_doublefree((void **)Cmds->commands);
+	ft_doublefree(Cmds->commands);
 }

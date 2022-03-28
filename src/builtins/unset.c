@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 16:03:58 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/28 23:13:14 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/29 00:17:40 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	**ft_unset_env(t_data *Data, int j)
 		new[x++] = ft_strdup(Data->env[i]);
 	}
 	new[x] = 0;
-	ft_doublefree((void **)Data->env);
+	ft_doublefree(Data->env);
 	return (new);
 }
 
@@ -52,15 +52,17 @@ void	ft_unset(t_data *Data, t_cmds *Cmds, int i)
 		if (!ft_strncmp(Data->env[j], find, len))
 		{
 			Data->env = ft_unset_env(Data, j);
+			Data->last_out = 0;
 			break ;
 		}
 	}
 }
 
-void	ft_unset_error(t_cmds *Cmds, int i)
+void	ft_unset_error(t_cmds *Cmds, t_data *Data, int i)
 {
 	printf("unset: '%s': not a valid identifier\n",
 		Cmds->p_command[i]);
+	Data->last_out = 1;
 }
 
 void	ft_check_unset(t_data *Data, t_cmds *Cmds, int cmd_pos)
@@ -78,7 +80,7 @@ void	ft_check_unset(t_data *Data, t_cmds *Cmds, int cmd_pos)
 		{
 			if (Cmds->p_command[i][j] == '=')
 			{
-				ft_unset_error(Cmds, i);
+				ft_unset_error(Cmds, Data, i);
 				check = 0;
 			}
 		}

@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:10:04 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/10 16:57:26 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/28 23:57:02 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	ft_free_data(t_data *Data)
 		free(Data->path[i]);
 	free(Data->path);
 	i = -1;
-	ft_doublefree((void **)Data->path);
+	ft_doublefree(Data->path);
 }
 
 int	main(int argc, char **argv, char **envp)

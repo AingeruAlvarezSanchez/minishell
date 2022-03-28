@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 21:12:02 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/28 23:18:01 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/28 23:50:34 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	ft_reshape_cmds( t_cmds *Cmds, char *value, int iref)
 			Cmds->commands[iref] = ft_strjoin(Cmds->commands[iref], tmp);
 		}
 	}
+	free(tmp);
 }
 
 void	ft_getvalue(t_cmds *Cmds, t_data *Data, int iref, int jref)
@@ -78,6 +79,22 @@ void	ft_getvalue(t_cmds *Cmds, t_data *Data, int iref, int jref)
 		ft_reshape_cmds(Cmds, value, iref);
 }
 
+void	ft_question_reshape(t_cmds *Cmds, t_data *Data, int iref, int jref)
+{
+	char	*tmp;
+	char	*num;
+	int		j;
+
+	j = -1;
+	num = ft_itoa(Data->last_out);
+	tmp = ft_strdup(Cmds->commands[iref]);
+	tmp = ft_substr(tmp, (jref + 2), ft_strlen(tmp));
+	Cmds->commands[iref] = ft_substr(Cmds->commands[iref], 0, (jref));
+	Cmds->commands[iref] = ft_strjoin(Cmds->commands[iref], num);
+	Cmds->commands[iref] = ft_strjoin(Cmds->commands[iref], tmp);
+	free(tmp);
+}
+
 void	ft_split_dollar(t_cmds *Cmds, t_data *Data)
 {
 	int	i;
@@ -95,10 +112,7 @@ void	ft_split_dollar(t_cmds *Cmds, t_data *Data)
 						Cmds->commands[i][j + 1] != '?')
 					ft_getvalue(Cmds, Data, i, j);
 				else if (Cmds->commands[i][j + 1] == '?')
-				{
-					printf("%d:", Data->last_out);
-					//ft_question_reshape(Cmds, i, j);
-				}
+					ft_question_reshape(Cmds, Data, i, j);
 			}
 		}
 	}

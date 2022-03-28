@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 18:38:08 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/03/10 16:04:59 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/29 00:19:03 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	**ft_newenv(t_data *Data, char *value, char *find)
 	i = -1;
 	while (Data->env[++i])
 		tmp[i] = ft_strdup(Data->env[i]);
-	ft_doublefree((void **)Data->env);
+	ft_doublefree(Data->env);
 	if (!value)
 	{
 		tmp[i] = ft_strdup(find);
@@ -101,6 +101,7 @@ void	ft_export(t_data *Data, t_cmds *Cmds, int i, int j)
 		}
 	}
 	Data->env = ft_newenv(Data, value, find);
+	Data->last_out = 0;
 	free(value);
 	free(find);
 }
@@ -115,6 +116,7 @@ void	ft_check_export(t_data *Data, t_cmds *Cmds, int cmd_pos)
 		i = -1;
 		while (Data->env[++i])
 			printf("declare -x %s\n", Data->env[i]);
+		Data->last_out = 0;
 	}
 	i = -1;
 	while (Cmds->p_command[++i])

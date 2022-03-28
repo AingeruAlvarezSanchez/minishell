@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:08:14 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/28 23:10:39 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/29 00:20:16 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ typedef struct s_cmds
 }	t_cmds;
 
 /* builtin functions */
-void	ft_check_echo(t_cmds *Cmds);
-void	ft_pwd(void);
+void	ft_check_echo(t_cmds *Cmds, t_data *Data);
+void	ft_pwd(t_data *Data);
 void	ft_env(t_data *Data);
 void	ft_cd(t_cmds *Cmds, t_data *Data, int cmd_pos);
 void	ft_exit(t_cmds *Cmds, int cmd_pos);

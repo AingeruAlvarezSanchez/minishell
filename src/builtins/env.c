@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 18:38:47 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/03/03 18:39:01 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/03/29 00:18:43 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	ft_env(t_data *Data)
 		while (Data->env[i][++j])
 			write(1, &Data->env[i][j], 1);
 		write(1, "\n", 1);
+		Data->last_out = 0;
 	}
 	exit(0);
 }

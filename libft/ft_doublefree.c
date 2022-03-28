@@ -6,13 +6,13 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 16:06:47 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/10 16:06:48 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/28 23:54:44 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_doublefree(void **str)
+void	ft_doublefree(char **str)
 {
 	int	i;
 
