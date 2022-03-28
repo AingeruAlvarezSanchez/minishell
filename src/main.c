@@ -83,7 +83,8 @@ int	main(int argc, char **argv, char **envp)
 
 	while (1 && argc && argv)
 	{	
-		str = readline("ejemplo1 ₺ ");
+		if((str = readline("ejemplo1 ₺ ")) == NULL)
+			ft_signal_exit();
 		add_history(str);
 		ft_commands(str, &Cmds, &Data);
 		waitpid(Cmds.pid, NULL, WUNTRACED);

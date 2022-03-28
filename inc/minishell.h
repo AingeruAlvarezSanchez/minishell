@@ -47,5 +47,6 @@ void	ft_init_exec(t_cmds *Cmds, t_data *Data);
 /* simple and multiquotes managing */
 char	*ft_manage_quotes(char *command);
 void	ft_signals_inter();
-void ft_signals();
+void	ft_signals();
+void	ft_signal_exit();
 #endif

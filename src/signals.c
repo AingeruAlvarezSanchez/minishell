@@ -16,6 +16,12 @@
 #include <sys/time.h>
 #include <readline/readline.h>
 
+void	ft_signal_exit()
+{
+	write(1, "exit\n", 5);
+	exit(0);
+}
+
 void	interact_signal(int signal)
 {
 	if (signal == SIGQUIT)
@@ -54,6 +60,7 @@ void	signal_handler(int signal)
 			rl_on_new_line();
 		}
 	}
+	else printf("%d signal", signal);
 }
 
 void ft_signals()
