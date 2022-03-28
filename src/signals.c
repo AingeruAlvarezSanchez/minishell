@@ -20,7 +20,7 @@ void	interact_signal(int signal)
 {
 	if (signal == SIGQUIT)
 	{
-		printf("\33[2K\r\n");
+		printf("\33[2K\r");
 		rl_on_new_line();
 		rl_redisplay();
 	}
@@ -44,7 +44,8 @@ void	signal_handler(int signal)
 		if (signal == SIGQUIT)
 		{
 			interactive = 1;
-			printf("interactive = %d\n", interactive);
+			write(1,"Quit\n", 5);
+			rl_on_new_line();
 		}
 		if (signal == SIGINT)
 		{
