@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:08:14 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/10 16:11:42 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/28 21:14:42 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ typedef struct s_cmds
 {
 	pid_t	pid;
 	char	**commands;
+	int		quotes;
+	int		dollar;
+	int		pipes;
 	char	**p_command;
 	int		n_cmds;
 }	t_cmds;
@@ -40,6 +43,8 @@ void	ft_check_unset(t_data *Data, t_cmds *Cmds, int cmd_pos);
 /* Command execution functions */
 void	ft_commands(char *str, t_cmds *Cmds, t_data *Data);
 void	ft_init_exec(t_cmds *Cmds, t_data *Data);
+/* parser */
+void	ft_check_separators(t_cmds *Cmds, t_data *Data);
 /* simple and multiquotes managing */
 char	*ft_manage_quotes(char *command);
 
