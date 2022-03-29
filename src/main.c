@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:10:04 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/29 10:13:19 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/29 10:49:59 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,17 @@ int	main(int argc, char **argv, char **envp)
 	char	*str;
 	t_cmds	Cmds;
 	t_data	Data;
+	ft_interactive(1);
 
 	Data.last_out = 0;
 	ft_cpyenv(&Data, envp);
 	ft_get_path(&Data);
+	ft_signals();
+
 	while (1 && argc && argv)
 	{	
-		str = readline("ejemplo1 ₺ ");
+		if((str = readline("ejemplo1 ₺ ")) == NULL)
+			ft_signal_exit();
 		add_history(str);
 		ft_commands(str, &Cmds, &Data);
 		//waitpid(Cmds.pid, NULL, WUNTRACED);

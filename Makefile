@@ -14,6 +14,7 @@ SRC		=	src/main.c	\
 			src/builtins/unset.c\
 			src/quotes.c\
 			src/execute.c\
+			src/signals.c\
 			src/commands.c
 
 INCLUDE =	inc/minishell.h

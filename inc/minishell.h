@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:08:14 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/29 09:15:44 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/29 10:49:54 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "../libft/libft.h"
+
 
 typedef struct s_data
 {
@@ -31,6 +32,7 @@ typedef struct s_cmds
 	int		pipes;
 	char	**p_command;
 	int		n_cmds;
+	int		**pipefd;
 }	t_cmds;
 
 /* builtin functions */
@@ -48,5 +50,9 @@ void	ft_init_exec(t_cmds *Cmds, t_data *Data);
 void	ft_split_dollar(t_cmds *Cmds, t_data *Data);
 /* simple and multiquotes managing */
 char	*ft_manage_quotes(char *command);
+void	ft_signals_inter();
+void	ft_signals();
+void	ft_signal_exit();
+int		ft_interactive(int inter);
 
 #endif

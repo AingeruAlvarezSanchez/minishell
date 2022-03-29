@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 12:39:27 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/29 10:13:54 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/29 10:59:06 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_isparent_builtin(t_cmds *Cmds, t_data *Data, int cmd_pos)
 void	ft_execute(t_data *Data, t_cmds *Cmds)
 {
 	char	*tmp;
-	int		i;
+	int	i;
 
 	i = -1;
 	if (!Cmds->p_command[0])
@@ -78,6 +78,7 @@ void	ft_create_forks(t_cmds *Cmds, t_data *Data)
 
 	status = 0;
 	Cmds->pid = fork();
+	ft_interactive(0);
 	if (Cmds->pid == 0)
 		ft_execute(Data, Cmds);
 	else
@@ -105,10 +106,11 @@ void	ft_init_exec(t_cmds *Cmds, t_data *Data)
 		if (!ft_check_builtin(Cmds))
 			ft_create_forks(Cmds, Data);
 		else
+		{
 			ft_isparent_builtin(Cmds, Data, i);
+		}
 		i++;
-		ft_doublefree(Cmds->p_command);
 	}
-	i = -1;
 	ft_doublefree(Cmds->commands);
+	ft_interactive(1);
 }
