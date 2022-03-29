@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:10:04 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/29 10:13:19 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/29 20:38:24 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,12 @@ int	main(int argc, char **argv, char **envp)
 	Data.last_out = 0;
 	ft_cpyenv(&Data, envp);
 	ft_get_path(&Data);
+	ft_interactive(1);
+	ft_signals();
 	while (1 && argc && argv)
 	{	
-		str = readline("ejemplo1 ₺ ");
+		if((str = readline("ejemplo1 ₺ ")) == NULL)
+			ft_signal_exit();	
 		add_history(str);
 		ft_commands(str, &Cmds, &Data);
 		//waitpid(Cmds.pid, NULL, WUNTRACED);

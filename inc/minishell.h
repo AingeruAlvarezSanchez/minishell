@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:08:14 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/29 09:15:44 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/29 20:35:53 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,10 @@ void	ft_init_exec(t_cmds *Cmds, t_data *Data);
 void	ft_split_dollar(t_cmds *Cmds, t_data *Data);
 /* simple and multiquotes managing */
 char	*ft_manage_quotes(char *command);
+/* signals */
+void	ft_signals_inter();
+void	ft_signals();
+void	ft_signal_exit();
+int		ft_interactive(int inter);
 
 #endif

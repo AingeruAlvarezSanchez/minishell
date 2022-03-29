@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 12:39:27 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/29 10:13:54 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/29 20:37:28 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	ft_create_forks(t_cmds *Cmds, t_data *Data)
 
 	status = 0;
 	Cmds->pid = fork();
+	ft_interactive(0);
 	if (Cmds->pid == 0)
 		ft_execute(Data, Cmds);
 	else
@@ -110,5 +111,6 @@ void	ft_init_exec(t_cmds *Cmds, t_data *Data)
 		ft_doublefree(Cmds->p_command);
 	}
 	i = -1;
+	ft_interactive(1);
 	ft_doublefree(Cmds->commands);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar_parser.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 21:12:02 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/29 07:43:56 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/29 20:39:27 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,7 @@ void	ft_question_reshape(t_cmds *Cmds, t_data *Data, int iref, int jref)
 {
 	char	*tmp;
 	char	*num;
-	int		j;
 
-	j = -1;
 	num = ft_itoa(Data->last_out);
 	tmp = ft_strdup(Cmds->commands[iref]);
 	tmp = ft_substr(tmp, (jref + 2), ft_strlen(tmp));
