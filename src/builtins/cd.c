@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 18:36:22 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/03/29 00:23:47 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/29 09:31:21 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,9 @@ void	ft_cd(t_cmds *Cmds, t_data *Data, int cmd_pos)
 		Data->env = ft_oldpwd(Data);
 		if (!opendir(Cmds->p_command[1]))
 		{
-			perror("cd");
+			printf("cd: %s: No such file or directory\n", Cmds->p_command[1]);
 			Data->last_out = 1;
+			return ;
 		}
 		if (cmd_pos != 0)
 			return ;

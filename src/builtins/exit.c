@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 18:38:39 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/03/29 00:18:31 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/29 09:49:47 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	ft_isstrdigit(char *str)
 	return (0);
 }
 
-static void	ft_checkargs(t_cmds *Cmds, int cmd_pos)
+static void	ft_checkargs(t_cmds *Cmds, t_data *Data, int cmd_pos)
 {
 	if (!Cmds->p_command[2])
 	{
@@ -35,31 +35,37 @@ static void	ft_checkargs(t_cmds *Cmds, int cmd_pos)
 		{
 			if (!ft_isstrdigit(Cmds->p_command[1]))
 			{
-				printf("chain is: %s\n", Cmds->p_command[1]);
 				printf("exit: %s: numeric argument required\n",
 					Cmds->p_command[1]);
 				if (cmd_pos != 0)
 					return ;
 				else
+				{
+					ft_doublefree(Cmds->commands);
 					exit(0);
+				}
 			}
 			else
 				exit (ft_atoi(Cmds->p_command[1]));
 		}
 	}
 	else
+	{
 		write(1, "exit: too many arguments\n", 25);
+		Data->last_out = 1;
+	}
 }
 
-void	ft_exit(t_cmds *Cmds, int cmd_pos)
+void	ft_exit(t_cmds *Cmds, t_data *Data, int cmd_pos)
 {
 	if (!Cmds->p_command[1])
 	{
 		if (cmd_pos != 0)
 			return ;
 		write(1, "exit\n", 5);
+		ft_doublefree(Cmds->commands);
 		exit(0);
 	}
 	else
-		ft_checkargs(Cmds, cmd_pos);
+		ft_checkargs(Cmds, Data, cmd_pos);
 }

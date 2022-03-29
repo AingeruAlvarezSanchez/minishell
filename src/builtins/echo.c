@@ -6,13 +6,13 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 18:39:08 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/03/29 00:16:41 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/29 09:36:34 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	ft_echo(t_cmds *Cmds, char *flag)
+void	ft_echo(t_cmds *Cmds, t_data *Data, char *flag)
 {
 	int	i;
 	int	j;
@@ -28,6 +28,7 @@ void	ft_echo(t_cmds *Cmds, char *flag)
 		if (Cmds->p_command[i + 1])
 			write(1, " ", 1);
 	}
+	Data->last_out = 0;
 	if (flag)
 		exit(0);
 	write(1, "\n", 1);
@@ -45,9 +46,8 @@ void	ft_check_echo(t_cmds *Cmds, t_data *Data)
 	else
 	{
 		if (!ft_strncmp(Cmds->p_command[1], "-n", 2))
-			ft_echo(Cmds, Cmds->p_command[1]);
+			ft_echo(Cmds, Data, Cmds->p_command[1]);
 		else
-			ft_echo(Cmds, NULL);
-		Data->last_out = 0;
+			ft_echo(Cmds, Data, NULL);
 	}
 }

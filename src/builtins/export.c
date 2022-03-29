@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 18:38:08 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/03/29 00:19:03 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/29 09:39:54 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,4 +132,5 @@ void	ft_check_export(t_data *Data, t_cmds *Cmds, int cmd_pos)
 			}
 		}
 	}
+	Data->last_out = 0;
 }

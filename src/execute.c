@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 12:39:27 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/29 00:21:04 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/03/29 10:13:54 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_ischild_builtin(t_cmds *Cmds, t_data *Data)
 	else if (!ft_strncmp(Cmds->p_command[0], "echo", 4))
 		ft_check_echo(Cmds, Data);
 	else if (!ft_strncmp(Cmds->p_command[0], "env", 3))
-		ft_env(Data);
+		ft_env(Data, Cmds);
 }
 
 void	ft_isparent_builtin(t_cmds *Cmds, t_data *Data, int cmd_pos)
@@ -30,13 +30,11 @@ void	ft_isparent_builtin(t_cmds *Cmds, t_data *Data, int cmd_pos)
 	if (!ft_strncmp(Cmds->p_command[0], "cd", 2))
 		ft_cd(Cmds, Data, cmd_pos);
 	else if (!ft_strncmp(Cmds->p_command[0], "exit", 4))
-		ft_exit(Cmds, cmd_pos);
+		ft_exit(Cmds, Data, cmd_pos);
 	else if (!ft_strncmp(Cmds->p_command[0], "export", 6))
 		ft_check_export(Data, Cmds, cmd_pos);
 	else if (!ft_strncmp(Cmds->p_command[0], "unset", 5))
 		ft_check_unset(Data, Cmds, cmd_pos);
-	if (Cmds->p_command)
-		ft_doublefree(Cmds->p_command);
 }
 
 void	ft_execute(t_data *Data, t_cmds *Cmds)
@@ -78,11 +76,13 @@ void	ft_create_forks(t_cmds *Cmds, t_data *Data)
 {
 	int	status;
 
+	status = 0;
 	Cmds->pid = fork();
 	if (Cmds->pid == 0)
 		ft_execute(Data, Cmds);
 	else
 		waitpid(Cmds->pid, &status, 0);
+	Data->last_out = WEXITSTATUS(status);
 }
 
 void	ft_init_exec(t_cmds *Cmds, t_data *Data)
@@ -107,7 +107,7 @@ void	ft_init_exec(t_cmds *Cmds, t_data *Data)
 		else
 			ft_isparent_builtin(Cmds, Data, i);
 		i++;
-		//ft_doublefree(Cmds->p_command);
+		ft_doublefree(Cmds->p_command);
 	}
 	i = -1;
 	ft_doublefree(Cmds->commands);
