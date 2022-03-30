@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 21:12:02 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/29 20:39:27 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/03/30 17:35:24 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 char	*ft_check_env(t_data *Data, char *to_find)
 {
-	char	*full_value;
 	int		i;
 	int		j;
 
@@ -27,9 +26,8 @@ char	*ft_check_env(t_data *Data, char *to_find)
 			j = 0;
 			while (Data->env[i][j] != '=')
 				j++;
-			full_value = ft_substr(Data->env[i], (j + 1),
-					ft_strlen(Data->env[i]));
-			return (full_value);
+			return (ft_substr(Data->env[i], (j + 1),
+					ft_strlen(Data->env[i])));
 		}
 	}
 	return (NULL);

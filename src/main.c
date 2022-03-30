@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:10:04 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/29 20:38:24 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/03/30 17:07:37 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,6 @@ int	main(int argc, char **argv, char **envp)
 			ft_signal_exit();	
 		add_history(str);
 		ft_commands(str, &Cmds, &Data);
-		//waitpid(Cmds.pid, NULL, WUNTRACED);
-		free(str);
 	}
 	return (0);
 }
