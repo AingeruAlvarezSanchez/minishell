@@ -54,6 +54,17 @@ void	ft_get_path(t_data *data)
 	free (tmp);
 }
 
+/* This function reshape the "tokens" member of cmds in order to adapt it to simple quotes needs */
+void	ft_simple_quotes(__attribute__((unused)) t_cmds *cmds,__attribute__((unused)) int iref,__attribute__((unused)) int jref)
+{
+	int	i;
+
+	i = -1;
+	while (cmds->tokens[++i])
+		printf("CMD: %s\n", cmds->tokens[i]);
+}
+
+/* needed to search for a way to make this function smaller to norminette */
 void	ft_commands(char *prompt, t_cmds *cmds, __attribute__((unused)) t_data *data)
 {
 	int	j;
@@ -67,8 +78,8 @@ void	ft_commands(char *prompt, t_cmds *cmds, __attribute__((unused)) t_data *dat
 	{
 		if (cmds->tokens[0][j] == '\'')
 		{
-			//ft_simple_quotes();
 			j++;
+			//ft_simple_quotes(cmds, i, j);
 			while (cmds->tokens[0][j] && cmds->tokens[0][j] != '\'')
 				j++;
 			if (cmds->tokens[0][j] != '\'')
@@ -79,10 +90,15 @@ void	ft_commands(char *prompt, t_cmds *cmds, __attribute__((unused)) t_data *dat
 		}
 		else if (cmds->tokens[0][j] == '"')
 		{
-			//ft_double_quotes();
+			//ft_double_quotes(cmds);
 			j++;
 			while (cmds->tokens[0][j] && cmds->tokens[0][j] != '"')
+			{
+				if (cmds->tokens[0][j] == '$')
+					printf("i found a dollar inside double quotes\n");
+					//ft_dollar(cmds, data);
 				j++;
+			}
 			if (cmds->tokens[0][j] != '"')
 			{
 				printf("Syntax error, unclosed quotes\n");
@@ -91,7 +107,7 @@ void	ft_commands(char *prompt, t_cmds *cmds, __attribute__((unused)) t_data *dat
 		}
 		/*else if (cmds->tokens[0][j] == '$')
 		{
-			//ft_dollar();
+			//ft_dollar(cmds, data);
 		}*/
 		else if (cmds->tokens[0][j] == '|')
 			cmds->n_cmds++;
@@ -113,7 +129,7 @@ int	main(int argc, char **argv, char **envp)
 		prompt = readline("ejemplo1 ₺ ");
 		add_history(prompt);
 		ft_commands(prompt, &cmds, &data);
-		//waitpid(Cmds.pid, NULL, WUNTRACED);
+		waitpid(Cmds.pid, NULL, WUNTRACED);
 		free(prompt);
 	}
 	return (0);
