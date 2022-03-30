@@ -3,7 +3,9 @@ NAME = minishell
 CC		=	gcc
 RM		=	rm -rf
 FLAGS	=	-Wall -Wextra -Werror -g -g3 -fsanitize=address
-SRC		=	src/main.c
+SRC		=	src/main.c		\
+			src/initials.c	\
+			src/quotes.c
 
 INCLUDE =	inc/minishell.h
 LIB		=	libft/libft.a
