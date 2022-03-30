@@ -6,7 +6,7 @@
 #    By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/24 12:12:22 by aalvarez          #+#    #+#              #
-#    Updated: 2022/02/20 13:20:35 by aalvarez         ###   ########.fr        #
+#    Updated: 2022/03/29 14:04:10 by aalvarez         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,7 +66,7 @@ OBJ = $(SRC:.c=.o)
 
 CC = gcc
 AR = ar rc
-CFLAGS = -Wall -Wextra #-Werror
+CFLAGS = -Wall -Wextra -Werror
 RM = /bin/rm -f
 
 all: $(NAME)
