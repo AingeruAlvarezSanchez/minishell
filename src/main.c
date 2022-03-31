@@ -82,8 +82,39 @@ void	ft_check_metacharacter(t_cmds *cmds, t_data *data)
 	}
 }
 
+/**
+ * @brief 
+ * 
+ * @param iref This is the reference to the i axis
+ * @param cmd_i 
+ */
 void	ft_create_command(t_cmds *cmds, int iref, int cmd_i)
 {
+	int		i;
+	char	*tmp;
+
+	i = -1;
+	tmp = ft_strdup(" ");
+	while (++i < iref)
+		tmp = ft_strjoin(tmp, cmds->tokens[i]);
+	tmp = ft_strtrim(tmp, " ");
+	i = -1;
+	while (tmp[++i])
+	{
+		if (tmp[i] == '|')
+		{
+			tmp = ft_substr(tmp, (i + 1), ft_strlen(tmp));
+			i = -1;
+		}
+	}
+	cmds->commands[cmd_i] = ft_strdup(tmp);
+	free(tmp);
+	tmp = ft_strdup(" ");
+	while (cmds->tokens[++iref])
+		tmp = ft_strjoin(tmp, cmds->tokens[iref]);
+	tmp = ft_strtrim(tmp, " ");
+	cmds->commands[cmd_i + 1] = ft_strdup(tmp);
+	free(tmp);
 }
 
 /* Once every separator or metacharacter has been
@@ -110,10 +141,10 @@ void	ft_parser(t_cmds *cmds)
 			}
 		}
 	}
-	cmds->commands[cmd_i + 1] = 0;
-	i = -1;
-	while (cmds->commands[++i])
-		printf("command: %s\n", cmds->commands[i]);
+	if (cmds->n_cmds == 1)
+		cmds->commands[cmd_i] = 0;
+	else
+		cmds->commands[cmd_i + 1] = 0;
 	ft_doublefree(cmds->tokens);
 }
 
@@ -126,7 +157,14 @@ void	ft_commands(char *prompt, t_cmds *cmds, t_data *data)
 	if (ft_check_quotes(cmds))
 		return ;
 	ft_check_metacharacter(cmds, data);
+	int i = -1;
+	while (cmds->tokens[++i])
+		printf("token[%d]:%s\n", i, cmds->tokens[i]);
 	ft_parser(cmds);
+	i = -1;
+	while (cmds->commands[++i])
+		printf("command[%d]:%s\n", i, cmds->commands[i]);
+	ft_doublefree(cmds->commands);
 }
 
 int	main(int argc, char **argv, char **envp)
