@@ -78,7 +78,7 @@ static void ft_dollar_no_value(t_cmds *cmds, int iref, int jref)
 
 /* This function is the entrance to checking all the possibilites for the $
 caracter, that means expansion for environment variable or last status */
-void	ft_dollar(t_cmds *cmds, t_data *data, int iref, int jref)
+void	ft_check_dollar(t_cmds *cmds, t_data *data, int iref, int jref)
 {
 	char	*to_find;
 	int		i;

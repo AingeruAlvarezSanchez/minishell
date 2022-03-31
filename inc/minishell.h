@@ -26,20 +26,28 @@ typedef struct s_cmds
 {
 	pid_t	pid;
 	char	**tokens;
+	char	**commands;
 	int		n_cmds;
 }	t_cmds;
 
 /* initial funcions, dedicated to set the 
 initial configuration of the program */
+
 void	ft_cpyenv(t_data *data, char **envp);
 void	ft_get_path(t_data *data);
 void	ft_initials(t_cmds *cmds, t_data *data, char *prompt);
 
 /* quote managing functions */
+
 int		ft_quote_error(t_cmds *cmds, int iref, int jref, int quote);
 void	ft_quotes(t_cmds *cmds, int iref, int jref, int quote);
 
 /* dollar managing function */
-void	ft_dollar(t_cmds *cmds, t_data *data, int iref, int jref);
+
+void	ft_check_dollar(t_cmds *cmds, t_data *data, int iref, int jref);
+
+/* pipes parsing function */
+
+int	ft_check_pipes(t_cmds *cmds, int iref, int jref);
 
 #endif
