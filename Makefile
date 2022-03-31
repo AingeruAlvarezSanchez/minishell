@@ -3,19 +3,11 @@ NAME = minishell
 CC		=	gcc
 RM		=	rm -rf
 FLAGS	=	-Wall -Wextra -Werror -g -g3 -fsanitize=address
-SRC		=	src/main.c	\
-			src/dollar_parser.c	\
-			src/builtins/echo.c	\
-			src/builtins/pwd.c	\
-			src/builtins/env.c	\
-			src/builtins/cd.c	\
-			src/builtins/exit.c	\
-			src/builtins/export.c\
-			src/builtins/unset.c\
-			src/quotes.c\
-			src/execute.c\
-			src/signals.c\
-			src/commands.c
+SRC		=	src/main.c		\
+			src/initials.c	\
+			src/quotes.c	\
+			src/dollars.c	\
+			src/pipes.c
 
 INCLUDE =	inc/minishell.h
 LIB		=	libft/libft.a

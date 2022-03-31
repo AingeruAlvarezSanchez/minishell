@@ -1,95 +1,129 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   quotes.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/03 18:41:03 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/03/03 18:45:04 by ecorreia         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../inc/minishell.h"
 #include <stdio.h>
-
-int	ft_ncinstr(char c, char *str)
+ 
+/* This function checks wheter after the found quote there are any other quotes,
+if there aren't any other closing quotes, the program returns to prompt state */
+int	ft_quote_error(t_cmds *cmds, int iref, int jref, int quote)
 {
-	int	i;
-	int	q;
-
-	q = 0;
-	i = 0;
-	while (str[i])
+	if (quote == 0)
 	{
-		if (str[i] == c)
-			q++;
-		i++;
+		while (cmds->tokens[iref][jref] && cmds->tokens[iref][jref] != '\'')
+			jref++;
+		if (cmds->tokens[iref][jref] != '\'')
+		{
+			printf("Syntax error, unclosed quotes\n");
+			return (-1);
+		}
 	}
-	return (q);
+	else if (quote == 1)
+	{
+		while (cmds->tokens[iref][jref] && cmds->tokens[iref][jref] != '"')
+			jref++;
+		if (cmds->tokens[iref][jref] != '"')
+		{
+			printf("Syntax error, unclosed quotes\n");
+			return (-1);
+		}
+	}
+	return (jref);
 }
 
-/**
- * @brief Checks if char is inside str and returns position
- * 
- * @param c     this is the char to search
- * @param str   This is the string in which to search for a character
- * @return int  Returns the position of character found or -1
- */
-int	ft_cinstr(char c, char *str)
+/* This function is only called if after the last quote there are other characters,
+this exist for memory assign efficiency */
+static char    **ft_full_final( t_cmds *cmds, char **tmp, int iref, int i, int quote)
 {
-	int	i;
+    int	j;
+    int jref;
 
-	i = 0;
-	while (str[i])
+	while (cmds->tokens[++i])
+		tmp[i] = ft_strdup(cmds->tokens[i]);
+	j = 0;
+	if (quote == 0)
 	{
-		if (str[i] == c)
-			return (i);
-		i++;
+		while (tmp[iref][j] != '\'')
+			j++;
+        jref = j + 1;
+        while (tmp[iref][jref] != '\'')
+            jref++;
 	}
-	return (-1);
+	else if (quote == 1)
+	{
+		while (tmp[iref][j] != '"')
+			j++;
+        jref = j + 1;
+        while (tmp[iref][jref] != '"')
+            jref++;
+	}
+	tmp[iref] = ft_substr(cmds->tokens[iref], 0, j);
+	tmp[iref + 1] = ft_substr(cmds->tokens[iref], j, (jref - (j - 1)));
+	tmp[iref + 2] = ft_substr(cmds->tokens[iref], (jref + 1), ft_strlen(cmds->tokens[iref]));
+    tmp[iref + 3] = 0;
+	ft_doublefree(cmds->tokens);
+	return (tmp);
 }
 
-/**
- * @brief Checks if there is quote and delete them if closed
- * 
- * @param str       This is the string in which to search for quotes
- * @param c         this is the quote type to delete 
- * @return char*    returns string without quotes or str if no 
- * coincidence or not closed
- */
-int	ft_check_quotes(char *str, char c)
+/* This function is only called if after the last quote there are no other characters,
+this exist for memory assign efficiency */
+static char	**ft_empty_final(t_cmds *cmds, char **tmp, int iref, int i, int quote)
 {
+	int	j;
+
+	while (cmds->tokens[++i])
+		tmp[i] = ft_strdup(cmds->tokens[i]);
+	j = 0;
+	if (quote == 0)
+	{
+		while (tmp[iref][j] != '\'')
+			j++;
+	}
+	else if (quote == 1)
+	{
+		while (tmp[iref][j] != '"')
+			j++;
+	}
+	tmp[iref] = ft_substr(cmds->tokens[iref], 0, j);
+	tmp[iref + 1] = ft_substr(cmds->tokens[iref], j, ft_strlen(cmds->tokens[iref]));
+	tmp[iref + 2] = 0;
+	j = -1;
+	ft_doublefree(cmds->tokens);
+	return (tmp);
+}
+
+/* This function recreates the result of tmp on the cmds->tokens structure component */
+static void	ft_newcmds(t_cmds *cmds, char **tmp)
+{
+    int i;
+
+	cmds->tokens = (char **)malloc(sizeof(char *) * (ft_doublestrlen(tmp) + 1));
+	i = -1;
+	while (tmp[++i])
+		cmds->tokens[i] = ft_strdup(tmp[i]);
+	cmds->tokens[i] = 0;
+}
+
+/* This function manages both simple and multiple quotes */
+void	ft_quotes(t_cmds *cmds, int iref, int jref, int quote)
+{
+	char	**tmp;
 	int		i;
-	char	*s;
 
 	i = -1;
-	i = ft_cinstr(c, str);
-	if (i >= 0)
+	if (cmds->tokens[iref][jref + 1])
 	{
-		s = ft_substr(str, ft_cinstr(c, str), ft_strlen(str + i));
-		if (s)
-			return (1);
+		tmp = (char **)malloc(sizeof(char *) * (ft_doublestrlen(cmds->tokens) + 3));
+		if (quote == 0)
+			tmp = ft_full_final(cmds, tmp, iref, i, 0);
+		else if (quote == 1)
+			tmp = ft_full_final(cmds, tmp, iref, i, 1);
 	}
-	return (0);
-}
-
-//es inpar
-int	isodd(int n)
-{
-	return (n & 1);
-}
-
-char	*ft_manage_quotes(char *command)
-{	
-	if (isodd(ft_ncinstr('\'', command)))
+	else
 	{
-		printf("quotes no cerradas\n");
-		return (command);
+		tmp = (char **)malloc(sizeof(char *) * (ft_doublestrlen(cmds->tokens) + 2));
+		if (quote == 0)
+			tmp = ft_empty_final(cmds, tmp, iref, i, 0);
+		else if (quote == 1)
+			tmp = ft_empty_final(cmds, tmp, iref, i, 1);
 	}
-	if (ft_check_quotes(command, '\''))
-		return (ft_strtrim(command, "\'"));
-	if (ft_check_quotes(command, '\"'))
-		return (ft_strtrim(command, "\""));
-	return (command);
+	ft_newcmds(cmds, tmp);
+	ft_doublefree(tmp);
 }

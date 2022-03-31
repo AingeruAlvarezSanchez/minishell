@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/16 15:10:04 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/30 17:07:37 by ecorreia         ###   ########.fr       */
+/*   Created: 2022/03/29 14:06:39 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/03/29 16:53:05 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,78 +15,135 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-/**
- * @brief get route of path from *envp[]
- * @param Data routes saved in **Data.path with '/' at end of route
- */
-
-void	ft_get_path(t_data *Data)
-{
-	int		i;
-	char	*tmp;
-	char	*tmp2;
-
-	i = 0;
-	while (ft_strncmp(Data->env[i], "PATH=", 5))
-		i++;
-	tmp2 = ft_strtrim(Data->env[i], "PATH=");
-	Data->path = ft_split(tmp2, ':');
-	i = 0;
-	while (Data->path[i])
-	{
-		tmp = ft_strjoin(Data->path[i], "/");
-		free(Data->path[i]);
-		Data->path[i] = tmp;
-		i++;
-	}
-	free (tmp2);
-	free (tmp);
-}
-
-/* this function creates a copy of the envp variable with malloc */
-void	ft_cpyenv(t_data *Data, char **envp)
-{
-	int		i;
-
-	i = 0;
-	while (envp[i])
-		i++;
-	Data->env = (char **)malloc(sizeof(char *) * (i + 1));
-	i = -1;
-	while (envp[++i])
-		Data->env[i] = ft_strdup(envp[i]);
-	Data->env[i] = 0;
-}	
-
-void	ft_free_data(t_data *Data)
+/* This function checks wheter there are quotes on the prompt
+or not, and stores the result in cmds->tokens for later treatment */
+int	ft_check_quotes(t_cmds *cmds)
 {
 	int	i;
+	int	j;
 
 	i = -1;
-	while (Data->path[++i])
-		free(Data->path[i]);
-	free(Data->path);
+	while (cmds->tokens[++i])
+	{
+		j = -1;
+		while (cmds->tokens[i][++j])
+		{
+			if (cmds->tokens[i][j] == '\'' || cmds->tokens[i][j] == '"')
+			{
+				if (cmds->tokens[i][j] == '\'')
+					j = ft_quote_error(cmds, i, (j + 1), 0);
+				else
+					j = ft_quote_error(cmds, i, (j + 1), 1);
+				if (j == -1)
+					return (1);
+				if (cmds->tokens[i][j] == '\'')
+					ft_quotes(cmds, i, j, 0);
+				else
+					ft_quotes(cmds, i, j, 1);
+				i++;
+				break ;
+			}
+			else if (cmds->tokens[i][j] == '|' && (cmds->tokens[i][0] != '\''
+					&& cmds->tokens[i][0] != '"'))
+			{
+				if (ft_check_pipes(cmds, i, j))
+					return (1);
+				cmds->n_cmds++;
+				i++;
+				break ;
+			}
+		}
+	}
+	return (0);
+}
+
+/* This function detects if there is a dollar in any
+expandible part of the cmds->tokens array and adapts
+it to the dollar necessities */
+void	ft_check_metacharacter(t_cmds *cmds, t_data *data)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (cmds->tokens[i])
+	{
+		j = -1;
+		while (cmds->tokens[i][++j])
+		{
+			if (cmds->tokens[i][j] == '$' && cmds->tokens[i][0] != '\'')
+			{
+				ft_check_dollar(cmds, data, i, j);
+				i = -1;
+				break ;
+			}
+		}
+		i++;
+	}
+}
+
+void	ft_create_command(t_cmds *cmds, int iref, int cmd_i)
+{
+}
+
+/* Once every separator or metacharacter has been
+clasified, this function creates the definitive version
+of the commands separated by pipes*/
+void	ft_parser(t_cmds *cmds)
+{
+	int	i;
+	int	j;
+	int	cmd_i;
+
+	cmds->commands = (char **)malloc(sizeof(char *) * (cmds->n_cmds + 1));
+	cmd_i = 0;
 	i = -1;
-	ft_doublefree(Data->path);
+	while (cmds->tokens[++i])
+	{
+		j = -1;
+		while (cmds->tokens[i][++j])
+		{
+			if (cmds->tokens[i][0] == '|')
+			{
+				ft_create_command(cmds, i, cmd_i);
+				cmd_i++;
+			}
+		}
+	}
+	cmds->commands[cmd_i + 1] = 0;
+	i = -1;
+	while (cmds->commands[++i])
+		printf("command: %s\n", cmds->commands[i]);
+	ft_doublefree(cmds->tokens);
+}
+
+/* This is the function that creates all the workflow of the program, checking
+initial data, checking separators and metacharacters and sending the result
+to the execution functions */
+void	ft_commands(char *prompt, t_cmds *cmds, t_data *data)
+{
+	ft_initials(cmds, data, prompt);
+	if (ft_check_quotes(cmds))
+		return ;
+	ft_check_metacharacter(cmds, data);
+	ft_parser(cmds);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	char	*str;
-	t_cmds	Cmds;
-	t_data	Data;
+	char	*prompt;
+	t_cmds	cmds;
+	t_data	data;
 
-	Data.last_out = 0;
-	ft_cpyenv(&Data, envp);
-	ft_get_path(&Data);
-	ft_interactive(1);
-	ft_signals();
+	ft_cpyenv(&data, envp);
+	ft_get_path(&data);
 	while (1 && argc && argv)
 	{	
-		if((str = readline("ejemplo1 ₺ ")) == NULL)
-			ft_signal_exit();	
-		add_history(str);
-		ft_commands(str, &Cmds, &Data);
+		prompt = readline("ejemplo1 ₺ ");
+		add_history(prompt);
+		ft_commands(prompt, &cmds, &data);
+		waitpid(cmds.pid, NULL, WUNTRACED);
+		free(prompt);
 	}
 	return (0);
 }
