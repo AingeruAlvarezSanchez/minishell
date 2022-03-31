@@ -15,48 +15,77 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-/* need to search for a way to make this function smaller to norminette */
-
-/* This functions searchs for every separator and metacharacter needed for the correct
-functioning of the shell, it makes sure cmds->tokens is correctly separated for later
-treatment */
-void	ft_commands(char *prompt, t_cmds *cmds, __attribute__((unused)) t_data *data)
+/* This function checks wheter there are quotes on the prompt
+or not, and stores the result in cmds->tokens for later treatment */
+int	ft_check_quotes(t_cmds *cmds)
 {
 	int	i;
 	int	j;
-	
-	ft_initials(cmds, data, prompt);
+
 	i = -1;
 	while (cmds->tokens[++i])
 	{
 		j = -1;
 		while (cmds->tokens[i][++j])
 		{
-			if (cmds->tokens[i][j] == '\'')
+			if (cmds->tokens[i][j] == '\'' || cmds->tokens[i][j] == '"')
 			{
-				j = ft_quote_error(cmds, i, (j + 1), 0);
+				if (cmds->tokens[i][j] == '\'')
+					j = ft_quote_error(cmds, i, (j + 1), 0);
+				else
+					j = ft_quote_error(cmds, i, (j + 1), 1);
 				if (j == -1)
-					return ;
-				ft_quotes(cmds, data, i, j, 0);
+					return (1);
+				if (cmds->tokens[i][j] == '\'')
+					ft_quotes(cmds, i, j, 0);
+				else
+					ft_quotes(cmds, i, j, 1);
+				i++;
 				break ;
 			}
-			else if (cmds->tokens[i][j] == '"')
-			{
-				j = ft_quote_error(cmds, i, (j + 1), 1);
-				if (j == -1)
-					return ;
-				ft_quotes(cmds, data, i, j, 1);
-				//ft_dollar(cmds, data);
-				break ;
-			}
-			else if (cmds->tokens[i][j] == '|')
-				cmds->n_cmds++;
-			/*else if (cmds->tokens[i][j] == '$')
-			{
-				//ft_dollar(cmds, data);
-			}*/
 		}
 	}
+	return (0);
+}
+
+/* This function detects if there is a dollar in any
+expandible part of the cmds->tokens array and adapts
+it to the dollar necessities */
+void	ft_check_dollar(t_cmds *cmds, t_data *data)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (cmds->tokens[++i])
+	{
+		j = -1;
+		while (cmds->tokens[i][++j])
+		{
+			if (cmds->tokens[i][j] == '$' && cmds->tokens[i][0] != '\'')
+			{
+				ft_dollar(cmds, data, i, j);
+				i = -1;
+				break ;
+			}
+		}
+	}
+}
+
+/* This is the function that creates all the workflow of the program, checking
+initial data, checking separators and metacharacters and sending the result
+to the execution functions */
+void	ft_commands(char *prompt, t_cmds *cmds, t_data *data)
+{
+	int	i;
+	
+	ft_initials(cmds, data, prompt);
+	if (ft_check_quotes(cmds))
+		return ;
+	ft_check_dollar(cmds, data);
+	/*else if (cmds->tokens[i][j] == '|')
+		cmds->n_cmds++;
+	*/
 	i = -1;
 	while (cmds->tokens[++i])
 		printf("cmd: %s\n", cmds->tokens[i]);

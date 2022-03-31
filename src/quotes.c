@@ -30,7 +30,7 @@ int	ft_quote_error(t_cmds *cmds, int iref, int jref, int quote)
 
 /* This function is only called if after the last quote there are other characters,
 this exist for memory assign efficiency */
-char    **ft_full_final( t_cmds *cmds, char **tmp, int iref, int i, int quote)
+static char    **ft_full_final( t_cmds *cmds, char **tmp, int iref, int i, int quote)
 {
     int	j;
     int jref;
@@ -55,7 +55,7 @@ char    **ft_full_final( t_cmds *cmds, char **tmp, int iref, int i, int quote)
             jref++;
 	}
 	tmp[iref] = ft_substr(cmds->tokens[iref], 0, j);
-	tmp[iref + 1] = ft_substr(cmds->tokens[iref], (j + 1), (jref - (j + 1)));
+	tmp[iref + 1] = ft_substr(cmds->tokens[iref], j, (jref - (j - 1)));
 	tmp[iref + 2] = ft_substr(cmds->tokens[iref], (jref + 1), ft_strlen(cmds->tokens[iref]));
     tmp[iref + 3] = 0;
 	ft_doublefree(cmds->tokens);
@@ -64,7 +64,7 @@ char    **ft_full_final( t_cmds *cmds, char **tmp, int iref, int i, int quote)
 
 /* This function is only called if after the last quote there are no other characters,
 this exist for memory assign efficiency */
-char	**ft_empty_final(t_cmds *cmds, char **tmp, int iref, int i, int quote)
+static char	**ft_empty_final(t_cmds *cmds, char **tmp, int iref, int i, int quote)
 {
 	int	j;
 
@@ -82,18 +82,15 @@ char	**ft_empty_final(t_cmds *cmds, char **tmp, int iref, int i, int quote)
 			j++;
 	}
 	tmp[iref] = ft_substr(cmds->tokens[iref], 0, j);
-	tmp[iref + 1] = ft_substr(cmds->tokens[iref], (j + 1), ft_strlen(cmds->tokens[iref] + 1));
-	if (quote == 0)
-		tmp[iref + 1] = ft_strtrim(tmp[iref + 1], "\'");
-	else if (quote == 1)
-		tmp[iref + 1] = ft_strtrim(tmp[iref + 1], "\"");
+	tmp[iref + 1] = ft_substr(cmds->tokens[iref], j, ft_strlen(cmds->tokens[iref]));
 	tmp[iref + 2] = 0;
+	j = -1;
 	ft_doublefree(cmds->tokens);
 	return (tmp);
 }
 
 /* This function recreates the result of tmp on the cmds->tokens structure component */
-void	ft_newcmds(t_cmds *cmds, char **tmp)
+static void	ft_newcmds(t_cmds *cmds, char **tmp)
 {
     int i;
 
@@ -105,7 +102,7 @@ void	ft_newcmds(t_cmds *cmds, char **tmp)
 }
 
 /* This function manages both simple and multiple quotes */
-void	ft_quotes(t_cmds *cmds,__attribute__((unused)) t_data *data, int iref, int jref, int quote)
+void	ft_quotes(t_cmds *cmds, int iref, int jref, int quote)
 {
 	char	**tmp;
 	int		i;

@@ -5,7 +5,8 @@ RM		=	rm -rf
 FLAGS	=	-Wall -Wextra -Werror -g -g3 -fsanitize=address
 SRC		=	src/main.c		\
 			src/initials.c	\
-			src/quotes.c
+			src/quotes.c	\
+			src/dollars.c
 
 INCLUDE =	inc/minishell.h
 LIB		=	libft/libft.a
