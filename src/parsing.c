@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 04:27:25 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/01 04:57:11 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/04/01 21:12:58 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,4 @@ void	ft_parser(t_cmds *cmds)
 	i = -1;
 	while (cmds->commands[++i])
 		cmds->commands[i] = ft_strtrim(cmds->commands[i], " ");
-	ft_doublefree(cmds->tokens);
 }

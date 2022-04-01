@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:06:39 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/01 05:01:01 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/04/01 21:13:25 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,12 +106,14 @@ void	ft_commands(char *prompt, t_cmds *cmds, t_data *data)
 		while (cmds->tokens[++i])
 			tmp = ft_strjoin(tmp, cmds->tokens[i]);
 		cmds->commands[0] = ft_strdup(ft_strtrim(tmp, " "));
-		cmds->commands[1] = 0;
 		free(tmp);
+		cmds->commands[1] = 0;
 	}
+	ft_doublefree(cmds->tokens);
 	i = -1;
 	while (cmds->commands[++i])
 		printf("command[%d]: %s\n", i, cmds->commands[i]);
+	ft_doublefree(cmds->commands);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -122,9 +124,13 @@ int	main(int argc, char **argv, char **envp)
 
 	ft_cpyenv(&data, envp);
 	ft_get_path(&data);
+	ft_interactive(1);
+	ft_signals();
 	while (1 && argc && argv)
 	{	
 		prompt = readline("ejemplo1 ₺ ");
+		if (!prompt)
+			ft_signal_exit(&cmds);
 		add_history(prompt);
 		ft_commands(prompt, &cmds, &data);
 		waitpid(cmds.pid, NULL, WUNTRACED);
