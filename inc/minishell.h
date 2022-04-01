@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:08:14 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/29 16:07:10 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/04/01 05:00:39 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,10 @@ void	ft_initials(t_cmds *cmds, t_data *data, char *prompt);
 int		ft_quote_error(t_cmds *cmds, int iref, int jref, int quote);
 void	ft_quotes(t_cmds *cmds, int iref, int jref, int quote);
 
-/* dollar managing function */
+/* parsing functions */
 
 void	ft_check_dollar(t_cmds *cmds, t_data *data, int iref, int jref);
-
-/* pipes parsing function */
-
-int	ft_check_pipes(t_cmds *cmds, int iref, int jref);
+int		ft_check_pipes(t_cmds *cmds, int iref, int jref);
+void	ft_parser(t_cmds *cmds);
 
 #endif

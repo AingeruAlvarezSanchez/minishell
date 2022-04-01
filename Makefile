@@ -7,7 +7,8 @@ SRC		=	src/main.c		\
 			src/initials.c	\
 			src/quotes.c	\
 			src/dollars.c	\
-			src/pipes.c
+			src/pipes.c		\
+			src/parsing.c
 
 INCLUDE =	inc/minishell.h
 LIB		=	libft/libft.a
