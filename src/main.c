@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:06:39 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/04 04:19:00 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/04/04 08:50:03 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-/* This function checks wheter there are quotes on the prompt
-or not, and stores the result in cmds->tokens for later treatment */
+/**
+ * @brief This function checks wheter there are quotes on the prompt
+ * or not, and stores the result in cmds->tokens for later treatment
+ */
 int	ft_quotes_pipes(t_cmds *cmds)
 {
 	int	i;
@@ -57,9 +59,11 @@ int	ft_quotes_pipes(t_cmds *cmds)
 	return (0);
 }
 
-/* This function detects if there is a dollar in any
-expandible part of the cmds->tokens array and adapts
-it to the dollar necessities */
+/**
+ * @brief This function detects if there is a dollar in any
+ * expandible part of the cmds->tokens array and adapts
+ * it to the dollar necessities
+ */
 void	ft_check_metacharacter(t_cmds *cmds, t_data *data)
 {
 	int	i;
@@ -82,15 +86,44 @@ void	ft_check_metacharacter(t_cmds *cmds, t_data *data)
 	}
 }
 
-/* This is the function that creates all the workflow of the program, checking
-initial data, checking separators and metacharacters and sending the result
-to the execution functions */
+void	ft_init_execute(__attribute__((unused)) t_cmds *cmds,__attribute__((unused)) t_data *data)
+{
+	printf("Is child builtin\n");
+}
+
+/**
+ * @brief This function checks if the commands are parent or 
+ * child builtins and sends them to their corresponding handlers
+ */
+void	ft_check_builtins(t_cmds *cmds, t_data *data)
+{
+	int	i;
+
+	i = -1;
+	while (++i < cmds->n_cmds)
+	{
+		cmds->proccess = ft_split(cmds->commands[i], ' ');
+		printf("cmd: %s\n", cmds->proccess[0]);
+		if (!ft_check_parent(cmds))
+			ft_init_execute(cmds, data);
+		else
+			ft_parent_builtin(cmds, data, i);
+		ft_doublefree(cmds->proccess);
+	}
+	ft_doublefree(cmds->commands);
+}
+
+/**
+ * @brief This is the function that creates all the workflow of the program, checking
+ * initial data, checking separators and metacharacters and sending the result 
+ * to the execution functions
+ * 
+ * @param prompt the variable containing the prompt string
+ */
 void	ft_commands(char *prompt, t_cmds *cmds, t_data *data)
 {
-	int i;
-
 	if (!prompt)
-		ft_signal_exit(cmds);
+		ft_signal_exit();
 	if (!prompt[0])
 		return ;
 	ft_initials(cmds, data, prompt);
@@ -102,10 +135,7 @@ void	ft_commands(char *prompt, t_cmds *cmds, t_data *data)
 	else if (cmds->n_cmds == 1)
 		ft_mono_command(cmds);
 	ft_doublefree(cmds->tokens);
-	i = -1;
-	while (cmds->commands[++i])
-		printf("command[%d]: %s\n", i, cmds->commands[i]);
-	ft_doublefree(cmds->commands);
+	ft_check_builtins(cmds, data);
 }
 
 int	main(int argc, char **argv, char **envp)

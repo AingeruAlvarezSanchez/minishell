@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 20:22:52 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/04/04 03:35:12 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/04/04 05:00:49 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_interactive(int inter)
 	return interactive;
 }
 
-void	ft_signal_exit(__attribute__((unused)) t_cmds *cmds)
+void	ft_signal_exit()
 {
 	write(1, "exit\n", 5);
 	exit(0);

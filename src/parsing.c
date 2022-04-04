@@ -6,12 +6,11 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 04:27:25 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/04 04:25:33 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/04/04 07:21:03 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-#include <stdio.h>
 
 /**
  * @brief This function creates a new double array containing
@@ -19,7 +18,8 @@
  * 
  * @param iref reference to the i axis on cmds->tokens
  * at moment of finding an readable pipe character
- * @param cmd_i 
+ * @param cmd_i the command number on wich the create 
+ * command is called
  */
 void	ft_create_command(t_cmds *cmds, int iref, int cmd_i)
 {
@@ -81,6 +81,11 @@ void	ft_parser(t_cmds *cmds)
 		cmds->commands[i] = ft_strtrim(cmds->commands[i], " ");
 }
 
+/**
+ * @brief When there is only one command, this function
+ * creates a 2 spaces double array and allocates the 
+ * prompt and a NULL spot
+ */
 void	ft_mono_command(t_cmds *cmds)
 {
 	int		i;

@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:08:14 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/04 04:10:03 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/04/04 08:48:39 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,9 @@ typedef struct s_cmds
 	pid_t	pid;
 	char	**tokens;
 	char	**commands;
+	char	**proccess;
 	int		n_cmds;
+	int		**pipefd;
 }	t_cmds;
 
 /* initial funcions, dedicated to set the 
@@ -53,7 +55,16 @@ void	ft_mono_command(t_cmds *cmds);
 
 void	ft_signals_inter();
 void	ft_signals();
-void	ft_signal_exit(t_cmds *cmds);
+void	ft_signal_exit();
 int		ft_interactive(int inter);
+
+/* builtins and builtin checkers */
+
+void	ft_parent_builtin(t_cmds *cmds, t_data *data, int cmd_n);
+int		ft_check_parent(t_cmds *cmds);
+void	ft_exit(t_cmds *cmds, t_data *data, int cmd_n);
+void	ft_cd(t_cmds *cmds, t_data *data, int cmd_n);
+void	ft_check_export(t_cmds *cmds, t_data *data, int cmd_n);
+void	ft_check_unset(t_cmds *cmds, t_data *data, int cmd_n);
 
 #endif
