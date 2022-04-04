@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:08:14 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/04 08:48:39 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/04/04 20:38:16 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ void	ft_initials(t_cmds *cmds, t_data *data, char *prompt);
 
 /* quote managing functions */
 
-int		ft_quote_error(t_cmds *cmds, int iref, int jref, int quote);
-void	ft_quotes(t_cmds *cmds, int iref, int jref, int quote);
+int		ft_quote_error(t_cmds *cmds, int iref, int jref, char quote);
+void	ft_quotes(t_cmds *cmds, int iref, int jref, char quote);
 
 /* parsing functions */
 

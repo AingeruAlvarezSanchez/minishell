@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 20:22:52 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/04/04 05:00:49 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/04/04 19:24:37 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,12 @@
 #include <sys/time.h>
 #include <readline/readline.h>
 
-//getter - setter
+/**
+ * @brief get or set the value of the variable interactive
+ * 
+ * @param inter if 0 or 1 changes the value. if -1 just get the value.
+ * @return the value of interactive
+ */
 int	ft_interactive(int inter)
 {
 	static int interactive;
