@@ -6,11 +6,12 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 04:27:25 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/04 07:21:03 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/04/04 15:19:06 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include <stdio.h>
 
 /**
  * @brief This function creates a new double array containing
@@ -25,11 +26,17 @@ void	ft_create_command(t_cmds *cmds, int iref, int cmd_i)
 {
 	int		i;
 	char	*tmp;
+	char	*tmp2;
 
 	i = -1;
 	tmp = ft_strdup(" ");
 	while (++i < iref)
-		tmp = ft_strjoin(tmp, cmds->tokens[i]);
+	{
+		tmp2 = ft_strjoin(tmp, cmds->tokens[i]);
+		free(tmp);
+		tmp = ft_strdup(tmp2);
+		free(tmp2);
+	}
 	i = -1;
 	while (tmp[++i])
 	{
@@ -43,7 +50,12 @@ void	ft_create_command(t_cmds *cmds, int iref, int cmd_i)
 	free(tmp);
 	tmp = ft_strdup(" ");
 	while (cmds->tokens[++iref])
-		tmp = ft_strjoin(tmp, cmds->tokens[iref]);
+	{
+		tmp2 = ft_strjoin(tmp, cmds->tokens[iref]);
+		free(tmp);
+		tmp = ft_strdup(tmp2);
+		free(tmp2);
+	}
 	cmds->commands[cmd_i + 1] = ft_strdup(tmp);
 	cmds->commands[cmd_i + 2] = 0;
 	free(tmp);
@@ -62,7 +74,7 @@ void	ft_parser(t_cmds *cmds)
 
 	cmd_i = 0;
 	i = -1;
-	cmds->commands = (char **)malloc(sizeof(char *) * (cmds->n_cmds + 1));
+	cmds->commands = (char **)malloc(sizeof(char *) * ((cmds->n_cmds) + 1));
 	while (cmds->tokens[++i])
 	{
 		j = -1;
@@ -90,13 +102,21 @@ void	ft_mono_command(t_cmds *cmds)
 {
 	int		i;
 	char	*tmp;
+	char	*tmp2;
 
 	cmds->commands = (char **)malloc(sizeof(char *) * 2);
 	i = -1;
 	tmp = ft_strdup(" ");
 	while (cmds->tokens[++i])
-		tmp = ft_strjoin(tmp, cmds->tokens[i]);
-	cmds->commands[0] = ft_strdup(ft_strtrim(tmp, " "));
+	{
+		tmp2 = ft_strjoin(tmp, cmds->tokens[i]);
+		free(tmp);
+		tmp = ft_strdup(tmp2);
+		free(tmp2);
+	}
+	tmp2 = ft_strtrim(tmp, " ");
+	cmds->commands[0] = ft_strdup(tmp2);
 	free(tmp);
+	free(tmp2);
 	cmds->commands[1] = 0;
 }
