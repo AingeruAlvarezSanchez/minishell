@@ -6,11 +6,12 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 04:27:25 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/01 21:12:58 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/04/04 04:25:33 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include <stdio.h>
 
 /**
  * @brief This function creates a new double array containing
@@ -44,6 +45,7 @@ void	ft_create_command(t_cmds *cmds, int iref, int cmd_i)
 	while (cmds->tokens[++iref])
 		tmp = ft_strjoin(tmp, cmds->tokens[iref]);
 	cmds->commands[cmd_i + 1] = ft_strdup(tmp);
+	cmds->commands[cmd_i + 2] = 0;
 	free(tmp);
 }
 
@@ -60,6 +62,7 @@ void	ft_parser(t_cmds *cmds)
 
 	cmd_i = 0;
 	i = -1;
+	cmds->commands = (char **)malloc(sizeof(char *) * (cmds->n_cmds + 1));
 	while (cmds->tokens[++i])
 	{
 		j = -1;
@@ -76,4 +79,19 @@ void	ft_parser(t_cmds *cmds)
 	i = -1;
 	while (cmds->commands[++i])
 		cmds->commands[i] = ft_strtrim(cmds->commands[i], " ");
+}
+
+void	ft_mono_command(t_cmds *cmds)
+{
+	int		i;
+	char	*tmp;
+
+	cmds->commands = (char **)malloc(sizeof(char *) * 2);
+	i = -1;
+	tmp = ft_strdup(" ");
+	while (cmds->tokens[++i])
+		tmp = ft_strjoin(tmp, cmds->tokens[i]);
+	cmds->commands[0] = ft_strdup(ft_strtrim(tmp, " "));
+	free(tmp);
+	cmds->commands[1] = 0;
 }

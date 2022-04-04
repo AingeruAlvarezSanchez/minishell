@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:06:39 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/01 21:13:25 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/04/04 04:19:00 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,28 +87,20 @@ initial data, checking separators and metacharacters and sending the result
 to the execution functions */
 void	ft_commands(char *prompt, t_cmds *cmds, t_data *data)
 {
-	char	*tmp;
 	int i;
 
+	if (!prompt)
+		ft_signal_exit(cmds);
 	if (!prompt[0])
 		return ;
 	ft_initials(cmds, data, prompt);
 	if (ft_quotes_pipes(cmds))
 		return ;
 	ft_check_metacharacter(cmds, data);
-	cmds->commands = (char **)malloc(sizeof(char *) * (cmds->n_cmds + 1));
 	if (cmds->n_cmds > 1)
 		ft_parser(cmds);
-	else
-	{
-		i = -1;
-		tmp = ft_strdup(" ");
-		while (cmds->tokens[++i])
-			tmp = ft_strjoin(tmp, cmds->tokens[i]);
-		cmds->commands[0] = ft_strdup(ft_strtrim(tmp, " "));
-		free(tmp);
-		cmds->commands[1] = 0;
-	}
+	else if (cmds->n_cmds == 1)
+		ft_mono_command(cmds);
 	ft_doublefree(cmds->tokens);
 	i = -1;
 	while (cmds->commands[++i])
@@ -129,8 +121,6 @@ int	main(int argc, char **argv, char **envp)
 	while (1 && argc && argv)
 	{	
 		prompt = readline("ejemplo1 ₺ ");
-		if (!prompt)
-			ft_signal_exit(&cmds);
 		add_history(prompt);
 		ft_commands(prompt, &cmds, &data);
 		waitpid(cmds.pid, NULL, WUNTRACED);

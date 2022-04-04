@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:08:14 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/01 21:03:29 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/04/04 04:10:03 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	ft_quotes(t_cmds *cmds, int iref, int jref, int quote);
 void	ft_check_dollar(t_cmds *cmds, t_data *data, int iref, int jref);
 int		ft_check_pipes(t_cmds *cmds, int iref, int jref);
 void	ft_parser(t_cmds *cmds);
+void	ft_mono_command(t_cmds *cmds);
 
 /* signals */
 
