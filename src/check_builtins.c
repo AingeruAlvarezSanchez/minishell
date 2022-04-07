@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_builtins.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 08:37:11 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/04 08:53:41 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/04/07 17:53:42 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,11 @@ int	ft_check_parent(t_cmds *cmds)
 		return (1);
 	else if (!ft_strncmp(cmds->proccess[0], "cd", 2) && !cmds->proccess[0][2])
 		return (1);
-	else if (!ft_strncmp(cmds->proccess[0], "export", 6) && !cmds->proccess[0][6])
+	else if (!ft_strncmp(cmds->proccess[0], "export", 6)
+		&& !cmds->proccess[0][6])
 		return (1);
-	else if (!ft_strncmp(cmds->proccess[0], "unset", 5) && !cmds->proccess[0][5])
+	else if (!ft_strncmp(cmds->proccess[0], "unset", 5)
+		&& !cmds->proccess[0][5])
 		return (1);
 	return (0);
 }
@@ -47,8 +49,10 @@ void	ft_parent_builtin(t_cmds *cmds, t_data *data, int cmd_n)
 		ft_exit(cmds, data, cmd_n);
 	else if (!ft_strncmp(cmds->proccess[0], "cd", 2) && !cmds->proccess[0][2])
 		ft_cd(cmds, data, cmd_n);
-	else if (!ft_strncmp(cmds->proccess[0], "export", 6) && !cmds->proccess[0][6])
-        ft_check_export(cmds, data, cmd_n);
-	else if (!ft_strncmp(cmds->proccess[0], "unset", 5) && !cmds->proccess[0][5])
-        ft_check_unset(cmds, data, cmd_n);
+	else if (!ft_strncmp(cmds->proccess[0], "export", 6)
+		&& !cmds->proccess[0][6])
+		ft_check_export(cmds, data, cmd_n);
+	else if (!ft_strncmp(cmds->proccess[0], "unset", 5)
+		&& !cmds->proccess[0][5])
+		ft_check_unset(cmds, data, cmd_n);
 }

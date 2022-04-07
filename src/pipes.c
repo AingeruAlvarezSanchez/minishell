@@ -21,8 +21,8 @@ static int	ft_pipes_error(t_cmds *cmds, int iref, int jref)
 	{
 		if (jref == 0)
 		{
-				printf("Syntax error near unexpected token '|'\n");
-				return (1);
+			printf("Syntax error near unexpected token '|'\n");
+			return (1);
 		}
 		else
 		{
@@ -36,9 +36,9 @@ static int	ft_pipes_error(t_cmds *cmds, int iref, int jref)
 	return (0);
 }
 
-/* This function checks for pipes that are not inside quotes and can be interpreted
-and creates a new cmds->tokens array separating the pipe in a single line for better
-treatment after the initial checks */
+/* This function checks for pipes that are not inside quotes and can be 
+interpreted and creates a new cmds->tokens array separating the pipe in 
+a single line for better treatment after the initial checks */
 int	ft_check_pipes(t_cmds *cmds, int iref, int jref)
 {
 	char	**tmp;
@@ -68,3 +68,4 @@ int	ft_check_pipes(t_cmds *cmds, int iref, int jref)
 	free(tmp2);
 	return (0);
 }
+

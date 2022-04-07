@@ -12,7 +12,8 @@
 
 #include "../inc/minishell.h"
 
-/* This function is used to create a copy of the environment in the data structure */
+/* This function is used to create a copy of the environment in the 
+data structure */
 void	ft_cpyenv(t_data *data, char **envp)
 {
 	int		i;
@@ -27,7 +28,8 @@ void	ft_cpyenv(t_data *data, char **envp)
 	data->env[i] = 0;
 }
 
- /* This function is used to create a copy of the PATH variable onto the data structure */
+/* This function is used to create a copy of the PATH variable onto the 
+data structure */
 void	ft_get_path(t_data *data)
 {
 	int		i;
@@ -51,7 +53,8 @@ void	ft_get_path(t_data *data)
 	free (tmp);
 }
 
-/* A function to make sure every non already initialized structure component is indeed initalized */
+/* A function to make sure every non already initialized structure component
+ is indeed initalized */
 void	ft_initials(t_cmds *cmds, t_data *data, char *prompt)
 {
 	cmds->tokens = (char **)malloc(sizeof(char *) * 2);
@@ -59,7 +62,7 @@ void	ft_initials(t_cmds *cmds, t_data *data, char *prompt)
 	cmds->tokens[1] = 0;
 	data->last_out = 0;
 	cmds->n_cmds = 1;
-	/*cmds->pipefd = (int **)malloc(sizeof(int *) * 2);
+	cmds->pipefd = (int **)malloc(sizeof(int *) * 2);
 	cmds->pipefd[0] = (int *)malloc(sizeof(int) * 2);
-	cmds->pipefd[1] = (int *)malloc(sizeof(int) * 2);*/
+	cmds->pipefd[1] = (int *)malloc(sizeof(int) * 2);
 }

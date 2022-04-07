@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 20:22:52 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/04/04 19:24:37 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/04/07 17:28:45 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@
  */
 int	ft_interactive(int inter)
 {
-	static int interactive;
+	static int	interactive;
 
-	if(inter == 0 || inter == 1) 
+	if (inter == 0 || inter == 1)
 		interactive = inter;
-	return interactive;
+	return (interactive);
 }
 
-void	ft_signal_exit()
+void	ft_signal_exit(void)
 {
 	write(1, "exit\n", 5);
 	exit(0);
@@ -47,7 +47,7 @@ void	interact_signal(int signal)
 	}
 	else if (signal == SIGINT)
 	{
-		write(1,"\n", 1);
+		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
@@ -65,21 +65,22 @@ void	signal_handler(int signal)
 		if (signal == SIGQUIT)
 		{
 			ft_interactive(1);
-			write(1,"Quit\n", 5);
+			write(1, "Quit\n", 5);
 			rl_on_new_line();
 		}
 		if (signal == SIGINT)
 		{
 			ft_interactive(1);
-			write(1,"\n", 1);
+			write(1, "\n", 1);
 			rl_on_new_line();
 		}
 	}
-	else printf("%d signal", signal);
+	else
+		printf("%d signal", signal);
 }
 
-void ft_signals()
+void	ft_signals(void)
 {
-    signal(SIGINT, signal_handler);
+	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, signal_handler);
 }

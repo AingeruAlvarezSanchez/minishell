@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:08:14 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/04 20:38:16 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/04/07 17:23:54 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "../libft/libft.h"
+# include <stdio.h>
 
 typedef struct s_data
 {
@@ -53,9 +54,9 @@ void	ft_mono_command(t_cmds *cmds);
 
 /* signals */
 
-void	ft_signals_inter();
-void	ft_signals();
-void	ft_signal_exit();
+void	ft_signals_inter(void);
+void	ft_signals(void);
+void	ft_signal_exit(void);
 int		ft_interactive(int inter);
 
 /* builtins and builtin checkers */

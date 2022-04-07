@@ -2,7 +2,7 @@ SHELL = /bin/sh
 NAME = minishell
 CC		=	gcc
 RM		=	rm -rf
-FLAGS	=	-Wall -Wextra -Werror -g  -g3 -fsanitize=address
+FLAGS	=	-Wall -Wextra -Werror -g  -g3 #-fsanitize=address
 SRC		=	src/main.c				\
 			src/initials.c			\
 			src/quotes.c			\
@@ -19,11 +19,16 @@ SRC		=	src/main.c				\
 INCLUDE =	inc/minishell.h
 LIB		=	libft/libft.a
 
+PWD = ~/.brew/opt/readline
+
+READLINE =	-lreadline -L /Users/$(USER)/.brew/opt/readline/lib\
+			-I /Users/$(USER)/.brew/opt/readline/include\
+
 $(NAME): all
 
 all: $(SRC)
 	@$(MAKE) -C libft/
-	@ $(CC) $(FLAGS) $(SRC) $(LIB) -lreadline -o $(NAME)
+	@ $(CC) $(FLAGS) $(SRC) $(LIB) $(READLINE) -o $(NAME)
 	@ echo "compilation OK"
 
 clean:

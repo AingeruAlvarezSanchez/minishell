@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 06:40:11 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/04 07:48:12 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/04/07 17:24:19 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	ft_exit(t_cmds *cmds, t_data *data, int cmd_n)
 			return ;
 		write(1, "exit\n", 5);
 		ft_doublefree(cmds->commands);
-        ft_doublefree(cmds->proccess);
+		ft_doublefree(cmds->proccess);
 		exit(0);
 	}
 	else
