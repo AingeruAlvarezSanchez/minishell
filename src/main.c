@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:06:39 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/07 18:05:05 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/04/10 20:13:45 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	ft_manage_special_char(int i, int j, t_cmds *cmds)
 	}
 	else if (cmds->tokens[i][j] == '>')
 	{
-		printf("redirecsioname papa!");
+		printf("redirections");
 		return (1);
 	}
 	return (0);
@@ -155,9 +155,7 @@ void	ft_check_builtins(t_cmds *cmds, t_data *data)
 void	ft_commands(char *prompt, t_cmds *cmds, t_data *data)
 {
 	if (!prompt)
-		ft_signal_exit();
-	if (!prompt[0])
-		return ;
+		ft_signal_exit(data);
 	ft_initials(cmds, data, prompt);
 	if (ft_has_special_char(cmds))
 		return ;
@@ -167,7 +165,8 @@ void	ft_commands(char *prompt, t_cmds *cmds, t_data *data)
 	else if (cmds->n_cmds == 1)
 		ft_mono_command(cmds);
 	ft_doublefree(cmds->tokens);
-	ft_check_builtins(cmds, data);
+	ft_doublefree(cmds->commands);
+	//ft_check_builtins(cmds, data);
 }
 
 int	main(int argc, char **argv, char **envp)

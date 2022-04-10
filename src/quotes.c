@@ -42,9 +42,10 @@ static char	**ft_full_final( t_cmds *cmds, char **tmp, int iref, int i, char quo
 	jref = j + 1;
 	while (tmp[iref][jref] != quote)
 		jref++;
+	free(tmp[iref]);
 	tmp[iref] = ft_substr(cmds->tokens[iref], 0, j);
 	tmp[iref + 1] = ft_substr(cmds->tokens[iref], j, (jref - (j - 1)));
-	tmp[iref + 2] = ft_substr(cmds->tokens[iref], (jref + 1), ft_strlen(cmds->tokens[iref]));
+	tmp[iref + 2] = ft_substr(cmds->tokens[iref], (jref + 1), (ft_strlen(cmds->tokens[iref]) - (jref + 1)));
 	tmp[iref + 3] = 0;
 	ft_doublefree(cmds->tokens);
 	return (tmp);
@@ -62,7 +63,7 @@ static char	**ft_empty_final(t_cmds *cmds, char **tmp, int iref, int i, char quo
 	while (tmp[iref][j] != quote)
 		j++;
 	tmp[iref] = ft_substr(cmds->tokens[iref], 0, j);
-	tmp[iref + 1] = ft_substr(cmds->tokens[iref], j, ft_strlen(cmds->tokens[iref]));
+	tmp[iref + 1] = ft_substr(cmds->tokens[iref], j, (ft_strlen(cmds->tokens[iref]) - j));
 	tmp[iref + 2] = 0;
 	j = -1;
 	ft_doublefree(cmds->tokens);

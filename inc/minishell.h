@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:08:14 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/07 17:23:54 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/04/10 19:24:41 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	ft_mono_command(t_cmds *cmds);
 
 void	ft_signals_inter(void);
 void	ft_signals(void);
-void	ft_signal_exit(void);
+void	ft_signal_exit(t_data *data);
 int		ft_interactive(int inter);
 
 /* builtins and builtin checkers */

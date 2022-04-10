@@ -41,16 +41,15 @@ void	ft_get_path(t_data *data)
 		i++;
 	tmp2 = ft_strtrim(data->env[i], "PATH=");
 	data->path = ft_split(tmp2, ':');
-	i = 0;
-	while (data->path[i])
+	free(tmp2);
+	i = -1;
+	while (data->path[++i])
 	{
 		tmp = ft_strjoin(data->path[i], "/");
 		free(data->path[i]);
-		data->path[i] = tmp;
-		i++;
+		data->path[i] = ft_strdup(tmp);
+		free(tmp);
 	}
-	free (tmp2);
-	free (tmp);
 }
 
 /* A function to make sure every non already initialized structure component
@@ -62,7 +61,7 @@ void	ft_initials(t_cmds *cmds, t_data *data, char *prompt)
 	cmds->tokens[1] = 0;
 	data->last_out = 0;
 	cmds->n_cmds = 1;
-	cmds->pipefd = (int **)malloc(sizeof(int *) * 2);
-	cmds->pipefd[0] = (int *)malloc(sizeof(int) * 2);
-	cmds->pipefd[1] = (int *)malloc(sizeof(int) * 2);
+	//cmds->pipefd = (int **)malloc(sizeof(int *) * 2);
+	//cmds->pipefd[0] = (int *)malloc(sizeof(int) * 2);
+	//cmds->pipefd[1] = (int *)malloc(sizeof(int) * 2);
 }
