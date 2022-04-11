@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:06:39 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/10 20:13:45 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/04/11 01:58:37 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,8 +165,7 @@ void	ft_commands(char *prompt, t_cmds *cmds, t_data *data)
 	else if (cmds->n_cmds == 1)
 		ft_mono_command(cmds);
 	ft_doublefree(cmds->tokens);
-	ft_doublefree(cmds->commands);
-	//ft_check_builtins(cmds, data);
+	ft_check_builtins(cmds, data);
 }
 
 int	main(int argc, char **argv, char **envp)

@@ -56,7 +56,7 @@ int	ft_check_pipes(t_cmds *cmds, int iref, int jref)
 	free(tmp2);
 	tmp2 = ft_substr(cmds->tokens[iref], (jref - 1), 2);
 	tmp[i + 1] = ft_strtrim(tmp2, " ");
-	tmp[i + 2] = ft_substr(cmds->tokens[iref], (jref + 1), ft_strlen(cmds->tokens[iref]));
+	tmp[i + 2] = ft_substr(cmds->tokens[iref], (jref + 1), (ft_strlen(cmds->tokens[iref]) - (jref + 1)));
 	tmp[i + 3] = 0;
 	ft_doublefree(cmds->tokens);
 	cmds->tokens = (char **)malloc(sizeof(char *) * (ft_doublestrlen(tmp) + 1));

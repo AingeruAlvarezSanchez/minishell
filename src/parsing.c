@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 04:27:25 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/07 18:00:21 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/04/11 01:20:32 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	ft_create_command(t_cmds *cmds, int iref, int cmd_i)
 	{
 		if (tmp[i] == '|')
 		{
-			tmp = ft_substr(tmp, (i + 1), ft_strlen(tmp));
+			tmp = ft_substr(tmp, (i + 1), (ft_strlen(tmp) - (i + 1)));
 			i = -1;
 		}
 	}

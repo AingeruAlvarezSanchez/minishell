@@ -27,14 +27,10 @@ static char	*ft_tofind(t_cmds *cmds, int iref, int jref)
 		jref++;
 		j++;
 	}
-	to_find = (char *)malloc(sizeof(char *) * (j + 1));
+	to_find = (char *)malloc(sizeof(char) * j);
 	j = 0;
 	while (reference < jref)
-	{
-		to_find[j] = cmds->tokens[iref][reference];
-		j++;
-		reference++;
-	}
+		to_find[j++] = cmds->tokens[iref][reference++];
 	to_find[j] = 0;
 	tmp = ft_strtrim(to_find, "\"");
 	free(to_find);
