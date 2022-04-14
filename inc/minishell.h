@@ -15,6 +15,8 @@
 
 # include "../libft/libft.h"
 # include <stdio.h>
+# define WRITE 1
+# define READ 0
 
 typedef struct s_data
 {
@@ -30,7 +32,7 @@ typedef struct s_cmds
 	char	**commands;
 	char	**proccess;
 	int		n_cmds;
-	int		pipefd1[2];
+	int		**pipefd;
 }	t_cmds;
 
 /* initial funcions, dedicated to set the 

@@ -96,8 +96,6 @@ void	ft_check_metacharacter(t_cmds *cmds, t_data *data)
 		i++;
 	}
 }
-# define WRITE 1
-# define READ 0
 
 void	ft_execute(t_data *data, t_cmds *cmds)
 {
@@ -105,11 +103,9 @@ void	ft_execute(t_data *data, t_cmds *cmds)
 	int		i;
 
 	i = -1;
-
 	while (data->path[++i])
 	{
 		tmp = ft_strjoin(data->path[i], cmds->proccess[0]);
-		//printf("tpm: %s\n", tmp);
 		if (access(tmp, X_OK) == 0)
 			execve(tmp, cmds->proccess, data->env);
 		free(tmp);
@@ -121,36 +117,27 @@ void	ft_execute(t_data *data, t_cmds *cmds)
 //solo para probar
 void	ft_init_execute(t_cmds *cmds, int pos)
 {
-	if (!cmds->proccess[0])
-		exit(0);
-	
 	if (cmds->n_cmds != 1)
 	{
-		if(pos == 0)// si es el primero
+		if (pos == 0) // si es el primero
 		{
-			printf("a)comando %d de %d = %s\n", pos + 1, cmds->n_cmds, cmds->proccess[0]);
-			dup2(cmds->pipefd1[WRITE], STDOUT_FILENO); // antiguo, nuevo a clonar
-			close(cmds->pipefd1[WRITE]);
+			//printf("a)comando %d de %d = %s\n", pos + 1, cmds->n_cmds, cmds->proccess[0]);
+			dup2(cmds->pipefd[0][WRITE], STDOUT_FILENO); // antiguo, nuevo a clonar
+			//close(cmds->pipefd[0][WRITE]);
+			//close(cmds->pipefd[0][READ]);
 			//close(cmds->pipefd[1][READ]);
 			//close(cmds->pipefd[1][WRITE]);
-			close(cmds->pipefd1[READ]);
 		}
-		else if(pos != 0 && pos != cmds->n_cmds - 1) // si no es primero ni ultimo
+		else if (pos != 0 && pos != cmds->n_cmds - 1) // si no es primero ni ultimo
 		{
 			printf("b)comando %d de %d\n", pos + 1, cmds->n_cmds);
-			close(cmds->pipefd1[0]);
-			close(cmds->pipefd1[1]);
 		//	close(cmds->pipefd[1][0]);
 		//	close(cmds->pipefd[1][1]);
 		}
-		else if(pos == cmds->n_cmds -1)// si es el ultimo
-		{	
-			//char x[111];
-			printf("c)comando %d de %d = %s\n", pos + 1, cmds->n_cmds, cmds->proccess[0]);
-			//read(cmds->pipefd1[READ], &x, 111);
-			dup2(cmds->pipefd1[READ], STDIN_FILENO);
-			close(cmds->pipefd1[READ]);
-			close(cmds->pipefd1[WRITE]);
+		else if (pos == cmds->n_cmds - 1) // si es el ultimo
+		{
+			//printf("c)comando %d de %d = %s\n", pos + 1, cmds->n_cmds, cmds->proccess[0]);
+			dup2(cmds->pipefd[0][READ], STDIN_FILENO);
 			//close(cmds->pipefd[1][READ]);
 			//close(cmds->pipefd[1][WRITE]);
 		}
@@ -159,12 +146,13 @@ void	ft_init_execute(t_cmds *cmds, int pos)
 
 void	ft_create_forks(t_cmds *cmds, t_data *data, int pos)
 {
-	pipe(cmds->pipefd1);
 	cmds->pid = fork();
 	ft_interactive(0);
 	if (cmds->pid == 0)
 	{
 		ft_init_execute(cmds, pos);
+		close(cmds->pipefd[0][READ]);
+		close(cmds->pipefd[0][WRITE]);
 		ft_execute(data, cmds);
 	}
 }
@@ -179,20 +167,19 @@ void	ft_check_builtins(t_cmds *cmds, t_data *data)
 	int	status;
 
 	status = 0;
-		
 	i = -1;
+	pipe(cmds->pipefd[0]);
 	while (++i < cmds->n_cmds)
 	{
 		cmds->proccess = ft_split(cmds->commands[i], ' ');
-		//printf("cmd:%s\n", cmds->proccess[0]);
 		if (!ft_check_parent(cmds))
 			ft_create_forks(cmds, data, i);
 		else
 			ft_parent_builtin(cmds, data, i);
 		ft_doublefree(cmds->proccess);
 	}
-	close(cmds->pipefd1[0]);
-	close(cmds->pipefd1[1]);
+	close(cmds->pipefd[0][READ]);
+	close(cmds->pipefd[0][WRITE]);
 	waitpid(cmds->pid, &status, 0);
 	data->last_out = WEXITSTATUS(status);
 	ft_doublefree(cmds->commands);
@@ -207,6 +194,8 @@ void	ft_check_builtins(t_cmds *cmds, t_data *data)
  */
 void	ft_commands(char *prompt, t_cmds *cmds, t_data *data)
 {
+	if (!prompt)
+		ft_signal_exit(data);
 	if (!prompt[0])
 		return ;
 	ft_initials(cmds, data, prompt);

@@ -88,7 +88,8 @@ static void	ft_dollar_no_value(t_cmds *cmds, int iref, int jref)
 	tmp = ft_substr(cmds->tokens[iref], 0, jref);
 	while (cmds->tokens[iref][jref] && cmds->tokens[iref][jref] != ' ')
 		iref++;
-	cmds->tokens[iref] = ft_substr(cmds->tokens[iref], jref, ft_strlen(cmds->tokens[iref]));
+	cmds->tokens[iref] = ft_substr(cmds->tokens[iref],
+			jref, ft_strlen(cmds->tokens[iref]));
 	tmp = ft_strjoin(tmp, cmds->tokens[iref]);
 	tmp = ft_strtrim(tmp, "\"");
 	free(cmds->tokens[iref]);
@@ -113,7 +114,8 @@ void	ft_check_dollar(t_cmds *cmds, t_data *data, int iref, int jref)
 	{
 		if (!ft_strncmp(data->env[i], to_find, ft_strlen(to_find)))
 		{
-			to_find = ft_substr(data->env[i], ft_strlen(to_find), (ft_strlen(data->env[i]) - ft_strlen(to_find)));
+			to_find = ft_substr(data->env[i], ft_strlen(to_find),
+					(ft_strlen(data->env[i]) - ft_strlen(to_find)));
 			ft_dollar_value(cmds, to_find, iref, jref);
 			free(to_find);
 			return ;
