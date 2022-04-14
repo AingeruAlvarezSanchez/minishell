@@ -30,7 +30,7 @@ typedef struct s_cmds
 	char	**commands;
 	char	**proccess;
 	int		n_cmds;
-	int		**pipefd;
+	int		pipefd1[2];
 }	t_cmds;
 
 /* initial funcions, dedicated to set the 

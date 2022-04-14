@@ -61,7 +61,7 @@ void	ft_initials(t_cmds *cmds, t_data *data, char *prompt)
 	cmds->tokens[1] = 0;
 	data->last_out = 0;
 	cmds->n_cmds = 1;
-	cmds->pipefd = (int **)malloc(sizeof(int *) * 2);
-	cmds->pipefd[0] = (int *)malloc(sizeof(int) * 2);
-	cmds->pipefd[1] = (int *)malloc(sizeof(int) * 2);
+	//cmds->pipefd = (int **)malloc(sizeof(int *) * 2);
+	//cmds->pipefd[0] = (int *)malloc(sizeof(int) * 2);
+	//cmds->pipefd[1] = (int *)malloc(sizeof(int) * 2);
 }
