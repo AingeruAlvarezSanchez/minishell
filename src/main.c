@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:06:39 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/11 01:58:37 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/04/14 17:48:02 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,27 +114,26 @@ void	ft_execute(t_data *data, t_cmds *cmds)
 	exit(0);
 }
 
-//solo para probar
 void	ft_init_execute(t_cmds *cmds, int pos)
 {
 	if (cmds->n_cmds != 1)
 	{
-		if (pos == 0) // si es el primero
+		if (pos == 0)
 		{
 			//printf("a)comando %d de %d = %s\n", pos + 1, cmds->n_cmds, cmds->proccess[0]);
-			dup2(cmds->pipefd[0][WRITE], STDOUT_FILENO); // antiguo, nuevo a clonar
-			//close(cmds->pipefd[0][WRITE]);
-			//close(cmds->pipefd[0][READ]);
+			dup2(cmds->pipefd[1][WRITE], STDOUT_FILENO);
 			//close(cmds->pipefd[1][READ]);
 			//close(cmds->pipefd[1][WRITE]);
 		}
-		else if (pos != 0 && pos != cmds->n_cmds - 1) // si no es primero ni ultimo
+		else if (pos != 0 && pos != cmds->n_cmds - 1)
 		{
-			printf("b)comando %d de %d\n", pos + 1, cmds->n_cmds);
+			//printf("b)comando %d de %d = %s\n", pos + 1, cmds->n_cmds, cmds->proccess[0]);
+			dup2(cmds->pipefd[1][WRITE], STDOUT_FILENO);
+			dup2(cmds->pipefd[0][READ], STDIN_FILENO);
 		//	close(cmds->pipefd[1][0]);
 		//	close(cmds->pipefd[1][1]);
 		}
-		else if (pos == cmds->n_cmds - 1) // si es el ultimo
+		else if (pos == cmds->n_cmds - 1)
 		{
 			//printf("c)comando %d de %d = %s\n", pos + 1, cmds->n_cmds, cmds->proccess[0]);
 			dup2(cmds->pipefd[0][READ], STDIN_FILENO);
@@ -144,6 +143,12 @@ void	ft_init_execute(t_cmds *cmds, int pos)
 	}
 }
 
+/**
+ * @brief This function creates all the necesary forks
+ * in order to execute every command
+ * 
+ * @param pos command number
+ */
 void	ft_create_forks(t_cmds *cmds, t_data *data, int pos)
 {
 	cmds->pid = fork();
@@ -153,6 +158,8 @@ void	ft_create_forks(t_cmds *cmds, t_data *data, int pos)
 		ft_init_execute(cmds, pos);
 		close(cmds->pipefd[0][READ]);
 		close(cmds->pipefd[0][WRITE]);
+		close(cmds->pipefd[1][READ]);
+		close(cmds->pipefd[1][WRITE]);
 		ft_execute(data, cmds);
 	}
 }
@@ -169,18 +176,31 @@ void	ft_check_builtins(t_cmds *cmds, t_data *data)
 	status = 0;
 	i = -1;
 	pipe(cmds->pipefd[0]);
+	pipe(cmds->pipefd[1]);
 	while (++i < cmds->n_cmds)
 	{
 		cmds->proccess = ft_split(cmds->commands[i], ' ');
 		if (!ft_check_parent(cmds))
+		{
 			ft_create_forks(cmds, data, i);
+			if (cmds->n_cmds > 2)
+			{
+				close(cmds->pipefd[0][0]);
+				close(cmds->pipefd[0][1]);
+				waitpid(cmds->pid, &status, 0);
+				cmds->pipefd[0][0] = cmds->pipefd[1][0];
+				cmds->pipefd[0][1] = cmds->pipefd[1][1];
+				pipe(cmds->pipefd[1]);
+			}
+		}
 		else
 			ft_parent_builtin(cmds, data, i);
 		ft_doublefree(cmds->proccess);
 	}
 	close(cmds->pipefd[0][READ]);
 	close(cmds->pipefd[0][WRITE]);
-	waitpid(cmds->pid, &status, 0);
+	close(cmds->pipefd[1][READ]);
+	close(cmds->pipefd[1][WRITE]);
 	data->last_out = WEXITSTATUS(status);
 	ft_doublefree(cmds->commands);
 }
