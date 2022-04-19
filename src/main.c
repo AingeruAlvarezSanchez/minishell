@@ -247,6 +247,9 @@ int	main(int argc, char **argv, char **envp)
 		ft_commands(prompt, &cmds, &data);
 		waitpid(cmds.pid, NULL, WUNTRACED);
 		free(prompt);
+		free(cmds.pipefd[0]);
+		free(cmds.pipefd[1]);
+		free(cmds.pipefd);
 	}
 	return (0);
 }

@@ -17,26 +17,33 @@ static char	*ft_tofind(t_cmds *cmds, int iref, int jref)
 {
 	char	*to_find;
 	char	*tmp;
-	int		j;
+	char	*tmp2;
+	//int		j;
 	int		reference;
 
-	j = 0;
+	//j = 0;
 	reference = jref + 1;
 	while (cmds->tokens[iref][jref] && cmds->tokens[iref][jref] != ' ')
 	{
 		jref++;
-		j++;
+		//j++;
 	}
-	to_find = (char *)malloc(sizeof(char) * j);
-	j = 0;
-	while (reference < jref)
-		to_find[j++] = cmds->tokens[iref][reference++];
-	to_find[j] = 0;
+	//to_find = (char *)malloc(sizeof(char) * j);
+	//j = 0;
+
+	to_find = ft_substr(cmds->tokens[iref],reference, jref -1);
+
+	//while (reference < jref)
+	//	to_find[j++] = cmds->tokens[iref][reference++];
+	//to_find[j] = 0;
+
 	tmp = ft_strtrim(to_find, "\"");
 	free(to_find);
-	to_find = ft_strjoin(tmp, "=");
+
+	tmp2 = ft_strjoin(tmp, "=");
 	free(tmp);
-	return (to_find);
+	
+	return (tmp2);
 }
 
 /* This function is only called if the value inside the dollar is actually in
@@ -84,7 +91,6 @@ to null, exactly like in bash */
 static void	ft_dollar_no_value(t_cmds *cmds, int iref, int jref)
 {
 	char	*tmp;
-
 	tmp = ft_substr(cmds->tokens[iref], 0, jref);
 	while (cmds->tokens[iref][jref] && cmds->tokens[iref][jref] != ' ')
 		iref++;
@@ -102,25 +108,30 @@ caracter, that means expansion for environment variable or last status */
 void	ft_check_dollar(t_cmds *cmds, t_data *data, int iref, int jref)
 {
 	char	*to_find;
+	char	*tmp;
 	int		i;
 
 	if (!cmds->tokens[iref][jref + 1])
 		return ;
 	//if (cmds->tokens[iref][jref + 1] == '?')
 		//ft_last_status();
-	to_find = ft_tofind(cmds, iref, jref);
+	tmp = ft_tofind(cmds, iref, jref);
 	i = -1;
 	while (data->env[++i])
 	{
-		if (!ft_strncmp(data->env[i], to_find, ft_strlen(to_find)))
+		if (!ft_strncmp(data->env[i], tmp, ft_strlen(tmp)))
 		{
 			to_find = ft_substr(data->env[i], ft_strlen(to_find),
 					(ft_strlen(data->env[i]) - ft_strlen(to_find)));
-			ft_dollar_value(cmds, to_find, iref, jref);
-			free(to_find);
-			return ;
+			if(to_find)
+			{
+				ft_dollar_value(cmds, to_find, iref, jref);
+				free(tmp);
+				free(to_find);
+				return ;
+			}
 		}
 	}
-	free(to_find);
+	free(tmp);
 	ft_dollar_no_value(cmds, iref, jref);
 }
