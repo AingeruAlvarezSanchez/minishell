@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:06:39 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/19 18:53:12 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/04/19 19:13:40 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,7 +202,7 @@ void	ft_check_builtins(t_cmds *cmds, t_data *data)
 	close(cmds->pipefd[1][READ]);
 	close(cmds->pipefd[1][WRITE]);
 	data->last_out = WEXITSTATUS(status);
-	//ft_doublefree(cmds->commands);
+	ft_doublefree(cmds->commands);
 }
 
 /**
