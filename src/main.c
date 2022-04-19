@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:06:39 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/14 17:48:02 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/04/19 18:53:12 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,7 +202,7 @@ void	ft_check_builtins(t_cmds *cmds, t_data *data)
 	close(cmds->pipefd[1][READ]);
 	close(cmds->pipefd[1][WRITE]);
 	data->last_out = WEXITSTATUS(status);
-	ft_doublefree(cmds->commands);
+	//ft_doublefree(cmds->commands);
 }
 
 /**
@@ -216,9 +216,12 @@ void	ft_commands(char *prompt, t_cmds *cmds, t_data *data)
 {
 	if (!prompt)
 		ft_signal_exit(data);
-	if (!prompt[0])
-		return ;
 	ft_initials(cmds, data, prompt);
+	if (!prompt[0])
+	{
+		ft_doublefree(cmds->tokens);
+		return ;
+	}
 	if (ft_has_special_char(cmds))
 		return ;
 	ft_check_metacharacter(cmds, data);
