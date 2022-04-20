@@ -64,8 +64,12 @@ static char	**ft_nofinal(t_cmds *cmds, char **tmp, int iref, int i, char q)
 	while (tmp[iref][j] != q)
 		j++;
 	tmp[iref] = ft_substr(cmds->tokens[iref], 0, j);
-	tmp[iref + 1] = ft_substr(cmds->tokens[iref], j,
-			(ft_strlen(cmds->tokens[iref]) - j));
+	if (q == '"')
+		tmp[iref + 1] = ft_substr(cmds->tokens[iref], (j + 1),
+				(ft_strlen(cmds->tokens[iref]) - 2));
+	else
+		tmp[iref + 1] = ft_substr(cmds->tokens[iref], j,
+				(ft_strlen(cmds->tokens[iref]) - j));
 	tmp[iref + 2] = 0;
 	j = -1;
 	ft_doublefree(cmds->tokens);
