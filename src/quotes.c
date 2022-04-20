@@ -31,8 +31,9 @@ int	ft_quote_error(t_cmds *cmds, int iref, int jref, char q)
 other characters, this exist for memory assign efficiency */
 static char	**ft_full_final( t_cmds *cmds, char **tmp, int iref, int i, char q)
 {
-	int	j;
-	int	jref;
+	int		j;
+	int		jref;
+	char	*tmp2;
 
 	while (cmds->tokens[++i])
 		tmp[i] = ft_strdup(cmds->tokens[i]);
@@ -44,7 +45,8 @@ static char	**ft_full_final( t_cmds *cmds, char **tmp, int iref, int i, char q)
 		jref++;
 	free(tmp[iref]);
 	tmp[iref] = ft_substr(cmds->tokens[iref], 0, j);
-	tmp[iref + 1] = ft_substr(cmds->tokens[iref], j, (jref - (j - 1)));
+	tmp2 = ft_substr(cmds->tokens[iref], (j + 1), (jref - (j - 1)));
+	tmp[iref + 1] = ft_strtrim(tmp2, "\"");
 	tmp[iref + 2] = ft_substr(cmds->tokens[iref], (jref + 1),
 			(ft_strlen(cmds->tokens[iref]) - (jref + 1)));
 	tmp[iref + 3] = 0;
@@ -56,7 +58,8 @@ static char	**ft_full_final( t_cmds *cmds, char **tmp, int iref, int i, char q)
 there are no other characters, this exist for memory assign efficiency */
 static char	**ft_nofinal(t_cmds *cmds, char **tmp, int iref, int i, char q)
 {
-	int	j;
+	int		j;
+	char	*tmp2;
 
 	while (cmds->tokens[++i])
 		tmp[i] = ft_strdup(cmds->tokens[i]);
@@ -64,14 +67,12 @@ static char	**ft_nofinal(t_cmds *cmds, char **tmp, int iref, int i, char q)
 	while (tmp[iref][j] != q)
 		j++;
 	tmp[iref] = ft_substr(cmds->tokens[iref], 0, j);
-	if (q == '"')
-		tmp[iref + 1] = ft_substr(cmds->tokens[iref], (j + 1),
-				(ft_strlen(cmds->tokens[iref]) - 2));
-	else
-		tmp[iref + 1] = ft_substr(cmds->tokens[iref], j,
+	tmp2 = ft_substr(cmds->tokens[iref], j,
 				(ft_strlen(cmds->tokens[iref]) - j));
+	tmp[iref + 1] = ft_strtrim(tmp2, "\"");
 	tmp[iref + 2] = 0;
 	j = -1;
+	free(tmp2);
 	ft_doublefree(cmds->tokens);
 	return (tmp);
 }
