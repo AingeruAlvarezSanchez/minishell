@@ -45,12 +45,13 @@ static char	**ft_full_final( t_cmds *cmds, char **tmp, int iref, int i, char q)
 		jref++;
 	free(tmp[iref]);
 	tmp[iref] = ft_substr(cmds->tokens[iref], 0, j);
-	tmp2 = ft_substr(cmds->tokens[iref], (j + 1), (jref - (j - 1)));
+	tmp2 = ft_substr(cmds->tokens[iref], j, (jref - (j - 1)));
 	tmp[iref + 1] = ft_strtrim(tmp2, "\"");
 	tmp[iref + 2] = ft_substr(cmds->tokens[iref], (jref + 1),
 			(ft_strlen(cmds->tokens[iref]) - (jref + 1)));
 	tmp[iref + 3] = 0;
 	ft_doublefree(cmds->tokens);
+	free(tmp2);
 	return (tmp);
 }
 

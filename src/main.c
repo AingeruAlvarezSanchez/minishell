@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:06:39 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/19 19:13:40 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/04/21 22:16:49 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,26 +120,18 @@ void	ft_init_execute(t_cmds *cmds, int pos)
 	{
 		if (pos == 0)
 		{
-			//printf("a)comando %d de %d = %s\n", pos + 1, cmds->n_cmds, cmds->proccess[0]);
-			dup2(cmds->pipefd[1][WRITE], STDOUT_FILENO);
-			//close(cmds->pipefd[1][READ]);
-			//close(cmds->pipefd[1][WRITE]);
+			if (cmds->n_cmds > 2)
+				dup2(cmds->pipefd[1][WRITE], STDOUT_FILENO);
+			else
+				dup2(cmds->pipefd[0][WRITE], STDOUT_FILENO);
 		}
 		else if (pos != 0 && pos != cmds->n_cmds - 1)
 		{
-			//printf("b)comando %d de %d = %s\n", pos + 1, cmds->n_cmds, cmds->proccess[0]);
 			dup2(cmds->pipefd[1][WRITE], STDOUT_FILENO);
 			dup2(cmds->pipefd[0][READ], STDIN_FILENO);
-		//	close(cmds->pipefd[1][0]);
-		//	close(cmds->pipefd[1][1]);
 		}
 		else if (pos == cmds->n_cmds - 1)
-		{
-			//printf("c)comando %d de %d = %s\n", pos + 1, cmds->n_cmds, cmds->proccess[0]);
 			dup2(cmds->pipefd[0][READ], STDIN_FILENO);
-			//close(cmds->pipefd[1][READ]);
-			//close(cmds->pipefd[1][WRITE]);
-		}
 	}
 }
 
@@ -174,9 +166,9 @@ void	ft_check_builtins(t_cmds *cmds, t_data *data)
 	int	status;
 
 	status = 0;
-	i = -1;
 	pipe(cmds->pipefd[0]);
 	pipe(cmds->pipefd[1]);
+	i = -1;
 	while (++i < cmds->n_cmds)
 	{
 		cmds->proccess = ft_split(cmds->commands[i], ' ');
@@ -227,7 +219,7 @@ void	ft_commands(char *prompt, t_cmds *cmds, t_data *data)
 	ft_check_metacharacter(cmds, data);
 	if (cmds->n_cmds > 1)
 		ft_parser(cmds);
-	else if (cmds->n_cmds == 1)
+	if (cmds->n_cmds == 1)
 		ft_mono_command(cmds);
 	ft_doublefree(cmds->tokens);
 	ft_check_builtins(cmds, data);
