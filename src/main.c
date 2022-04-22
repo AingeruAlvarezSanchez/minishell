@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:06:39 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/22 13:40:19 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/04/22 19:19:48 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,23 @@ int	ft_is_special_char(char c)
 	return (0);
 }
 
-int	ft_manage_special_char(int i, int j, t_cmds *cmds)
+int	ft_manage_special_char(int y, int x, t_cmds *cmds)
 {
-	if (cmds->tokens[i][j] == '\'' || cmds->tokens[i][j] == '"')
+	if (cmds->tokens[y][x] == '\'' || cmds->tokens[y][x] == '"')
 	{
-		j = ft_quote_error(cmds, i, (j + 1), cmds->tokens[i][j]);
-		if (j == -1)
+		x = ft_quote_error(cmds, y, (x + 1), cmds->tokens[y][x]);
+		if (x == -1)
 			return (1);
-		ft_quotes(cmds, i, j, cmds->tokens[i][j]);
+		ft_quotes(cmds, y, x, cmds->tokens[y][x]);
 	}
-	else if (cmds->tokens[i][j] == '|' && (cmds->tokens[i][0] != '\''
-		&& cmds->tokens[i][0] != '"'))
+	else if (cmds->tokens[y][x] == '|' && (cmds->tokens[y][0] != '\''
+		&& cmds->tokens[y][0] != '"'))
 	{
-		if (ft_check_pipes(cmds, i, j))
+		if (ft_check_pipes(cmds, y, x))
 			return (1);
 		cmds->n_cmds++;
 	}
-	else if (cmds->tokens[i][j] == '>')
+	else if (cmds->tokens[y][x] == '>')
 	{
 		printf("redirections");
 		return (1);
@@ -49,20 +49,20 @@ int	ft_manage_special_char(int i, int j, t_cmds *cmds)
 
 int	ft_has_special_char(t_cmds *cmds)
 {
-	int	i;
-	int	j;
+	int	y;
+	int	x;
 
-	i = -1;
-	while (cmds->tokens[++i])
+	y = -1;
+	while (cmds->tokens[++y])
 	{
-		j = -1;
-		while (cmds->tokens[i][++j])
+		x = -1;
+		while (cmds->tokens[y][++x])
 		{
-			if (ft_is_special_char(cmds->tokens[i][j]))
+			if (ft_is_special_char(cmds->tokens[y][x]))
 			{
-				if (ft_manage_special_char(i, j, cmds))
+				if (ft_manage_special_char(y, x, cmds))
 					return (1);
-				i++;
+				y++;
 				break ;
 			}
 		}
@@ -77,23 +77,23 @@ int	ft_has_special_char(t_cmds *cmds)
  */
 void	ft_check_metacharacter(t_cmds *cmds, t_data *data)
 {
-	int	i;
-	int	j;
+	int	y;
+	int	x;
 
-	i = 0;
-	while (cmds->tokens[i])
+	y = 0;
+	while (cmds->tokens[y])
 	{
-		j = -1;
-		while (cmds->tokens[i][++j])
+		x = -1;
+		while (cmds->tokens[y][++x])
 		{
-			if (cmds->tokens[i][j] == '$' && cmds->tokens[i][0] != '\'')
+			if (cmds->tokens[y][x] == '$' && cmds->tokens[y][0] != '\'')
 			{
-				ft_check_dollar(cmds, data, i, j);
-				i = -1;
+				ft_check_dollar(cmds, data, y, x);
+				y = -1;
 				break ;
 			}
 		}
-		i++;
+		y++;
 	}
 }
 
@@ -197,6 +197,20 @@ void	ft_check_builtins(t_cmds *cmds, t_data *data)
 	ft_doublefree(cmds->commands);
 }
 
+
+int ft_all_space(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if(str[i] != ' ')
+			return (0);
+		i++;
+	}
+	return (1);
+}
 /**
  * @brief This is the function that creates all the workflow of the program, 
  * checking initial data, checking separators and metacharacters and sending 
@@ -209,7 +223,7 @@ void	ft_commands(char *prompt, t_cmds *cmds, t_data *data)
 	if (!prompt)
 		ft_signal_exit(data);
 	ft_initials(cmds, data, prompt);
-	if (!prompt[0])
+	if (!prompt[0] || ft_all_space(prompt))
 	{
 		ft_doublefree(cmds->tokens);
 		return ;

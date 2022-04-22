@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 04:27:25 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/22 17:21:26 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/04/22 19:23:18 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
  * @param cmd_i the command number on wich the create 
  * command is called
  */
-void	ft_create_command(t_cmds *cmds,__attribute__((unused)) int iref,__attribute__((unused)) int cmd_i)
+void	ft_create_command(t_cmds *cmds, int iref, int cmd_i)
 {
 	int		i;
 	char	*tmp;

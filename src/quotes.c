@@ -29,12 +29,14 @@ int	ft_quote_error(t_cmds *cmds, int iref, int jref, char q)
 
 /* This function is only called if after the last q there are 
 other characters, this exist for memory assign efficiency */
-static char	**ft_full_final( t_cmds *cmds, char **tmp, int iref, int i, char q)
+static char	**ft_full_final( t_cmds *cmds, char **tmp, int iref, char q)
 {
 	int		j;
 	int		jref;
 	char	*tmp2;
-
+	int		i;
+	
+	i = -1;
 	while (cmds->tokens[++i])
 		tmp[i] = ft_strdup(cmds->tokens[i]);
 	j = 0;
@@ -57,11 +59,13 @@ static char	**ft_full_final( t_cmds *cmds, char **tmp, int iref, int i, char q)
 
 /* This function is only called if after the last q 
 there are no other characters, this exist for memory assign efficiency */
-static char	**ft_nofinal(t_cmds *cmds, char **tmp, int iref, int i, char q)
+static char	**ft_nofinal(t_cmds *cmds, char **tmp, int iref, char q)
 {
 	int		j;
 	char	*tmp2;
-
+	int		i;
+	
+	i = -1;
 	while (cmds->tokens[++i])
 		tmp[i] = ft_strdup(cmds->tokens[i]);
 	j = 0;
@@ -92,23 +96,27 @@ static void	ft_newcmds(t_cmds *cmds, char **tmp)
 }
 
 /* This function manages both simple and multiple quotes */
-void	ft_quotes(t_cmds *cmds, int iref, int jref, char q)
+/**
+ * @brief This function manages both simple and multiple quotes
+ * @param y position in axis Y of array tokens[][]
+ * @param x position in axis X of array tokens[][]
+ * @param q char with quote " or '
+ */
+void	ft_quotes(t_cmds *cmds, int y, int x, char q)
 {
 	char	**tmp;
-	int		i;
 
-	i = -1;
-	if (cmds->tokens[iref][jref + 1])
+	if (cmds->tokens[y][x + 1])
 	{
 		tmp = (char **)malloc(sizeof(char *)
 				* (ft_doublestrlen(cmds->tokens) + 3));
-		tmp = ft_full_final(cmds, tmp, iref, i, q);
+		tmp = ft_full_final(cmds, tmp, y, q);
 	}
 	else
 	{
 		tmp = (char **)malloc(sizeof(char *)
 				* (ft_doublestrlen(cmds->tokens) + 2));
-		tmp = ft_nofinal(cmds, tmp, iref, i, q);
+		tmp = ft_nofinal(cmds, tmp, y, q);
 	}
 	ft_newcmds(cmds, tmp);
 	ft_doublefree(tmp);
