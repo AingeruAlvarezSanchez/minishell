@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 04:27:25 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/21 22:13:50 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/04/22 16:40:49 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@
  * @param cmd_i the command number on wich the create 
  * command is called
  */
-void	ft_create_command(t_cmds *cmds, int iref, int cmd_i)
+void	ft_create_command(t_cmds *cmds,__attribute__((unused)) int iref,__attribute__((unused)) int cmd_i)
 {
 	int		i;
 	char	*tmp;
 	char	*tmp2;
-	
+
 	i = 0;
 	tmp = ft_strjoin(" ", cmds->tokens[i]);
 	while (++i < iref)
@@ -37,20 +37,32 @@ void	ft_create_command(t_cmds *cmds, int iref, int cmd_i)
 		tmp = ft_strdup(tmp2);
 		free(tmp2);
 	}
-	i = -1;
-	cmds->commands[cmd_i] = ft_strdup(tmp);//leak
+	cmds->commands[cmd_i] = ft_strtrim(tmp, " ");
 	free(tmp);
-	tmp2 = ft_strjoin(" ", cmds->tokens[++iref]);
-	while (cmds->tokens[++iref])
+	tmp = ft_strjoin(" ", cmds->tokens[++i]);
+	while (cmds->tokens[++i])
 	{
-		tmp = ft_strjoin(tmp2, cmds->tokens[iref]);//leak
-		free(tmp2);
-		tmp2 = ft_strdup(tmp);
+		tmp2 = ft_strjoin(tmp, cmds->tokens[i]);
 		free(tmp);
+		tmp = ft_strdup(tmp2);
+		free(tmp2);
 	}
-	cmds->commands[cmd_i + 1] = ft_strdup(tmp2);//leak cambiar por trim " " directamente?
+	cmds->commands[cmd_i + 1] = ft_strtrim(tmp, " ");
 	cmds->commands[cmd_i + 2] = 0;
-	free(tmp2);
+}
+
+void	ft_revsubstr(t_cmds *cmds, int iref, char c)
+{
+	int		i;
+	char	*tmp;
+
+	i = ft_strlen(cmds->commands[iref]);
+	while (cmds->commands[iref][i] != c)
+		i--;
+	tmp = ft_substr(cmds->commands[iref], (i + 1), (ft_strlen(cmds->commands[iref]) - (i + 1)));
+	free(cmds->commands[iref]);
+	cmds->commands[iref] = ft_strtrim(tmp, " ");
+	free(tmp);
 }
 
 /**
@@ -76,10 +88,22 @@ void	ft_parser(t_cmds *cmds)
 				ft_create_command(cmds, i, cmd_i++);
 		}
 	}
-	cmds->commands[cmd_i + 1] = 0;
-	i = -1;
-	while (cmds->commands[++i])
-		cmds->commands[i] = ft_strtrim(cmds->commands[i], " ");
+	if (cmds->n_cmds > 2)
+	{
+		i = -1;
+		while (cmds->commands[++i])
+		{
+			j = -1;
+			while (cmds->commands[i][++j])
+			{
+				if (cmds->commands[i][j] == '|')
+				{
+					ft_revsubstr(cmds, i, '|');
+					break ;
+				}
+			}
+		}
+	}
 }
 
 /**
