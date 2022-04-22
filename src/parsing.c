@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 04:27:25 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/22 16:40:49 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/04/22 17:21:26 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,13 @@ void	ft_create_command(t_cmds *cmds,__attribute__((unused)) int iref,__attribute
 	cmds->commands[cmd_i + 2] = 0;
 }
 
+/**
+ * @brief This fucntion makes a reverse count untill finding
+ * the first pipe, then cuts the result in commands
+ * 
+ * @param iref i reference on the external pointer
+ * @param c character to find, always a pipe
+ */
 void	ft_revsubstr(t_cmds *cmds, int iref, char c)
 {
 	int		i;
