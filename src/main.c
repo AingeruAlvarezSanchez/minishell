@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:06:39 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/26 19:01:55 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/04/26 20:10:10 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	ft_check_metacharacter(t_cmds *cmds, t_data *data)
 			if (cmds->tokens[y][x] == '$' && cmds->tokens[y][0] != '\'')
 			{
 				ft_check_dollar(cmds, data, y, x);
-				y = -1;
+				y = 0;
 				break ;
 			}
 		}
@@ -245,6 +245,8 @@ void	ft_commands(char *prompt, t_cmds *cmds, t_data *data)
 	if (cmds->n_cmds == 1)
 		ft_mono_command(cmds);
 	ft_doublefree(cmds->tokens);
+	if (!cmds->commands[0][0])
+		return ;
 	ft_check_builtins(cmds, data);
 }
 

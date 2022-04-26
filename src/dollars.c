@@ -73,19 +73,10 @@ static void	ft_dollar_value(t_cmds *cmds, char *to_find, int iref, int jref)
 /* This function is only called if the value inside the dollar
 is not inside the environment varible, it changes the dollar value
 to null, exactly like in bash */
-static void	ft_dollar_no_value(t_cmds *cmds, int iref, int jref)
+static void	ft_dollar_no_value(t_cmds *cmds, int iref)
 {
-	char	*tmp;
-	tmp = ft_substr(cmds->tokens[iref], 0, jref);
-	while (cmds->tokens[iref][jref] && cmds->tokens[iref][jref] != ' ')
-		iref++;
-	cmds->tokens[iref] = ft_substr(cmds->tokens[iref],
-			jref, ft_strlen(cmds->tokens[iref]));
-	tmp = ft_strjoin(tmp, cmds->tokens[iref]);
-	tmp = ft_strtrim(tmp, "\"");
 	free(cmds->tokens[iref]);
-	cmds->tokens[iref] = ft_strdup(tmp);
-	free(tmp);
+	cmds->tokens[iref] = ft_calloc(1, 1);
 }
 
 /* This function is the entrance to checking all the possibilites for the $
@@ -118,5 +109,5 @@ void	ft_check_dollar(t_cmds *cmds, t_data *data, int iref, int jref)
 		}
 	}
 	free(tmp);
-	ft_dollar_no_value(cmds, iref, jref);
+	ft_dollar_no_value(cmds, iref);
 }
