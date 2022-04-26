@@ -48,7 +48,7 @@ static char	**ft_full_final( t_cmds *cmds, char **tmp, int iref, char q)
 	free(tmp[iref]);
 	tmp[iref] = ft_substr(cmds->tokens[iref], 0, j);
 	tmp2 = ft_substr(cmds->tokens[iref], j, (jref - (j - 1)));
-	tmp[iref + 1] = ft_strtrim(tmp2, "\"");
+	tmp[iref + 1] = ft_strdup(tmp2);
 	tmp[iref + 2] = ft_substr(cmds->tokens[iref], (jref + 1),
 			(ft_strlen(cmds->tokens[iref]) - (jref + 1)));
 	tmp[iref + 3] = 0;
@@ -74,7 +74,7 @@ static char	**ft_nofinal(t_cmds *cmds, char **tmp, int iref, char q)
 	tmp[iref] = ft_substr(cmds->tokens[iref], 0, j);
 	tmp2 = ft_substr(cmds->tokens[iref], j,
 				(ft_strlen(cmds->tokens[iref]) - j));
-	tmp[iref + 1] = ft_strtrim(tmp2, "\"");
+	tmp[iref + 1] = ft_strdup(tmp2);
 	tmp[iref + 2] = 0;
 	j = -1;
 	free(tmp2);
