@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 06:40:11 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/10 19:26:02 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/04/27 14:47:26 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,14 @@ static int	ft_isstrdigit(char *str)
 	return (0);
 }
 
+void	ft_free(t_cmds *cmds, t_data *data)
+{
+	ft_doublefree(cmds->commands);
+	ft_doublefree(cmds->proccess);
+	ft_doublefree(data->env);
+	ft_doublefree(data->path);
+}
+
 static void	ft_checkargs(t_cmds *cmds, t_data *data, int cmd_n)
 {
 	if (!cmds->proccess[2])
@@ -40,10 +48,7 @@ static void	ft_checkargs(t_cmds *cmds, t_data *data, int cmd_n)
 					return ;
 				else
 				{
-					ft_doublefree(cmds->commands);
-					ft_doublefree(cmds->proccess);
-					ft_doublefree(data->env);
-					ft_doublefree(data->path);
+					ft_free(cmds, data);
 					exit(0);
 				}
 			}
@@ -65,10 +70,7 @@ void	ft_exit(t_cmds *cmds, t_data *data, int cmd_n)
 		if (cmd_n != 0)
 			return ;
 		write(1, "exit\n", 5);
-		ft_doublefree(cmds->commands);
-		ft_doublefree(cmds->proccess);
-		ft_doublefree(data->env);
-		ft_doublefree(data->path);
+		ft_free(cmds, data);
 		exit(0);
 	}
 	else

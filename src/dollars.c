@@ -23,7 +23,7 @@ static char	*ft_tofind(t_cmds *cmds, int iref, int jref)
 	reference = jref + 1;
 	while (cmds->tokens[iref][jref] && cmds->tokens[iref][jref] != ' ')
 		jref++;
-	to_find = ft_substr(cmds->tokens[iref],reference, jref -1);
+	to_find = ft_substr(cmds->tokens[iref], reference, jref -1);
 	tmp = ft_strtrim(to_find, "\"");
 	free(to_find);
 	tmp2 = ft_strjoin(tmp, "=");
@@ -99,7 +99,7 @@ void	ft_check_dollar(t_cmds *cmds, t_data *data, int iref, int jref)
 		{
 			to_find = ft_substr(data->env[i], ft_strlen(tmp),
 					(ft_strlen(data->env[i]) - ft_strlen(tmp)));
-			if(to_find)
+			if (to_find)
 			{
 				ft_dollar_value(cmds, to_find, iref, jref);
 				free(tmp);

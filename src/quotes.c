@@ -35,7 +35,7 @@ static char	**ft_full_final( t_cmds *cmds, char **tmp, int iref, char q)
 	int		jref;
 	char	*tmp2;
 	int		i;
-	
+
 	i = -1;
 	while (cmds->tokens[++i])
 		tmp[i] = ft_strdup(cmds->tokens[i]);
@@ -64,7 +64,7 @@ static char	**ft_nofinal(t_cmds *cmds, char **tmp, int iref, char q)
 	int		j;
 	char	*tmp2;
 	int		i;
-	
+
 	i = -1;
 	while (cmds->tokens[++i])
 		tmp[i] = ft_strdup(cmds->tokens[i]);
@@ -73,7 +73,7 @@ static char	**ft_nofinal(t_cmds *cmds, char **tmp, int iref, char q)
 		j++;
 	tmp[iref] = ft_substr(cmds->tokens[iref], 0, j);
 	tmp2 = ft_substr(cmds->tokens[iref], j,
-				(ft_strlen(cmds->tokens[iref]) - j));
+			(ft_strlen(cmds->tokens[iref]) - j));
 	tmp[iref + 1] = ft_strdup(tmp2);
 	tmp[iref + 2] = 0;
 	j = -1;
