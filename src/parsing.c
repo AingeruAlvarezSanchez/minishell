@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 04:27:25 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/22 19:23:18 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/04/27 15:12:37 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,12 @@ void	ft_mono_command(t_cmds *cmds)
 	char	*tmp;
 	char	*tmp2;
 
+	i = -1;
+	while (cmds->tokens[++i])
+	{
+		if (cmds->tokens[i][0] != '"' || cmds->tokens[i][0] != '\'')
+			cmds->tokens[i] = ft_strtrim(cmds->tokens[i], " ");
+	}
 	cmds->commands = (char **)malloc(sizeof(char *) * 2);
 	i = 0;
 	tmp = ft_strjoin(" ", cmds->tokens[0]);
