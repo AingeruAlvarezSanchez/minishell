@@ -11,6 +11,8 @@ SRC		=	src/main.c				\
 			src/parsing.c			\
 			src/signals.c			\
 			src/check_builtins.c	\
+			src/special_chars.c		\
+			src/execute.c			\
 			src/builtins/exit.c		\
 			src/builtins/cd.c		\
 			src/builtins/export.c	\

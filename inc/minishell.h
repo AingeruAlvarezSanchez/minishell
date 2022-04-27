@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:08:14 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/10 19:24:41 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/04/27 14:55:56 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,11 @@ void	ft_exit(t_cmds *cmds, t_data *data, int cmd_n);
 void	ft_cd(t_cmds *cmds, t_data *data, int cmd_n);
 void	ft_check_export(t_cmds *cmds, t_data *data, int cmd_n);
 void	ft_check_unset(t_cmds *cmds, t_data *data, int cmd_n);
+
+/* command execution functions */
+
+void	ft_check_metacharacter(t_cmds *cmds, t_data *data);
+void	ft_check_builtins(t_cmds *cmds, t_data *data);
+int		ft_has_special_char(t_cmds *cmds);
 
 #endif
