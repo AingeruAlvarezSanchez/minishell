@@ -33,6 +33,14 @@ static int	ft_pipes_error(t_cmds *cmds, int iref, int jref)
 			}
 		}
 	}
+	else if (cmds->tokens[iref][jref] == '|')
+	{
+		if (jref == 0)
+		{
+			printf("Syntax error near unexpected token '|'\n");
+			return (1);
+		}
+	}
 	return (0);
 }
 

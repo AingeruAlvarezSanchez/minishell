@@ -6,11 +6,12 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 14:50:38 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/27 15:25:17 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/05/03 16:14:08 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include <sys/wait.h>
 
 void	ft_execute(t_data *data, t_cmds *cmds)
 {
@@ -20,7 +21,6 @@ void	ft_execute(t_data *data, t_cmds *cmds)
 	i = -1;
 	while (data->path[++i])
 	{
-		printf("command: %s/\n", cmds->proccess[0]);
 		if (access(cmds->proccess[0], X_OK) == 0)
 			execve(cmds->proccess[0], cmds->proccess, data->env);
 		tmp = ft_strjoin(data->path[i], cmds->proccess[0]);
@@ -93,9 +93,6 @@ void	ft_check_builtins(t_cmds *cmds, t_data *data)
 			cmds->proccess = ft_split(cmds->commands[i], '"');
 		else
 			cmds->proccess = ft_split(cmds->commands[i], ' ');
-		i = -1;
-		while (cmds->proccess[++i])
-			printf("proccess: %s/\n", cmds->proccess[i]);
 		if (!ft_check_parent(cmds))
 		{
 			ft_create_forks(cmds, data, i);

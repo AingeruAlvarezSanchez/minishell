@@ -88,6 +88,7 @@ static void	ft_newcmds(t_cmds *cmds, char **tmp)
 {
 	int	i;
 
+	i = -1;
 	cmds->tokens = (char **)malloc(sizeof(char *) * (ft_doublestrlen(tmp) + 1));
 	i = -1;
 	while (tmp[++i])

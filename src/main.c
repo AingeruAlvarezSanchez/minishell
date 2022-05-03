@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 14:06:39 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/27 15:04:00 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/05/03 16:18:47 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	ft_commands(char *prompt, t_cmds *cmds, t_data *data)
 		ft_parser(cmds);
 	if (cmds->n_cmds == 1)
 		ft_mono_command(cmds);
-	//ft_doublefree(cmds->tokens);
+	ft_doublefree(cmds->tokens);
 	if (!cmds->commands[0][0])
 		return ;
 	ft_check_builtins(cmds, data);
