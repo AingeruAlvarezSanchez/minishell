@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:08:14 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/27 14:55:56 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/05/03 18:03:32 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,8 @@ void	ft_check_unset(t_cmds *cmds, t_data *data, int cmd_n);
 void	ft_check_metacharacter(t_cmds *cmds, t_data *data);
 void	ft_check_builtins(t_cmds *cmds, t_data *data);
 int		ft_has_special_char(t_cmds *cmds);
+
+/*	utils */
+char* ft_deletechar(const char* str, const char delete);
 
 #endif

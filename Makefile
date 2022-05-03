@@ -16,7 +16,8 @@ SRC		=	src/main.c				\
 			src/builtins/exit.c		\
 			src/builtins/cd.c		\
 			src/builtins/export.c	\
-			src/builtins/unset.c
+			src/builtins/unset.c	\
+			src/utils.c
 
 INCLUDE =	inc/minishell.h
 LIB		=	libft/libft.a

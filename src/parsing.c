@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 04:27:25 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/27 15:12:37 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/05/03 18:15:13 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void	ft_mono_command(t_cmds *cmds)
 	while (cmds->tokens[++i])
 	{
 		if (cmds->tokens[i][0] != '"' || cmds->tokens[i][0] != '\'')
-			cmds->tokens[i] = ft_strtrim(cmds->tokens[i], " ");
+			cmds->tokens[i] = ft_strtrim(cmds->tokens[i], "");
 	}
 	cmds->commands = (char **)malloc(sizeof(char *) * 2);
 	i = 0;
@@ -140,7 +140,8 @@ void	ft_mono_command(t_cmds *cmds)
 		tmp = ft_strdup(tmp2);
 		free(tmp2);
 	}
-	tmp2 = ft_strtrim(tmp, " ");
+	//tmp2 = ft_strtrim(tmp, " ");
+	tmp2 = ft_deletechar(tmp, '\"');
 	cmds->commands[0] = ft_strdup(tmp2);
 	free(tmp);
 	free(tmp2);
