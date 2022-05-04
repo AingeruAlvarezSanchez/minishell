@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 04:23:58 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/04 04:41:37 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/05/04 19:41:31 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void    ft_firstcasepipe(t_cmds *cmds, int jref)
     char    *tmp2;
 
     tmp = (char **)malloc(sizeof(char *) * 4);
-    tmp2 = ft_substr(cmds->tokens[0], 0, (jref - 1));
+    tmp2 = ft_substr(cmds->tokens[0], 0, jref);
     tmp[0] = ft_strtrim(tmp2, " ");
     free(tmp2);
     tmp[1] = ft_strdup("|");

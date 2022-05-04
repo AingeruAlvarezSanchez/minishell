@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 23:40:23 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/04 05:08:01 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/05/04 19:42:54 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,23 +52,23 @@ int	ft_nomorecommand(t_cmds *cmds, int iref, int jref)
 
 int  ft_pipes_error(t_cmds *cmds, int iref, int jref)
 {
-	if (!cmds->tokens[iref][jref + 1] || ft_nomorecommand(cmds, iref, jref))
+    if (!cmds->tokens[iref][jref + 1] || ft_nomorecommand(cmds, iref, jref))
 	{
-		printf("Syntax error near unexpected token '|'\n");
+		printf("1.Syntax error near unexpected token '|'\n");
 		return (1);
 	}
     else if (cmds->tokens[iref][jref + 1] == '|')
 	{
 		if (jref == 0)
 		{
-			printf("Syntax error near unexpected token '|'\n");
+			printf("2.Syntax error near unexpected token '|'\n");
 			return (1);
 		}
 		else
 		{
 			if (cmds->tokens[iref][jref + 2] == '|')
 			{
-				printf("Syntax error near unexpected token '|'\n");
+				printf("3.Syntax error near unexpected token '|'\n");
 				return (1);
 			}
 		}
