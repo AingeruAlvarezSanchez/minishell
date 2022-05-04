@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 22:56:10 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/04 05:12:28 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/05/04 16:57:41 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static void ft_commands(char *prompt, t_data *data, t_cmds *cmds)
+static void ft_commands(char *prompt, t_data *data, t_cmds *cmds, t_proc *proc)
 {
     if (!prompt[0])
         return ;
@@ -28,6 +28,8 @@ static void ft_commands(char *prompt, t_data *data, t_cmds *cmds)
 		return ;
     }
     ft_check_metacharacter(cmds, data);
+    if (cmds->n_cmds == 1)
+        ft_mono_command(cmds);
     int i = -1;
     while (cmds->tokens[++i])
     {
@@ -41,7 +43,7 @@ int main(int argc, char **argv, char **envp)
     char		*prompt;
 	t_cmds		cmds;
 	t_data		data;
-	//t_command	command;
+	t_proc      proc;
 
 	ft_cpyenv(&data, envp);
 	/*ft_interactive(1);
@@ -50,7 +52,7 @@ int main(int argc, char **argv, char **envp)
 	{
 		prompt = readline("ejemplo1 ₺ ");
 		add_history(prompt);
-		ft_commands(prompt, &data, &cmds);
+		ft_commands(prompt, &data, &cmds &proc);
 		//waitpid(cmds.pid, NULL, WUNTRACED);
         free(prompt);
 	}

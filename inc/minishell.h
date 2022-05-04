@@ -12,6 +12,12 @@ typedef struct s_cmds {
     int     n_cmds;
 }   t_cmds;
 
+typedef struct s_proc {
+    char    *binary;
+    char    *flags;
+    char    *command;
+}   t_proc;
+
 /* Inital checks and memory allocation functions */
 void    ft_cpyenv(t_data *data, char **envp);
 void    ft_initcmds(char *prompt, t_cmds *cmds);
