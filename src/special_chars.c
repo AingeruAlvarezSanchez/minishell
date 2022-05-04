@@ -28,7 +28,7 @@ void	ft_newcmds(t_cmds *cmds, char **tmp)
 	cmds->tokens = (char **)malloc(sizeof(char *) * (ft_doublestrlen(tmp) + 1));
 	i = -1;
 	while (tmp[++i])
-		cmds->tokens[i] = ft_strdup(tmp[i]);
+		cmds->tokens[i] = ft_strtrim(tmp[i], " ");
 	cmds->tokens[i] = 0;
 }
 
@@ -43,7 +43,7 @@ void    ft_check_metacharacter(t_cmds *cmds, t_data *data)
 		j = -1;
 		while (cmds->tokens[i][++j])
 		{
-			if (cmds->tokens[i][j] == '$' && cmds->tokens[i][0] != '\'')
+			if (cmds->tokens[i][j] == '$' && (cmds->tokens[i][0] != '\'' || cmds->tokens[i][ft_strlen(cmds->tokens[i]) - 1] != '\''))
 			{
 				ft_check_dollar(cmds, data, i, j);
 				i = 0;
@@ -89,6 +89,8 @@ int	ft_has_special_char(t_cmds *cmds)
 	i = -1;
 	while (cmds->tokens[++i])
 	{
+		if (!cmds->tokens[i])
+			break ;
 		j = -1;
 		while (cmds->tokens[i][++j])
 		{
@@ -96,8 +98,8 @@ int	ft_has_special_char(t_cmds *cmds)
 			{
 				if (ft_manage_special_char(cmds, i, j, cmds->tokens[i][j]))
 					return (1);
-                if (i != 0)
-                    i++;
+				//if (i != 0)
+				i++;
 				break ;
 			}
 		}
