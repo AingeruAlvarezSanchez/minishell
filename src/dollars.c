@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollars.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 05:09:56 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/04 16:48:39 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/05/04 19:07:13 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static char	*ft_tofind(t_cmds *cmds, int iref, int jref)
 	int		reference;
 
 	reference = jref + 1;
-	while (cmds->tokens[iref][jref] && cmds->tokens[iref][jref] != ' ')
+	while (cmds->tokens[iref][jref] && (cmds->tokens[iref][jref] != ' '
+		&& cmds->tokens[iref][jref] != '\"' && cmds->tokens[iref][jref] != '\''))
 		jref++;
 	tmp = ft_substr(cmds->tokens[iref], reference, (jref - reference));
 	tmp2 = ft_strtrim(tmp, "\"");

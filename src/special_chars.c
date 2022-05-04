@@ -86,23 +86,23 @@ int	ft_has_special_char(t_cmds *cmds)
 	int	i;
 	int	j;
 
-	i = -1;
-	while (cmds->tokens[++i])
+	i = 0;
+	while (cmds->tokens[i])
 	{
-		if (!cmds->tokens[i])
-			break ;
-		j = -1;
-		while (cmds->tokens[i][++j])
+		j = 0;
+		while (cmds->tokens[i][j])
 		{
 			if (ft_is_special_char(cmds->tokens[i][j]))
 			{
 				if (ft_manage_special_char(cmds, i, j, cmds->tokens[i][j]))
 					return (1);
-				//if (i != 0)
-				i++;
+				if (i != 0)
+					i++;
 				break ;
 			}
+			j++;
 		}
+		i++;
 	}
     ft_nonulls(cmds);
 	return (0);
