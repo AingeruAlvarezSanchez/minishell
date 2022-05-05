@@ -1,6 +1,10 @@
 #ifndef MINISHELL_H
 #define MINISHELL_H
 # include "../libft/libft.h"
+# include <stdio.h>
+
+# define WRITE 1
+# define READ 0
 
 typedef struct s_data {
     char    **env;
@@ -10,13 +14,15 @@ typedef struct s_data {
 typedef struct s_cmds {
     char    **tokens;
     int     n_cmds;
+
+    char    **binary;
+    char    **flags;
+    char    **command;
+
+    //pid_t	pid;
+    //int     **pipefd
 }   t_cmds;
 
-typedef struct s_proc {
-    char    *binary;
-    char    *flags;
-    char    *command;
-}   t_proc;
 
 /* Inital checks and memory allocation functions */
 void    ft_cpyenv(t_data *data, char **envp);
@@ -40,5 +46,8 @@ int     ft_check_pipes(t_cmds *cmds, int iref, int jref);
 /* Dollar managing functions */
 void    ft_check_metacharacter(t_cmds *cmds, t_data *data);
 void    ft_check_dollar(t_cmds *cmds, t_data *data, int iref, int jref);
+
+/* Functions to execute binaries */
+//void	ft_check_builtins(t_cmds *cmds, t_data *data)
 
 #endif

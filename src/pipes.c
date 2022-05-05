@@ -6,12 +6,11 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 04:23:58 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/04 19:41:31 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/05/06 00:07:56 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-#include <stdio.h>
 
 static void    ft_firstcasepipe(t_cmds *cmds, int jref)
 {

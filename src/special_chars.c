@@ -54,26 +54,26 @@ void    ft_check_metacharacter(t_cmds *cmds, t_data *data)
 	}
 }
 
-static int  ft_manage_special_char(t_cmds *cmds, int iref, int jref, int c)
+static int  ft_manage_special_char(t_cmds *cmds, int y, int x, int c)
 {
-    int x;
+    int f;
 
-    x = -1;
+    f = -1;
     if (c == '\'' || c == '"')
     {
-        x = ft_has_final(cmds, iref, jref, c);
-        if (x == -1)
+        f = ft_has_final(cmds, y, x, c);
+        if (f == -1)
             return (1);
-        ft_quotes(cmds, iref, jref, x);
+        ft_quotes(cmds, y, x, f);
     }
-    else if (c == '|' && (cmds->tokens[iref][0] != '\''
-		&& cmds->tokens[iref][0] != '"'))
+    else if (c == '|' && (cmds->tokens[y][0] != '\''
+		&& cmds->tokens[y][0] != '"'))
     {
-        if (ft_check_pipes(cmds, iref, jref))
+        if (ft_check_pipes(cmds, y, x))
             return (1);
         cmds->n_cmds++;
     }
-    else if (cmds->tokens[iref][x] == '>')
+    else if (cmds->tokens[y][f] == '>')
 	{
 		printf("redirections");
 		return (1);
@@ -83,26 +83,28 @@ static int  ft_manage_special_char(t_cmds *cmds, int iref, int jref, int c)
 
 int	ft_has_special_char(t_cmds *cmds)
 {
-	int	i;
-	int	j;
+	int	y;
+	int	x;
 
-	i = 0;
-	while (cmds->tokens[i])
+	y = 0;
+	while (cmds->tokens[y])
 	{
-		j = 0;
-		while (cmds->tokens[i][j])
+		x = 0;
+		while (cmds->tokens[y][x])
 		{
-			if (ft_is_special_char(cmds->tokens[i][j]))
+			if (ft_is_special_char(cmds->tokens[y][x]))
 			{
-				if (ft_manage_special_char(cmds, i, j, cmds->tokens[i][j]))
-					return (1);
-				if (i != 0)
-					i++;
+			
+				ft_manage_special_char(cmds, y, x, cmds->tokens[y][x]);
+
+				if (cmds->tokens[y+1])
+					y++;
+	
 				break ;
 			}
-			j++;
+			x++;
 		}
-		i++;
+		y++;
 	}
     ft_nonulls(cmds);
 	return (0);
