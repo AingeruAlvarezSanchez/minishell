@@ -49,5 +49,5 @@ void    ft_check_dollar(t_cmds *cmds, t_data *data, int iref, int jref);
 
 /* Functions to execute binaries */
 //void	ft_check_builtins(t_cmds *cmds, t_data *data)
-
+void ft_parsing(t_cmds *cmds, char* prompt);
 #endif

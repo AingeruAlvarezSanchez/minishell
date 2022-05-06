@@ -9,7 +9,9 @@ SRC		=	src/main.c				\
 			src/special_chars.c		\
 			src/quotes.c			\
 			src/pipes.c				\
+			src/parsing.c				\
 			src/dollars.c
+			
 
 INCLUDE =	inc/minishell.h
 LIB		=	libft/libft.a
