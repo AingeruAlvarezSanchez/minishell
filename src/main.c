@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 22:56:10 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/06 18:03:55 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/05/09 19:55:15 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void ft_commands(char *prompt, t_data *data, t_cmds *cmds/*, t_proc *proc
 
     ft_parsing(cmds, prompt);
     
-    ft_doublefree(cmds->tokens);
+    //ft_doublefree(cmds->tokens);
     //if (!cmds->command[0][0])
 	//	return ;
 	//ft_check_builtins(cmds, data);
