@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 04:27:25 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/09 22:10:36 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/05/10 20:08:29 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,26 @@ void	ft_parser(t_cmds *cmds, char *prompt, char **arr, int n_comand)
     }
 }
 
+
+char **copy_doble_array(char **arr)
+{
+	char **new;
+	int i;
+	
+	i = 0;
+	while(arr[i])
+		i++;
+	new = (char **)malloc(sizeof(char *) * (i + 1));
+	new[i] = 0;
+	i = 0;
+	while(arr[i])
+	{
+		new[i] = ft_strdup(arr[i]);
+		i++;
+	}
+	return new;
+}
+
 void print_bi_array(char **arr, char *text)
 {
 	int y;
@@ -116,12 +136,12 @@ void print_bi_array(char **arr, char *text)
 	while(arr[y] && arr[y][0])
 	{
 		if(arr[y][0])
-			{printf("%d.%s->%s.\n", y, text, arr[y]);
+			{printf("%d.%s->%s.\n", y + 1, text, arr[y]);
 			y++;}
 	}
 }
 
-void admin_comands(t_cmds *cmds, char* prompt)
+void admin_comands(t_cmds *cmds, char* prompt, char **tkn)
 {
 	int n_tkn;
 	int i;
@@ -130,34 +150,35 @@ void admin_comands(t_cmds *cmds, char* prompt)
 	
 	n_tkn = 0;
 	n_comand = 0;
-	while(cmds->tokens[n_tkn])
+	while(tkn[n_tkn])
 	{
-		if(cmds->tokens[n_tkn][0] == '|' || !cmds->tokens[n_tkn + 1] )//encuentra pos de pipe
+		if(tkn[n_tkn][0] == '|' || !tkn[n_tkn + 1] )//encuentra pos de pipe
 		{
-			if(!cmds->tokens[n_tkn + 1])//si es el ultimo
+			if(!tkn[n_tkn + 1])//si es el ultimo
 			n_tkn++;
 			arr = (char**)malloc(sizeof(char*) * (n_tkn + 1));
 			arr[n_tkn] = 0;
 			i = -1;
 			while(n_tkn > ++i)
-				arr[i] = ft_strdup(cmds->tokens[i]);//guarda tokens hasta pipe
+				arr[i] = ft_strdup(tkn[i]);//guarda tokens hasta pipe
 			if (cmds->n_cmds > 1)
 				ft_parser(cmds, prompt, arr, n_comand);
 			else if(cmds->n_cmds == 1)
 				ft_parser(cmds, prompt, arr, 0);
 			else return ;
 			ft_doublefree(arr);
-			if(cmds->tokens[0 + n_tkn] )
-				cmds->tokens= cmds->tokens + n_tkn;
+			if(tkn[0 + n_tkn] )
+				tkn = tkn + n_tkn;
 			else return;
 			n_tkn = 0;
-			if(cmds->tokens[0][0] == '|')
-				cmds->tokens++;
+			if(tkn[0][0] == '|')
+				tkn++;
 			n_comand++;
 			continue;
 		}
 		n_tkn++;
 	}
+	ft_doublefree(tkn);
 }
 
 void ft_parsing(t_cmds *cmds, char* prompt)
@@ -169,10 +190,11 @@ void ft_parsing(t_cmds *cmds, char* prompt)
     cmds->command = (char**)malloc(sizeof(char*) * (cmds->n_cmds + 1));
 	cmds->command[cmds->n_cmds] = 0;
     
-	//mejor enviar copia de token en vez de usar token
-	admin_comands(cmds, prompt);
 	
-	//print_bi_array(cmds->tokens, "tokens");
+	//mejor enviar copia de token en vez de usar token
+	admin_comands(cmds, prompt, copy_doble_array(cmds->tokens));
+	
+	print_bi_array(cmds->tokens, "tokens");
  	print_bi_array(cmds->binary, "binaries");
     //print_bi_array(cmds->flags, "flags");
 	print_bi_array(cmds->command, "comands");

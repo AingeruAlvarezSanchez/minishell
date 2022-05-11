@@ -9,7 +9,11 @@ SRC		=	src/main.c				\
 			src/special_chars.c		\
 			src/quotes.c			\
 			src/pipes.c				\
-			src/parsing.c				\
+			src/parsing.c			\
+			src/builtins/exit.c		\
+			src/builtins/cd.c		\
+			src/builtins/export.c	\
+			src/builtins/unset.c	\
 			src/dollars.c
 			
 
