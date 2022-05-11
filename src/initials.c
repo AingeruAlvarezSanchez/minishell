@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 23:08:33 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/11 10:36:25 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/05/11 19:26:45 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,5 @@ void ft_initcmds(char *prompt, t_cmds *cmds)
     cmds->pipefd = (int **)malloc(sizeof(int *) * 2);
 	cmds->pipefd[0] = (int *)malloc(sizeof(int) * 2);
 	cmds->pipefd[1] = (int *)malloc(sizeof(int) * 2);
+
 }

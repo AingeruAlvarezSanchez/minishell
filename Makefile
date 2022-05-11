@@ -12,6 +12,7 @@ SRC		=	src/main.c				\
 			src/parsing.c			\
 			src/builtins/exit.c		\
 			src/builtins/cd.c		\
+			src/utils.c				\
 			src/dollars.c
 
 INCLUDE =	inc/minishell.h

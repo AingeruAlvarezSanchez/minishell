@@ -23,10 +23,13 @@ typedef struct s_cmds {
     char    **binary;
     char    **flags;
     char    **command;
+    char    *after_cmd;
 
     pid_t	pid;
     int     **pipefd;
 }   t_cmds;
+
+
 
 
 /* Inital checks and memory allocation functions */
@@ -52,15 +55,18 @@ int     ft_check_pipes(t_cmds *cmds, int iref, int jref);
 void    ft_check_metacharacter(t_cmds *cmds, t_data *data);
 void    ft_check_dollar(t_cmds *cmds, t_data *data, int iref, int jref);
 
-/* Functions to execute binaries */
+/* parsing */
 //void	ft_check_builtins(t_cmds *cmds, t_data *data)
-void ft_parsing(t_cmds *cmds, char* prompt);
+void ft_parsing(t_cmds *cmds);
 
-/*  */
+/* builtins */
 void	ft_exit(char *flag, t_data *data, int cmd_n);
 void	ft_cd(char *flag, t_data *data, int cmd_pos);
-void	ft_check_export(t_cmds *cmds, t_data *data, int cmd_n);
-void	ft_check_unset(t_cmds *cmds, t_data *data, int cmd_n);
+//void	ft_check_export(t_cmds *cmds, t_data *data, int cmd_n);
+//void	ft_check_unset(t_cmds *cmds, t_data *data, int cmd_n);
 
+/* utils */
+void print_bi_array(char **arr, char *text);
 char **copy_doble_array(char **arr);
+
 #endif

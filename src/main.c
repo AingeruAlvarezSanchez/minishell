@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 22:56:10 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/11 14:01:27 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/05/11 20:12:29 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ void	ft_execute(t_data *data, const char *command, char *binary, char *flag)
 	cpy = (char **)malloc(sizeof(char *) * 3);
 	
 	cpy[0] = ft_strdup(binary);
-	if(flag)
+	if(flag && flag[0])
 		cpy[1] = ft_strdup(flag);
 	else
 		cpy[1] = 0;
 	cpy[2] = 0;
-	
 	i = -1;
+	
 	while (data->paths[++i])
 	{
 		if (access(binary, X_OK) == 0)
@@ -183,9 +183,7 @@ static void ft_commands(char *prompt, t_data *data, t_cmds *cmds/*, t_proc *proc
 		return ;
     }
     ft_check_metacharacter(cmds, data);
-
-    ft_parsing(cmds, prompt);
-
+    ft_parsing(cmds);
     ft_doublefree(cmds->tokens);
     //if (!cmds->command[0][0])
 	//	return ;
