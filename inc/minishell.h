@@ -13,6 +13,7 @@
 typedef struct s_data {
     char    **env;
     char    **paths;
+    int     last_out;
 }   t_data;
 
 typedef struct s_cmds {
@@ -24,7 +25,7 @@ typedef struct s_cmds {
     char    **command;
 
     pid_t	pid;
-    int     **pipefd
+    int     **pipefd;
 }   t_cmds;
 
 
@@ -55,5 +56,11 @@ void    ft_check_dollar(t_cmds *cmds, t_data *data, int iref, int jref);
 //void	ft_check_builtins(t_cmds *cmds, t_data *data)
 void ft_parsing(t_cmds *cmds, char* prompt);
 
+/*  */
+void	ft_exit(char *flag, t_data *data, int cmd_n);
+void	ft_cd(char *flag, t_data *data, int cmd_pos);
+void	ft_check_export(t_cmds *cmds, t_data *data, int cmd_n);
+void	ft_check_unset(t_cmds *cmds, t_data *data, int cmd_n);
 
+char **copy_doble_array(char **arr);
 #endif

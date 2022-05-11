@@ -12,10 +12,7 @@ SRC		=	src/main.c				\
 			src/parsing.c			\
 			src/builtins/exit.c		\
 			src/builtins/cd.c		\
-			src/builtins/export.c	\
-			src/builtins/unset.c	\
 			src/dollars.c
-			
 
 INCLUDE =	inc/minishell.h
 LIB		=	libft/libft.a

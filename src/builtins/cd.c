@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 07:49:07 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/04/07 17:24:12 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/05/11 10:09:09 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,29 +91,29 @@ void	ft_minusflag(t_data *data)
 	free(oldpwd);
 }
 
-void	ft_cd(t_cmds *cmds, t_data *data, int cmd_pos)
+void	ft_cd(char *flag, t_data *data, int cmd_pos)
 {
-	if (!cmds->proccess[1])
+	if (!flag)
 	{
 		data->env = ft_oldpwd(data);
 		chdir("/");
 		data->last_out = 0;
 		data->env = ft_newpwd(data);
 	}
-	else if (cmds->proccess[1][0] == '-')
+	else if (flag[0] == '-')
 		ft_minusflag(data);
 	else
 	{
 		data->env = ft_oldpwd(data);
-		if (!opendir(cmds->proccess[1]))
+		if (!opendir(flag))
 		{
-			printf("cd: %s: No such file or directory\n", cmds->proccess[1]);
+			printf("cd: %s: No such file or directory\n", flag);
 			data->last_out = 1;
 			return ;
 		}
 		if (cmd_pos != 0)
 			return ;
-		chdir(cmds->proccess[1]);
+		chdir(flag);
 		data->last_out = 0;
 		data->env = ft_newpwd(data);
 	}
