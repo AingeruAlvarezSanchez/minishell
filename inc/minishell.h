@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 05:41:11 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/16 18:10:06 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/05/16 19:47:53 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,7 @@ int  ft_quotes(t_cmds *cmds, int xref, char c);
 
 /* Quotes managing function */
 int ft_pipes(t_cmds *cmds, int xref);
+
+/* Join after checking special chars */
+void ft_lastjoin(t_cmds *cmds);
 #endif

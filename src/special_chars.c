@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 09:51:44 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/16 18:09:31 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/05/16 19:42:20 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ static int  ft_manage_special_character(t_cmds *cmds, int xref, char c)
             return (-1);
         result = ft_pipes(cmds, xref);
     }
+    else if (c == '<' || c == '>')
+        printf("redirections\n");
     return (result);
 }
 
@@ -62,6 +64,7 @@ int ft_has_special_char(t_cmds *cmds)
             x = -1;
         }
     }
-    printf("prompt after final: %s\n", cmds->prompt);
+    if (cmds->prompt[0])
+        ft_lastjoin(cmds);
     return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 23:29:19 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/10 23:33:33 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/05/16 19:52:50 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,21 @@ int  ft_pipes_error(t_cmds *cmds, int xref)
 {
     if (!cmds->prompt[xref + 1]/* || ft_nomorecommand(cmds, iref, jref)*/)
 	{
-		printf("1: Syntax error near unexpected token '|'\n");
+		printf("Syntax error near unexpected token '|'\n");
 		return (1);
 	}
     else if (cmds->prompt[xref + 1] == '|')
 	{
 		if (xref == 0)
 		{
-			printf("2: Syntax error near unexpected token '|'\n");
+			printf("Syntax error near unexpected token '|'\n");
 			return (1);
 		}
 		else
 		{
 			if (cmds->prompt[xref + 2] == '|')
 			{
-				printf("3: Syntax error near unexpected token '|'\n");
+				printf("Syntax error near unexpected token '|'\n");
 				return (1);
 			}
 		}
