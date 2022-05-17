@@ -5,121 +5,95 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/04 01:48:36 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/04 03:04:36by aalvarez         ###   ########.fr       */
+/*   Created: 2022/05/10 21:54:34 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/05/16 17:40:57 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-#include <stdio.h>
 
-static void ft_firsttoken(t_cmds *cmds, char **tmp)
+static int ft_checkprevious(char *tmp)
 {
-    int i;
-    int j;
-
-    i = -1;
-    while (tmp[++i])
-    {
-        if (tmp[i][0])
-            j++;
-    }
-    cmds->tokens = (char **)malloc(sizeof(char *) * (j + 1));
-    i = -1;
-    j = 0;
-    while (tmp[++i])
-    {
-        if (tmp[i][0])
-            cmds->tokens[j++] = ft_strdup(tmp[i]);
-    }
-    cmds->tokens[j] = 0;
-    ft_doublefree(tmp);
+    if (tmp[0])
+        return (1);
+    else
+        return (0);
 }
 
-static void ft_firstcasequote(t_cmds *cmds, int iref, int jref, int xref)
+static void ft_multicommand(t_cmds *cmds, int iref, int xref, int cut)
 {
     char    **tmp;
-    char    *tmp2;
-
-    if (cmds->tokens[iref][xref + 1])
-        tmp = (char **)malloc(sizeof(char *) * 4);
-    else
-        tmp = (char **)malloc(sizeof(char *) * 3);
-    tmp[0] = ft_substr(cmds->tokens[0], 0, jref);
-    tmp2 = ft_substr(cmds->tokens[0], jref, ((xref + 1) - jref));
-    tmp[1] = ft_strtrim(tmp2, " ");
-    free(tmp2);
-    if (cmds->tokens[iref][xref + 1])
-    {
-        tmp2 = ft_substr(cmds->tokens[0], (xref + 1), ft_strlen(cmds->tokens[0]) - (xref + 1));
-        tmp[2] = ft_strtrim(tmp2, " ");
-        free(tmp2);
-        tmp[3] = 0;
-    }
-    else
-        tmp[2] = 0;
-    ft_doublefree(cmds->tokens);
-    ft_firsttoken(cmds, tmp);
-}
-
-static char	**ft_nofinal(t_cmds *cmds, int iref, int jref, int xref)
-{
-	int		i;
-    char    **tmp;
-    char    *tmp2;
-
-    tmp = (char **)malloc(sizeof(char *) * (ft_doublestrlen(cmds->tokens) + 2));
-    i = -1;
-    while (++i < iref)
-        tmp[i] = ft_strdup(cmds->tokens[i]);
-    tmp2 = ft_substr(cmds->tokens[i], 0, jref);
-    tmp[i] = ft_strtrim(tmp2, " ");
-    free(tmp2);
-    tmp2 = ft_substr(cmds->tokens[i], jref, ((xref + 1) - jref));
-    tmp[i + 1] = ft_strtrim(tmp2, " ");
-    free(tmp2);
-    tmp[i + 2] = 0;
-	ft_doublefree(cmds->tokens);
-	return (tmp);
-}
-
-static char	**ft_full_final(t_cmds *cmds, int iref, int jref, int xref)
-{
+    char    **tmp2;
     int     i;
-    char    **tmp;
-    char    *tmp2;
+    int     x;
 
-    tmp = (char **)malloc(sizeof(char *) * (ft_doublestrlen(cmds->tokens) + 3));
-    i = -1;
-    while (++i < iref)
-        tmp[i] = ft_strdup(cmds->tokens[i]);
-    tmp2 = ft_substr(cmds->tokens[i], 0, jref);
-    tmp[i] = ft_strtrim(tmp2, " ");
-    free(tmp2);
-    tmp2 = ft_substr(cmds->tokens[i], jref, ((xref + 1) - jref));
-    tmp[i + 1] = ft_strtrim(tmp2, " ");
-    free(tmp2);
-    tmp2 = ft_substr(cmds->tokens[iref], (xref + 1), (ft_strlen(cmds->tokens[iref]) - (xref - 1)));
-    tmp[i + 2] = ft_strtrim(tmp2, " ");
-    free(tmp2);
-    tmp[i + 3] = 0;
-	ft_doublefree(cmds->tokens);
-    return (tmp);
-}
-
-void    ft_quotes(t_cmds *cmds, int iref, int jref, int xref)
-{
-    char    **tmp;
-
-    if (ft_doublestrlen(cmds->tokens) == 1)
+    tmp = ft_split(cmds->tokens[iref], ' ');
+    if (ft_doublestrlen(tmp) == 1)
     {
-        ft_firstcasequote(cmds, iref, jref, xref);
+        ft_doublefree(tmp);
         return ;
     }
-    if (cmds->tokens[iref][xref + 1])
-		tmp = ft_full_final(cmds, iref, jref, xref);
     else
-		tmp = ft_nofinal(cmds, iref, jref, xref);
-    ft_newcmds(cmds, tmp);
+    {
+        tmp2 = ft_doublestrdup(cmds->tokens);
+        cmds->tokens = (char **)malloc(sizeof(char *) * (ft_doublestrlen(tmp) + (iref + 2)));
+        i = -1;
+        while (++i < iref)
+            cmds->tokens[i] = ft_strdup(tmp2[i]);
+        x = 0;
+        while (tmp[x])
+            cmds->tokens[i++] = tmp[x++];
+        cmds->tokens[i] = ft_substr(cmds->prompt, xref, ((cut + 1) - xref));
+        cmds->tokens[i + 1] = 0;
+    }
+}
+
+static void ft_isnotfirst(t_cmds *cmds, char **tmp, int xref, int x)
+{
+    char    *tmp2;
+    int     i;
+
+    tmp2 = ft_substr(cmds->prompt, 0, xref);
+    if (ft_checkprevious(tmp2))
+    {
+        cmds->tokens = (char **)malloc(sizeof(char *) * (ft_doublestrlen(tmp) + 3));
+        i = -1;
+        while (tmp[++i])
+            cmds->tokens[i] = ft_strdup(tmp[i]);
+        cmds->tokens[i] = ft_strtrim(tmp2, " ");
+        cmds->tokens[i + 1] = ft_substr(cmds->prompt, xref, ((x + 1) - xref));
+        cmds->tokens[i + 2] = 0;
+        ft_multicommand(cmds, i, xref, x);
+    }
+    else
+    {
+        i = -1;
+        cmds->tokens = (char **)malloc(sizeof(char *) * (ft_doublestrlen(tmp) + 2));
+        while (tmp[++i])
+            cmds->tokens[i] = ft_strdup(tmp[i]);
+        cmds->tokens[i] = ft_substr(cmds->prompt, xref, ((x + 1) - xref));
+        cmds->tokens[i + 1] = 0;
+    }
+    free(tmp2);
+}
+
+int  ft_quotes(t_cmds *cmds, int xref, char c)
+{
+    char    **tmp;
+    int     x;
+
+    x = xref + 1;
+    tmp = ft_doublestrdup(cmds->tokens);
+    while (cmds->prompt[x] != c)
+        x++;
+    if (tmp[0])
+        ft_isnotfirst(cmds, tmp, xref, x);
+    else
+    {
+        cmds->tokens = (char **)malloc(sizeof(char *) * 2);
+        cmds->tokens[0] = ft_substr(cmds->prompt, xref, ((x + 1) - xref));
+        cmds->tokens[1] = 0;
+    }
     ft_doublefree(tmp);
+    return (x + 1);
 }

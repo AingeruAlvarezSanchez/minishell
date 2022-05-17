@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/24 12:07:09 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/04 03:25:17 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/05/10 08:35:48 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 void	ft_doublefree(char **str);
+char	**ft_doublestrdup(char **str);
 char 	*ft_deletechar(const char *str, const char delete);
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_front(t_list **lst, t_list *new);

@@ -3,60 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/03 22:56:10 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/09 19:55:15 by ecorreia         ###   ########.fr       */
+/*   Created: 2022/05/10 05:41:15 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/05/10 21:58:43 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include <sys/wait.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-#include <stdio.h>
-#include <stdlib.h>
 
-
-
-static void ft_commands(char *prompt, t_data *data, t_cmds *cmds/*, t_proc *proc*/)
+static void ft_commands(t_cmds *cmds,__attribute__((unused)) t_data *data)
 {
-    if (!prompt[0])
+    char    *tmp;
+
+    tmp = ft_strtrim(cmds->prompt, " ");
+    free(cmds->prompt);
+    cmds->prompt = ft_strdup(tmp);
+    free(tmp);
+    if (!cmds->prompt[0])
         return ;
-    ft_initcmds(prompt, cmds);
+    ft_initcmds(cmds);
     if (ft_has_special_char(cmds))
     {
         ft_doublefree(cmds->tokens);
-		return ;
+        return ;
     }
-    ft_check_metacharacter(cmds, data);
-
-    ft_parsing(cmds, prompt);
-    
-    //ft_doublefree(cmds->tokens);
-    //if (!cmds->command[0][0])
-	//	return ;
-	//ft_check_builtins(cmds, data);
+    int x = -1;
+    while (cmds->tokens[++x])
+        printf("token: /%s/\n", cmds->tokens[x]);
 }
 
 int main(int argc, char **argv, char **envp)
 {
-    char		*prompt;
-	t_cmds		cmds;
-	t_data		data;
-	//t_proc      proc;
+    t_cmds  cmds;
+    t_data  data;
 
-	ft_cpyenv(&data, envp);
-	/*ft_interactive(1);
-	ft_signals();*/
-	while (1 && argc && argv)
-	{
-		prompt = readline("ejemplo1 ₺ ");
-		add_history(prompt);
-		ft_commands(prompt, &data, &cmds/*, &proc*/);
-		//waitpid(cmds.pid, NULL, WUNTRACED);
-        free(prompt);
-	}
-	return (0);
-    
+    ft_cpyenv(envp, &data);
+    while (1 && argc && argv)
+    {
+		cmds.prompt = readline("ejemplo1 ₺ ");
+		add_history(cmds.prompt);
+        ft_commands(&cmds, &data);
+        free(cmds.prompt);
+    }
+    return (0);
 }

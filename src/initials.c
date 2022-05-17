@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   initials.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/03 23:08:33 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/05 23:30:10 by ecorreia         ###   ########.fr       */
+/*   Created: 2022/05/10 07:44:17 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/05/10 09:49:17 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static void    ft_create_paths(t_data *data)
+static void    ft_createpaths(t_data *data)
 {
     int     i;
     char    **tmp;
@@ -21,18 +21,20 @@ static void    ft_create_paths(t_data *data)
     while (data->env[++i])
     {
         if (!ft_strncmp(data->env[i], "PATH=", 5))
+        {
+            tmp = ft_split(data->env[i], ':');
+            i = -1;
+            data->paths = (char **)malloc(sizeof(char *) * (ft_doublestrlen(tmp) + 1));
+            while (tmp[++i])
+                data->paths[i] = ft_strjoin(tmp[i], "/");
+            data->paths[i] = 0;
+            ft_doublefree(tmp);
             break ;
+        }
     }
-    tmp = ft_split(data->env[i], ':');
-    data->paths = (char **)malloc(sizeof(char *) * (ft_doublestrlen(tmp) + 1));
-    i = -1;
-    while (tmp[++i])
-        data->paths[i] = ft_strjoin(tmp[i], "/");
-    data->paths[i] = 0;
-    ft_doublefree(tmp);
 }
 
-void    ft_cpyenv(t_data *data, char **envp)
+void    ft_cpyenv(char **envp, t_data *data)
 {
     int i;
 
@@ -41,13 +43,11 @@ void    ft_cpyenv(t_data *data, char **envp)
     while (envp[++i])
         data->env[i] = ft_strdup(envp[i]);
     data->env[i] = 0;
-    ft_create_paths(data);
+    ft_createpaths(data);
 }
 
-void ft_initcmds(char *prompt, t_cmds *cmds)
+void ft_initcmds(t_cmds *cmds)
 {
-    cmds->tokens = (char **)malloc(sizeof(char *) * 2);
-    cmds->tokens[0] = ft_strdup(prompt);
-    cmds->tokens[1] = 0;
-    cmds->n_cmds = 1;
+    cmds->tokens = (char **)malloc(sizeof(char *));
+    cmds->tokens[0] = 0;
 }

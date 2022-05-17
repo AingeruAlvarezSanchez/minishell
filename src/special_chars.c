@@ -5,15 +5,15 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/03 23:41:57 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/04 01:35:33by aalvarez         ###   ########.fr       */
+/*   Created: 2022/05/10 09:51:44 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/05/16 18:09:31 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 #include <stdio.h>
 
-static int	ft_is_special_char(char c)
+int	ft_is_special_char(char c)
 {
 	if (c == '\'' || c == '"' || c == '<' || c == '>'
 		|| (c == '|' && (c != '\'' && c != '"')))
@@ -21,91 +21,47 @@ static int	ft_is_special_char(char c)
 	return (0);
 }
 
-void	ft_newcmds(t_cmds *cmds, char **tmp)
+static int  ft_manage_special_character(t_cmds *cmds, int xref, char c)
 {
-	int	i;
+    int result;
 
-	cmds->tokens = (char **)malloc(sizeof(char *) * (ft_doublestrlen(tmp) + 1));
-	i = -1;
-	while (tmp[++i])
-		cmds->tokens[i] = ft_strtrim(tmp[i], " ");
-	cmds->tokens[i] = 0;
+    if (c == '"' || c == '\'')
+    {
+        if (!ft_has_final(cmds, xref, c))
+            return (-1);
+        result = ft_quotes(cmds, xref, c);
+    }
+    else if (c == '|')
+    {
+        if (ft_pipes_error(cmds, xref))
+            return (-1);
+        result = ft_pipes(cmds, xref);
+    }
+    return (result);
 }
 
-void    ft_check_metacharacter(t_cmds *cmds, t_data *data)
+int ft_has_special_char(t_cmds *cmds)
 {
-    int	i;
-	int	j;
+    char    *tmp;
+    int     x;
+    int     ref;
 
-	i = 0;
-	while (cmds->tokens[i])
-	{
-		j = -1;
-		while (cmds->tokens[i][++j])
-		{
-			if (cmds->tokens[i][j] == '$' && (cmds->tokens[i][0] != '\'' || cmds->tokens[i][ft_strlen(cmds->tokens[i]) - 1] != '\''))
-			{
-				ft_check_dollar(cmds, data, i, j);
-				i = 0;
-				break ;
-			}
-		}
-		i++;
-	}
-}
-
-static int  ft_manage_special_char(t_cmds *cmds, int y, int x, int c)
-{
-    int f;
-
-    f = -1;
-    if (c == '\'' || c == '"')
+    x = -1;
+    ft_check_first(cmds);
+    while (cmds->prompt[++x])
     {
-        f = ft_has_final(cmds, y, x, c);
-        if (f == -1)
-            return (1);
-        ft_quotes(cmds, y, x, f);
+        if (ft_is_special_char(cmds->prompt[x]))
+        {
+            ref = ft_manage_special_character(cmds, x, cmds->prompt[x]);
+            if (ref == -1)
+                return (1);
+            tmp = ft_substr(cmds->prompt, ref, (ft_strlen(cmds->prompt) - ref));
+            free(cmds->prompt);
+            cmds->prompt = ft_strtrim(tmp, " ");
+            free(tmp);
+            x = -1;
+        }
     }
-    else if (c == '|' && (cmds->tokens[y][0] != '\''
-		&& cmds->tokens[y][0] != '"'))
-    {
-        if (ft_check_pipes(cmds, y, x))
-            return (1);
-        cmds->n_cmds++;
-    }
-    else if (cmds->tokens[y][f] == '>')
-	{
-		printf("redirections");
-		return (1);
-	} //in case of redirections we have to change the way the command struct is filled
+    printf("prompt after final: %s\n", cmds->prompt);
     return (0);
-}
-
-int	ft_has_special_char(t_cmds *cmds)
-{
-	int	y;
-	int	x;
-
-	y = 0;
-	while (cmds->tokens[y])
-	{
-		x = 0;
-		while (cmds->tokens[y][x])
-		{
-			if (ft_is_special_char(cmds->tokens[y][x]))
-			{
-			
-				ft_manage_special_char(cmds, y, x, cmds->tokens[y][x]);
-
-				if (cmds->tokens[y+1])
-					y++;
-	
-				break ;
-			}
-			x++;
-		}
-		y++;
-	}
-    ft_nonulls(cmds);
-	return (0);
 }

@@ -1,10 +1,18 @@
-#ifndef MINISHELL_H
-#define MINISHELL_H
-# include "../libft/libft.h"
-# include <stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/10 05:41:11 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/05/16 18:10:06 by aalvarez         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-# define WRITE 1
-# define READ 0
+#ifndef MINISHELL_H
+# define MINISHELL_H
+#include "../libft/libft.h"
 
 typedef struct s_data {
     char    **env;
@@ -12,42 +20,29 @@ typedef struct s_data {
 }   t_data;
 
 typedef struct s_cmds {
+    char    *prompt;
+    char    *token_value;
     char    **tokens;
-    int     n_cmds;
-
-    char    **binary;
-    char    **flags;
-    char    **command;
-
-    //pid_t	pid;
-    //int     **pipefd
 }   t_cmds;
 
+/* Initials */
+void    ft_cpyenv(char **envp, t_data *data);
+void    ft_initcmds(t_cmds *cmds);
 
-/* Inital checks and memory allocation functions */
-void    ft_cpyenv(t_data *data, char **envp);
-void    ft_initcmds(char *prompt, t_cmds *cmds);
+/* Errors handling fucntions */
+int ft_has_final(t_cmds *cmds, int xref, char c);
+int  ft_pipes_error(t_cmds *cmds, int xref);
 
-/* Functions to check various errors */
-int     ft_has_final(t_cmds *cmds, int iref, int jref, int c);
-int     ft_pipes_error(t_cmds *cmds, int iref, int jref);
-void    ft_nonulls(t_cmds *cmds);
+/* Special chars */
+int	ft_is_special_char(char c);
+int ft_has_special_char(t_cmds *cmds);
 
-/* Functions to manage special characters*/
-int	    ft_has_special_char(t_cmds *cmds);
-void	ft_newcmds(t_cmds *cmds, char **tmp);
+/* First case function */
+void ft_check_first(t_cmds *cmds);
 
-/* Quote managing functions */
-void    ft_quotes(t_cmds *cmds, int iref, int jref, int xref);
+/* Quotes managing function */
+int  ft_quotes(t_cmds *cmds, int xref, char c);
 
-/* Pipes managing functions */
-int     ft_check_pipes(t_cmds *cmds, int iref, int jref);
-
-/* Dollar managing functions */
-void    ft_check_metacharacter(t_cmds *cmds, t_data *data);
-void    ft_check_dollar(t_cmds *cmds, t_data *data, int iref, int jref);
-
-/* Functions to execute binaries */
-//void	ft_check_builtins(t_cmds *cmds, t_data *data)
-void ft_parsing(t_cmds *cmds, char* prompt);
+/* Quotes managing function */
+int ft_pipes(t_cmds *cmds, int xref);
 #endif
