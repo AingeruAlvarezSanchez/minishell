@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 05:41:11 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/16 19:47:53 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/05/19 07:53:56 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,7 @@ int ft_pipes(t_cmds *cmds, int xref);
 
 /* Join after checking special chars */
 void ft_lastjoin(t_cmds *cmds);
+
+/* Dollar expanding function */
+void    ft_dollars(t_cmds *cmds, t_data *data);
 #endif
