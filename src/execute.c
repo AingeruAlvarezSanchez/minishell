@@ -3,135 +3,74 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/03 12:39:27 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/10 21:47:57 by aalvarez         ###   ########.fr       */
+/*   Created: 2022/05/19 20:54:41 by ecorreia          #+#    #+#             */
+/*   Updated: 2022/05/19 23:08:27 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-#include <sys/wait.h>
 #include <stdio.h>
 
-/**
- * @brief runs the command in a new proccess if one of following builtins
- */
-void	ft_ischild_builtin(t_cmds *Cmds, t_data *Data)
-{
-	if (!ft_strncmp(Cmds->p_command[0], "pwd", 3))
-		ft_pwd();
-	else if (!ft_strncmp(Cmds->p_command[0], "echo", 4))
-		ft_check_echo(Cmds);
-	else if (!ft_strncmp(Cmds->p_command[0], "env", 3))
-		ft_env(Data);
-}
-
-/**
- * @brief executes command if one of following builtins
- * @param cmd_pos position of the comand in the terminal line
- */
-void	ft_isparent_builtin(t_cmds *Cmds, t_data *Data, int cmd_pos)
-{
-	Cmds->p_command = ft_split(Cmds->commands[0], ' ');
-	if (!ft_strncmp(Cmds->p_command[0], "cd", 2))
-		ft_cd(Cmds, Data, cmd_pos);
-	else if (!ft_strncmp(Cmds->p_command[0], "exit", 4))
-		ft_exit(Cmds, cmd_pos);
-	else if (!ft_strncmp(Cmds->p_command[0], "export", 6))
-		ft_check_export(Data, Cmds, cmd_pos);
-	else if (!ft_strncmp(Cmds->p_command[0], "unset", 5))
-		ft_check_unset(Data, Cmds, cmd_pos);
-	if (Cmds->p_command)
-		ft_doublefree((void **)Cmds->p_command);
-}
-
-void	ft_execute(t_data *Data, t_cmds *Cmds, int cnum)
+void	ft_execute(t_data *data, char **command)
 {
 	char	*tmp;
-	int	i;
+	int		i;
 
-	i = -1;
-	if (!Cmds->p_command[0])
-		exit (0);
-	if (Cmds->n_cmds > 1)
+    i = -1;
+	while (data->paths[++i])
 	{
-		dup2(Cmds->pipefd[cnum][1], 1);
-		dup2(Cmds->pipefd[cnum + 1][0], 0);
-		close(Cmds->pipefd[cnum][0]);
-		close(Cmds->pipefd[cnum][1]);
-		close(Cmds->pipefd[cnum + 1][0]);
-		close(Cmds->pipefd[cnum + 1][1]);
-	}
-	ft_ischild_builtin(Cmds, Data);
-	while (Data->path[++i])
-	{
-		tmp = ft_strjoin(Data->path[i], Cmds->p_command[0]);
+		if (access(command[0], X_OK) == 0)
+			execve(command[0], command, data->env);
+		tmp = ft_strjoin(data->paths[i], command[0]);
 		if (access(tmp, X_OK) == 0)
-			execve(tmp, Cmds->p_command, Data->env);
+			execve(tmp, command, data->env);
 		free(tmp);
 	}
-	printf("%s: Command not found\n", Cmds->p_command[0]);
+	printf("%s: Command not found\n", command[0]);
 	exit(0);
 }
 
-/**
- * @brief check if need to create new process to execute builtin
- * 
- * @return 0 if process creation needed for builtin 
- * return 1 if no need to fork();
- */
-int	ft_check_builtin(t_cmds *Cmds)
+void	ft_init_execute(t_cmds *cmds, int pos)
 {
-	if (!Cmds->p_command[0])
-		return (0);
-	if (!ft_strncmp(Cmds->p_command[0], "cd", 2))
-		return (1);
-	else if (!ft_strncmp(Cmds->p_command[0], "exit", 4))
-		return (1);
-	else if (!ft_strncmp(Cmds->p_command[0], "export", 6))
-		return (1);
-	else if (!ft_strncmp(Cmds->p_command[0], "unset", 5))
-		return (1);
-	return (0);
-}
-
-void	ft_pipesmem(t_cmds *Cmds)
-{
-	int	i;
-
-	i = -1;
-	Cmds->pipefd = (int **)malloc(sizeof(int *) * (Cmds->n_cmds + 1));
-	while (++i < Cmds->n_cmds + 1)
+	if (cmds->n_cmds != 1)
 	{
-		Cmds->pipefd[i] = (int *)malloc(sizeof(int) * 2);
-		pipe(Cmds->pipefd[i]);
-	}
-}
-
-void	ft_init_exec(t_cmds *Cmds, t_data *Data)
-{
-	int	i;
-	int	status;
-
-	i = 0;
-	if (Cmds->n_cmds > 1)
-		ft_pipesmem(Cmds);
-	while (i < Cmds->n_cmds)
-	{
-		Cmds->p_command = ft_split(Cmds->commands[i], ' ');
-		if (!ft_check_builtin(Cmds))
+		if (pos == 0)
 		{
-			Cmds->pid = fork();
-			if (Cmds->pid == 0)
-				ft_execute(Data, Cmds, i);
+			if (cmds->n_cmds > 2)
+				dup2(cmds->pipefd[1][WRITE], STDOUT_FILENO);
 			else
-				waitpid(Cmds->pid, &status, 0);
+				dup2(cmds->pipefd[0][WRITE], STDOUT_FILENO);
 		}
-		else
-			ft_isparent_builtin(Cmds, Data, i);
-		i++;
-		ft_doublefree((void **)Cmds->p_command);
+		else if (pos != 0 && pos != cmds->n_cmds - 1)
+		{
+			dup2(cmds->pipefd[1][WRITE], STDOUT_FILENO);
+			dup2(cmds->pipefd[0][READ], STDIN_FILENO);
+		}
+		else if (pos == cmds->n_cmds - 1)
+			dup2(cmds->pipefd[0][READ], STDIN_FILENO);
 	}
-	ft_doublefree((void **)Cmds->commands);
+}
+
+/**
+ * @brief This function creates all the necesary forks
+ * in order to execute every command
+ * 
+ * @param pos command number
+ */
+void	ft_create_forks(t_cmds *cmds, t_data *data, int pos)
+{
+	cmds->pid = fork();
+	ft_interactive(0);
+	if (cmds->pid == 0)
+	{
+		ft_init_execute(cmds, pos);
+		close(cmds->pipefd[0][READ]);
+		close(cmds->pipefd[0][WRITE]);
+		close(cmds->pipefd[1][READ]);
+		close(cmds->pipefd[1][WRITE]);
+		ft_execute(data, cmds->command[pos]);
+		
+	}
 }

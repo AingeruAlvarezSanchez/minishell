@@ -3,61 +3,69 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/10 16:03:58 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/10 16:08:45 by aalvarez         ###   ########.fr       */
+/*   Created: 2022/04/04 08:42:17 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/05/19 18:34:54 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include <stdio.h>
 
-char	**ft_unset_env(t_data *Data, int j)
+char	**ft_unset_env(t_data *data, int j)
 {
 	char	**new;
 	int		i;
 	int		x;
 
 	i = 0;
-	while (Data->env[i])
+	while (data->env[i])
 		i++;
 	new = (char **)malloc(sizeof(char *) * i);
 	i = -1;
 	x = 0;
-	while (Data->env[++i])
+	while (data->env[++i])
 	{
 		if (i == j)
 			i++;
-		if (!Data->env[i])
+		if (!data->env[i])
 			break ;
-		new[x++] = ft_strdup(Data->env[i]);
+		new[x++] = ft_strdup(data->env[i]);
 	}
 	new[x] = 0;
-	ft_doublefree((void **)Data->env);
+	ft_doublefree(data->env);
 	return (new);
 }
 
-void	ft_unset(t_data *Data, t_cmds *Cmds, int i)
+void	ft_unset(t_data *data, char **command, int i)
 {
 	char	*find;
 	size_t	len;
 	int		j;
 
-	find = Cmds->p_command[i];
+	find = command[i];
 	len = ft_strlen(find);
 	j = -1;
-	while (Data->env[++j])
+	while (data->env[++j])
 	{
-		if (!ft_strncmp(Data->env[j], find, len))
+		if (!ft_strncmp(data->env[j], find, len))
 		{
-			Data->env = ft_unset_env(Data, j);
+			data->env = ft_unset_env(data, j);
+			data->last_out = 0;
 			break ;
 		}
 	}
 }
 
-void	ft_check_unset(t_data *Data, t_cmds *Cmds, int cmd_pos)
+void	ft_unset_error(char **command, t_data *data, int i)
+{
+	printf("unset: '%s': not a valid identifier\n",
+		command[i]);
+	data->last_out = 1;
+}
+
+void	ft_check_unset(char **command, t_data *data, int cmd_n)
 {
 	int	i;
 	int	j;
@@ -65,23 +73,22 @@ void	ft_check_unset(t_data *Data, t_cmds *Cmds, int cmd_pos)
 
 	i = 0;
 	check = 1;
-	while (Cmds->p_command[++i])
+	while (command[++i])
 	{
 		j = -1;
-		while (Cmds->p_command[i][++j])
+		while (command[i][++j])
 		{
-			if (Cmds->p_command[i][j] == '=')
+			if (command[i][j] == '=')
 			{
-				printf("unset: '%s': not a valid identifier\n",
-					Cmds->p_command[i]);
+				ft_unset_error(command, data, i);
 				check = 0;
 			}
 		}
 		if (check == 1)
 		{
-			if (cmd_pos != 0)
+			if (cmd_n != 0)
 				return ;
-			ft_unset(Data, Cmds, i);
+			ft_unset(data, command, i);
 		}
 		check = 1;
 	}

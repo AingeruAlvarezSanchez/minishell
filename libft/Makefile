@@ -6,7 +6,7 @@
 #    By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/24 12:12:22 by aalvarez          #+#    #+#              #
-#    Updated: 2022/02/20 13:20:35 by aalvarez         ###   ########.fr        #
+#    Updated: 2022/05/10 08:36:06 by aalvarez         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,9 @@ SRC = ft_isalpha.c			\
 	  ft_putendl_fd.c		\
 	  ft_putnbr_fd.c		\
 	  ft_strmapi.c			\
-	  ft_doublefree.c
+	  ft_doublefree.c		\
+	  ft_doublestrdup.c		\
+	  ft_deletechar.c
 
 SRC_BONUS = ft_lstnew.c			\
 			ft_lstadd_front.c	\
@@ -66,7 +68,7 @@ OBJ = $(SRC:.c=.o)
 
 CC = gcc
 AR = ar rc
-CFLAGS = -Wall -Wextra #-Werror
+CFLAGS = -Wall -Wextra -Werror
 RM = /bin/rm -f
 
 all: $(NAME)

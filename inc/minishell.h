@@ -3,45 +3,87 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/16 15:08:14 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/10 16:11:42 by aalvarez         ###   ########.fr       */
+/*   Created: 2022/05/10 05:41:11 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/05/19 23:12:58 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+#include "../libft/libft.h"
 
-# include "../libft/libft.h"
+# define WRITE 1
+# define READ 0
 
-typedef struct s_data
-{
-	char	**env;
-	char	**path;
-}	t_data;
+typedef struct s_data {
+    char    **env;
+    char    **paths;
+    int     last_out;
+}   t_data;
 
-typedef struct s_cmds
-{
-	pid_t	pid;
-	char	**commands;
-	char	**p_command;
-	int		n_cmds;
-	int		**pipefd;
-}	t_cmds;
+typedef struct s_cmds {
+    char    *prompt;
+    char    *token_value;
+    char    **tokens;
+    
+    int     n_cmds;
+    char    **binary;
+    char    ***command;
 
-/* builtin functions */
-void	ft_check_echo(t_cmds *Cmds);
-void	ft_pwd(void);
-void	ft_env(t_data *Data);
-void	ft_cd(t_cmds *Cmds, t_data *Data, int cmd_pos);
-void	ft_exit(t_cmds *Cmds, int cmd_pos);
-void	ft_check_export(t_data *Data, t_cmds *Cmds, int cmd_pos);
-void	ft_check_unset(t_data *Data, t_cmds *Cmds, int cmd_pos);
-/* Command execution functions */
-void	ft_commands(char *str, t_cmds *Cmds, t_data *Data);
-void	ft_init_exec(t_cmds *Cmds, t_data *Data);
-/* simple and multiquotes managing */
-char	*ft_manage_quotes(char *command);
+    pid_t	pid;
+    int     **pipefd;
+    
+}   t_cmds;
+
+/* Initials */
+void    ft_cpyenv(char **envp, t_data *data);
+void    ft_initcmds(t_cmds *cmds);
+
+/* Errors handling fucntions */
+int ft_has_final(t_cmds *cmds, int xref, char c);
+int  ft_pipes_error(t_cmds *cmds, int xref);
+
+/* Special chars */
+int	ft_is_special_char(char c);
+int ft_has_special_char(t_cmds *cmds);
+
+/* First case function */
+void ft_check_first(t_cmds *cmds);
+
+/* Quotes managing function */
+int  ft_quotes(t_cmds *cmds, int xref, char c);
+
+/* Quotes managing function */
+int ft_pipes(t_cmds *cmds, int xref);
+
+/* Join after checking special chars */
+void ft_lastjoin(t_cmds *cmds);
+
+
+/* Dollar expanding function */
+void    ft_dollars(t_cmds *cmds, t_data *data);
+
+/* parsing */
+void ft_parsing(t_cmds *cmds);
+
+/* builtins */
+void	ft_exit(char *flag, t_data *data, int cmd_n);
+void	ft_cd(char *flag, t_data *data, int cmd_pos);
+void	ft_check_export(char **command, t_data *data, int cmd_n);
+void	ft_check_unset(char **command, t_data *data, int cmd_n);
+
+/* utils */
+void    print_bi_array(char **arr, char *text);
+char    **copy_doble_array(char **arr);
+
+/* execute*/
+void	ft_create_forks(t_cmds *cmds, t_data *data, int pos);
+
+/*signals*/
+void	ft_signals(void);
+int     ft_interactive(int inter);
+void	ft_signal_exit(t_data *data);
 
 #endif
