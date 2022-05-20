@@ -9,6 +9,7 @@ SRC		=	src/main.c				\
 			src/firstcase.c			\
 			src/errors.c			\
 			src/quotes.c			\
+			src/composed_quotes.c	\
 			src/pipes.c				\
 			src/lastjoin.c			\
 			src/dollars.c

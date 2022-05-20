@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 05:41:11 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/19 07:53:56 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/05/20 01:34:13 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void ft_check_first(t_cmds *cmds);
 
 /* Quotes managing function */
 int  ft_quotes(t_cmds *cmds, int xref, char c);
+int  ft_composed_quotes_ref(t_cmds *cmds, int xref);
+int  ft_composed_quotes_len(t_cmds *cmds, int xref);
 
 /* Quotes managing function */
 int ft_pipes(t_cmds *cmds, int xref);
@@ -51,4 +53,5 @@ void ft_lastjoin(t_cmds *cmds);
 
 /* Dollar expanding function */
 void    ft_dollars(t_cmds *cmds, t_data *data);
+
 #endif

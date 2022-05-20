@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 21:54:34 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/17 04:59:15 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/05/20 01:25:43y aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ static void ft_isnotfirst(t_cmds *cmds, char **tmp, int xref, int x)
         while (tmp[++i])
             cmds->tokens[i] = ft_strdup(tmp[i]);
         cmds->tokens[i] = ft_strtrim(tmp2, " ");
-        cmds->tokens[i + 1] = ft_substr(cmds->prompt, xref, ((x + 1) - xref));
         cmds->tokens[i + 2] = 0;
+        cmds->tokens[i + 1] = ft_substr(cmds->prompt, xref, ((x + 1) - xref));
         ft_multicommand(cmds, i, xref, x);
     }
     else
@@ -84,14 +84,21 @@ int  ft_quotes(t_cmds *cmds, int xref, char c)
 
     x = xref + 1;
     tmp = ft_doublestrdup(cmds->tokens);
+    if (xref != 0 && cmds->prompt[xref - 1] != ' ')
+        xref = ft_composed_quotes_ref(cmds, xref);
     while (cmds->prompt[x] != c)
         x++;
+    if (cmds->prompt[x + 1] && cmds->prompt[x + 1] != ' ')
+        x = ft_composed_quotes_len(cmds, x);
     if (tmp[0])
         ft_isnotfirst(cmds, tmp, xref, x);
     else
     {
         cmds->tokens = (char **)malloc(sizeof(char *) * 2);
-        cmds->tokens[0] = ft_substr(cmds->prompt, xref, ((x + 1) - xref));
+        if (cmds->prompt[x + 1] && cmds->prompt[x + 1] != '"')
+            cmds->tokens[0] = ft_substr(cmds->prompt, xref, ((x + 2) - xref));
+        else
+            cmds->tokens[0] = ft_substr(cmds->prompt, xref, ((x + 1) - xref));
         cmds->tokens[1] = 0;
     }
     ft_doublefree(tmp);

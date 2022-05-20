@@ -6,13 +6,12 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 05:41:15 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/19 07:53:16 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/05/20 01:34:36 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 #include <stdio.h>
-#include <stdlib.h>
 #include <sys/wait.h>
 #include <readline/readline.h>
 #include <readline/history.h>
