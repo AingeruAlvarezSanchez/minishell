@@ -19,18 +19,15 @@ char **copy_doble_array(char **arr)
 	char **new;
 	int i;
 	
-	i = 0;
-	while(arr[i])
-		i++;
-	new = (char **)malloc(sizeof(char *) * (i + 1));
-	new[i] = 0;
+	new = (char **)malloc(sizeof(char *) * (ft_doublestrlen(arr) + 1));
 	i = 0;
 	while(arr[i])
 	{
 		new[i] = ft_strdup(arr[i]);
 		i++;
 	}
-	return new;
+	new[i] = 0;
+	return (new);
 }
 
 void print_bi_array(char **arr, char *text)

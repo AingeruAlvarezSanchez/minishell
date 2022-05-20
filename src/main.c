@@ -26,13 +26,13 @@
  */
 void	ft_parent_builtin(char** command, t_data *data, int cmd_n)
 {    
-	if (!ft_strncmp(command[0], "exit", 4) && !command[0][4])
+	if (!ft_strncmp(command[0], "exit", 4)/* && !command[0][4]*/)
 		ft_exit(command[1], data, cmd_n);
-	else if (!ft_strncmp(command[0], "cd", 2) && !command[2])
+	else if (!ft_strncmp(command[0], "cd", 2)/* && !command[2]*/)
 		ft_cd(command[1], data, cmd_n);
-	else if (!ft_strncmp(command[0], "export", 6) && !command[6])
+	else if (!ft_strncmp(command[0], "export", 6)/* && !command[6]*/)
 		ft_check_export(command, data, cmd_n);
-	else if (!ft_strncmp(command[0], "unset", 5) && !command[5])
+	else if (!ft_strncmp(command[0], "unset", 5)/* && !command[5]*/)
 		ft_check_unset(command, data, cmd_n);
 }
 
