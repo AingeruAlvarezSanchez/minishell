@@ -19,6 +19,7 @@ SRC		=	src/main.c				\
 			src/lastjoin.c			\
 			src/execute.c			\
 			src/signals.c			\
+			src/composed_quotes.c	\
 			src/dollars.c
 
 INCLUDE =	inc/minishell.h

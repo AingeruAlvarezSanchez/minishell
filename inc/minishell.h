@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 05:41:11 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/19 23:12:58 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/05/20 12:24:29 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,14 @@ void ft_check_first(t_cmds *cmds);
 
 /* Quotes managing function */
 int  ft_quotes(t_cmds *cmds, int xref, char c);
+int  ft_composed_quotes_ref(t_cmds *cmds, int xref);
+int  ft_composed_quotes_len(t_cmds *cmds, int xref);
 
 /* Quotes managing function */
 int ft_pipes(t_cmds *cmds, int xref);
 
 /* Join after checking special chars */
 void ft_lastjoin(t_cmds *cmds);
-
 
 /* Dollar expanding function */
 void    ft_dollars(t_cmds *cmds, t_data *data);

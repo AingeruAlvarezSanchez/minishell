@@ -6,13 +6,12 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 05:41:15 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/19 23:19:51 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/05/20 12:27:18 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 #include <stdio.h>
-#include <stdlib.h>
 #include <sys/wait.h>
 #include <readline/readline.h>
 #include <readline/history.h>
