@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initials.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 07:44:17 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/18 19:51:18 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/05/21 06:10:54 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,17 @@ void    ft_cpyenv(char **envp, t_data *data)
     ft_createpaths(data);
 }
 
+void	ft_create_pipes(t_cmds *cmds)
+{
+    cmds->pipefd = (int **)malloc(sizeof(int *) * 2);
+	cmds->pipefd[0] = (int *)malloc(sizeof(int) * 2);
+	cmds->pipefd[1] = (int *)malloc(sizeof(int) * 2);
+}
+
 void ft_initcmds(t_cmds *cmds)
 {
     cmds->tokens = (char **)malloc(sizeof(char *));
     cmds->tokens[0] = 0;
 
     cmds->n_cmds = 1;
-
-    cmds->pipefd = (int **)malloc(sizeof(int *) * 2);
-	cmds->pipefd[0] = (int *)malloc(sizeof(int) * 2);
-	cmds->pipefd[1] = (int *)malloc(sizeof(int) * 2);
-
 }

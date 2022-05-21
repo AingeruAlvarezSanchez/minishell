@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollars.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 07:52:52 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/19 19:43:01 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/05/21 06:45:26 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,18 +92,13 @@ void    ft_dollars(t_cmds *cmds, t_data *data)
         x = -1;
         while (cmds->tokens[i][++x])
         {
-            if (cmds->tokens[i][x] == '$' && cmds->tokens[i][0] != '\'')
+            if (cmds->tokens[i][x] == '$' && cmds->tokens[i][0] != '\'' && (cmds->tokens[i][x + 1] && cmds->tokens[i][x + 1] != '$'))
             {
                 if (ft_check_dollars(cmds, data, i, x))
-                {
                     ft_dollar_value(cmds, i, x);
-                    x = -1;
-                }
                 else
-                {
                     ft_dollar_no_value(cmds, i, x);
-                    x = -1;
-                }
+                x = -1;
             }
         }
     }

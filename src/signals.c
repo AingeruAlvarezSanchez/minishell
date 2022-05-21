@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 21:00:16 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/05/19 23:17:15 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/05/21 02:30:45 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,9 @@ int	ft_interactive(int inter)
 	return (interactive);
 }
 
-void	ft_signal_exit(t_data *data)
+void	ft_signal_exit(t_data *data, t_cmds *cmds)
 {
+	free(cmds->prompt);
 	write(1, "exit\n", 5);
 	ft_doublefree(data->env);
 	ft_doublefree(data->paths);

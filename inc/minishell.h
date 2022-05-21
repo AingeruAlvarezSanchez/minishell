@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 05:41:11 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/20 12:24:29 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/05/21 06:10:49 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_cmds {
 /* Initials */
 void    ft_cpyenv(char **envp, t_data *data);
 void    ft_initcmds(t_cmds *cmds);
+void	ft_create_pipes(t_cmds *cmds);
 
 /* Errors handling fucntions */
 int ft_has_final(t_cmds *cmds, int xref, char c);
@@ -85,6 +86,6 @@ void	ft_create_forks(t_cmds *cmds, t_data *data, int pos);
 /*signals*/
 void	ft_signals(void);
 int     ft_interactive(int inter);
-void	ft_signal_exit(t_data *data);
+void	ft_signal_exit(t_data *data, t_cmds *cmds);
 
 #endif

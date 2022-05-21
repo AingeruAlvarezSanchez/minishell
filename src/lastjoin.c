@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 19:41:26 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/16 19:47:33 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/05/21 05:56:36 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,5 @@ void ft_lastjoin(t_cmds *cmds)
         cmds->tokens[i] = ft_strdup(tmp[i]);
     cmds->tokens[i] = ft_strdup(cmds->prompt);
     cmds->tokens[i + 1] = 0;
-    cmds->prompt = 0;
     ft_doublefree(tmp);
 }

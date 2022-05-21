@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 08:40:53 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/19 18:25:41 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/05/21 06:24:59 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,22 @@
 char	*ft_create_value(char **command, int x, int i)
 {
 	char	*value;
-	int		size;
-	int		ref;
+	//int		size;
+	//int		ref;
 
-	size = 0;
-	ref = x;
+	//size = 0;
+	//ref = x;
 	if (command[i][x])
 	{
 		x = x - 1;
-		while (command[i][++x])
+		value = ft_strdup(command[i]);
+		/*while (command[i][++x])
 			size++;
 		value = (char *)malloc(sizeof(char) * (size + 1));
 		x = 0;
 		while (command[i][ref])
 			value[x++] = command[i][ref++];
-		value[x] = 0;
+		value[x] = 0;*/
 	}
 	else
 		return (NULL);

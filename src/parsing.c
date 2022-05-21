@@ -3,20 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 17:13:14 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/05/20 12:39:12 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/05/21 06:41:07 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include <stdio.h>
 
 void	ft_parser(t_cmds *cmds, char **arr, int cmd_pos)
 {
-    int i;
-    
-    cmds->binary[cmd_pos] = ft_strtrim(ft_deletechar(arr[0], '\"'), " ");
+    int     i;
+    char    *tmp;
+
+    tmp = ft_deletechar(arr[0], '\"');
+    cmds->binary[cmd_pos] = ft_strtrim(tmp, " ");
+    free(tmp);
     cmds->command[cmd_pos][0] = ft_strdup(cmds->binary[cmd_pos]);
     i = 0;
     while (arr[++i])
@@ -25,18 +29,20 @@ void	ft_parser(t_cmds *cmds, char **arr, int cmd_pos)
 
 void ft_until_pipe(t_cmds *cmds, int n_tkn, int n_comand, char ** tkn)
 {
-    int i;
-    char **arr;// tokens until pipe
+    int     i;
+    char    **arr;// tokens until pipe
         
     arr = (char**)malloc(sizeof(char*) * (n_tkn + 1));
 	arr[n_tkn] = 0;
       i = -1;
 	while(n_tkn > ++i)
 	    arr[i] = ft_strdup(tkn[i]);//guarda tokens hasta pipe
-    print_bi_array(arr, "arr");
+    arr[i] = 0;
+    //print_bi_array(arr, "arr"); //los printeos dan tanto invalid reads (segfaults internos) como leaks
     cmds->command[n_comand] = (char**)malloc(sizeof(char*) * (n_tkn + 1));
     cmds->command[n_comand][n_tkn] = 0;
     ft_parser(cmds, arr, n_comand);
+    ft_doublefree(arr);
 }
 
 void admin_comands(t_cmds *cmds, char **tkn)
@@ -63,22 +69,25 @@ void admin_comands(t_cmds *cmds, char **tkn)
 		}
 		n_tkn++;
 	}
-	//ft_doublefree(tkn);
 }
 
 void ft_parsing(t_cmds *cmds)
 {
+    char    **tkn;
+
     cmds->binary = (char**)malloc(sizeof(char*) * (cmds->n_cmds + 1));
 	cmds->binary[cmds->n_cmds] = 0;
     cmds->command = (char***)malloc(sizeof(char**) * (cmds->n_cmds + 1));
 	cmds->command[cmds->n_cmds] = 0;
-   
-	admin_comands(cmds, copy_doble_array(cmds->tokens));
+    tkn = ft_doublestrdup(cmds->tokens);
+    admin_comands(cmds, tkn);
 	
-	//print_bi_array(cmds->tokens, "tokens");
+    //los printeos dan tanto invalid reads (segfaults internos) como leaks
+	/*print_bi_array(cmds->tokens, "tokens");
  	print_bi_array(cmds->binary, "binaries");
     int i = 0;
     while(cmds->command[i])
-	    print_bi_array(cmds->command[i++], "comands");
-		
+	    print_bi_array(cmds->command[i++], "comands");*/
+    ft_doublefree(tkn);
+    ft_doublefree(cmds->binary);
 }

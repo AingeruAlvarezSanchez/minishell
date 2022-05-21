@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   firstcase.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 19:07:31 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/20 12:25:04 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/05/21 05:51:01 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static void ft_isfirst_multicommand(t_cmds *cmds)
     {
         ft_doublefree(cmds->tokens);
         cmds->tokens = ft_doublestrdup(tmp);
+        ft_doublefree(tmp);
     }
 }
 
@@ -59,6 +60,7 @@ static void ft_isjoin_multicommand(t_cmds *cmds)
     while (split[++i])
         cmds->tokens[i] = ft_strdup(split[i]);
     cmds->tokens[i] = 0;
+    ft_doublefree(split);
 }
 
 static int ft_firstcut_quotejoin(t_cmds *cmds, int xref)

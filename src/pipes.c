@@ -78,5 +78,6 @@ int ft_pipes(t_cmds *cmds, int xref)
         cmds->tokens[i + 1] = 0;
     }
     ft_doublefree(tmp);
+    free(tmp2);
     return (result);
 }
