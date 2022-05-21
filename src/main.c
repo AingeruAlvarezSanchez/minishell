@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 05:41:15 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/21 06:34:24 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/05/21 07:18:02 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,9 @@ void	ft_check_builtins(t_cmds *cmds, t_data *data)
 	close(cmds->pipefd[0][WRITE]);
 	close(cmds->pipefd[1][READ]);
 	close(cmds->pipefd[1][WRITE]);
-	data->last_out = WEXITSTATUS(status);
+	printf("data->last pre: %d\n", data->last_out);
+	data->last_out = WEXITSTATUS(status); //data last out no se rellena bien con el WEXITSTATUS 
+	printf("data->last post: %d\n", data->last_out);
 	ft_triplefree(cmds->command);
 }
 

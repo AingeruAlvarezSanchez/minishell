@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 07:44:17 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/21 06:10:54 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/05/21 07:12:38 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void    ft_cpyenv(char **envp, t_data *data)
     int i;
 
     i = -1;
+    data->last_out = 0;
     data->env = (char **)malloc(sizeof(char *) * (ft_doublestrlen(envp) + 1));
     while (envp[++i])
         data->env[i] = ft_strdup(envp[i]);

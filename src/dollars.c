@@ -6,11 +6,12 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 07:52:52 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/21 06:45:26 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/05/21 07:13:57 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include <stdio.h>
 
 static int ft_check_dollars(t_cmds *cmds, t_data *data, int iref, int xref)
 {
@@ -81,6 +82,29 @@ static void ft_dollar_value(t_cmds *cmds, int iref, int xref)
     free(next);
 }
 
+static void ft_lastoutdollar(t_cmds *cmds, t_data *data, int iref, int xref)
+{
+    char    *status;
+    char    *prev;
+    char    *next;
+
+    status = ft_itoa(data->last_out);
+    prev = ft_substr(cmds->tokens[iref], 0, xref);
+    next = ft_strjoin(prev, status);
+    free(prev);
+    while (cmds->tokens[iref][xref] && cmds->tokens[iref][xref] != ' ')
+        xref++;
+    if (cmds->tokens[iref][xref - 1] == '"')
+        prev = ft_strdup("\"");
+    else
+        prev = ft_substr(cmds->tokens[iref], xref, (ft_strlen(cmds->tokens[iref]) - xref));
+    free(cmds->tokens[iref]);
+    cmds->tokens[iref] = ft_strjoin(next, prev);
+    free(prev);
+    free(next);
+    free(status);
+}
+
 void    ft_dollars(t_cmds *cmds, t_data *data)
 {
     int i; 
@@ -94,6 +118,13 @@ void    ft_dollars(t_cmds *cmds, t_data *data)
         {
             if (cmds->tokens[i][x] == '$' && cmds->tokens[i][0] != '\'' && (cmds->tokens[i][x + 1] && cmds->tokens[i][x + 1] != '$'))
             {
+                if (cmds->tokens[i][x + 1] == '?')
+                {
+                    ft_lastoutdollar(cmds, data, i, x);
+                    if (cmds->tokens[i][x + 2] && cmds->tokens[i][x + 2] == ' ')//segfault porque el programa no puede comprobar la posicion + 2 si no existe
+                        x += 2;
+                    continue ;
+                }
                 if (ft_check_dollars(cmds, data, i, x))
                     ft_dollar_value(cmds, i, x);
                 else
