@@ -26,7 +26,6 @@ static void ft_isfirst_multicommand(t_cmds *cmds)
     {
         ft_doublefree(cmds->tokens);
         cmds->tokens = ft_doublestrdup(tmp);
-        ft_doublefree(tmp);
     }
 }
 
