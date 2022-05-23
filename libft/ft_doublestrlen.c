@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-int	ft_doublestrlen(const char **str)
+int	ft_doublestrlen(char **str)
 {
 	int	i;
 

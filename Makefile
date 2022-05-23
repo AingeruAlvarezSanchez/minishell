@@ -3,28 +3,38 @@ NAME = minishell
 CC		=	gcc
 RM		=	rm -rf
 FLAGS	=	-Wall -Wextra -Werror -g -g3 -fsanitize=address
-SRC		=	src/main.c	\
-			src/dollar_parser.c	\
-			src/builtins/echo.c	\
-			src/builtins/pwd.c	\
-			src/builtins/env.c	\
-			src/builtins/cd.c	\
-			src/builtins/exit.c	\
-			src/builtins/export.c\
-			src/builtins/unset.c\
-			src/quotes.c\
-			src/execute.c\
-			src/signals.c\
-			src/commands.c
+SRC		=	src/main.c				\
+			src/builtins/exit.c		\
+			src/builtins/cd.c		\
+			src/builtins/export.c	\
+			src/builtins/unset.c	\
+			src/initials.c			\
+			src/special_chars.c		\
+			src/firstcase.c			\
+			src/errors.c			\
+			src/quotes.c			\
+			src/parsing.c			\
+			src/pipes.c				\
+			src/utils.c				\
+			src/lastjoin.c			\
+			src/execute.c			\
+			src/signals.c			\
+			src/composed_quotes.c	\
+			src/dollars.c
 
 INCLUDE =	inc/minishell.h
 LIB		=	libft/libft.a
+
+PWD = ~/.brew/opt/readline
+
+READLINE =	-lreadline -L /Users/$(USER)/.brew/opt/readline/lib\
+			-I /Users/$(USER)/.brew/opt/readline/include\
 
 $(NAME): all
 
 all: $(SRC)
 	@$(MAKE) -C libft/
-	@ $(CC) $(FLAGS) $(SRC) $(LIB) -lreadline -o $(NAME)
+	@ $(CC) $(FLAGS) $(SRC) $(LIB) $(READLINE) -o $(NAME)
 	@ echo "compilation OK"
 
 clean:

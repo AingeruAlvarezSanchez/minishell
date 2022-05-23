@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_triplefree.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/03 18:39:33 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/03/29 09:50:12 by aalvarez         ###   ########.fr       */
+/*   Created: 2022/05/21 05:59:31 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/05/21 06:02:32 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
-#include <stdio.h>
+#include "libft.h"
 
-void	ft_pwd(t_data *Data)
+void    ft_triplefree(char ***str)
 {
-	char	*route;
+    int i;
 
-	route = getcwd(NULL, 0);
-	printf("%s\n", route);
-	Data->last_out = 0;
-	free(route);
-	exit(0);
+    i = -1;
+    while (str[++i])
+        ft_doublefree(str[i]);
+    free(str);
 }

@@ -5,91 +5,102 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/03 18:41:03 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/03/03 18:45:04 by ecorreia         ###   ########.fr       */
+/*   Created: 2022/05/10 21:54:34 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/05/20 12:25:48 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-#include <stdio.h>
 
-int	ft_ncinstr(char c, char *str)
+static int ft_checkprevious(char *tmp)
 {
-	int	i;
-	int	q;
-
-	q = 0;
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == c)
-			q++;
-		i++;
-	}
-	return (q);
+    if (tmp[0])
+        return (1);
+    else
+        return (0);
 }
 
-/**
- * @brief Checks if char is inside str and returns position
- * 
- * @param c     this is the char to search
- * @param str   This is the string in which to search for a character
- * @return int  Returns the position of character found or -1
- */
-int	ft_cinstr(char c, char *str)
+static void ft_multicommand(t_cmds *cmds, int iref, int xref, int cut)
 {
-	int	i;
+    char    **tmp;
+    char    **tmp2;
+    int     i;
+    int     x;
 
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == c)
-			return (i);
-		i++;
-	}
-	return (-1);
+    tmp = ft_split(cmds->tokens[iref], ' ');
+    if (ft_doublestrlen(tmp) == 1)
+    {
+        ft_doublefree(tmp);
+        return ;
+    }
+    else
+    {
+        tmp2 = ft_doublestrdup(cmds->tokens);
+        cmds->tokens = (char **)malloc(sizeof(char *) * (ft_doublestrlen(tmp) + (iref + 2)));
+        i = -1;
+        while (++i < iref)
+            cmds->tokens[i] = ft_strdup(tmp2[i]);
+        x = 0;
+        while (tmp[x])
+            cmds->tokens[i++] = tmp[x++];
+        cmds->tokens[i] = ft_substr(cmds->prompt, xref, ((cut + 1) - xref));
+        cmds->tokens[i + 1] = 0;
+    }
 }
 
-/**
- * @brief Checks if there is quote and delete them if closed
- * 
- * @param str       This is the string in which to search for quotes
- * @param c         this is the quote type to delete 
- * @return char*    returns string without quotes or str if no 
- * coincidence or not closed
- */
-int	ft_check_quotes(char *str, char c)
+static void ft_isnotfirst(t_cmds *cmds, char **tmp, int xref, int x)
 {
-	int		i;
-	char	*s;
+    char    *tmp2;
+    int     i;
 
-	i = -1;
-	i = ft_cinstr(c, str);
-	if (i >= 0)
-	{
-		s = ft_substr(str, ft_cinstr(c, str), ft_strlen(str + i));
-		if (s)
-			return (1);
-	}
-	return (0);
+    tmp2 = ft_substr(cmds->prompt, 0, xref);
+    if (ft_checkprevious(tmp2))
+    {
+        cmds->tokens = (char **)malloc(sizeof(char *) * (ft_doublestrlen(tmp) + 3));
+        i = -1;
+        while (tmp[++i])
+            cmds->tokens[i] = ft_strdup(tmp[i]);
+        cmds->tokens[i] = ft_strtrim(tmp2, " ");
+        cmds->tokens[i + 2] = 0;
+        cmds->tokens[i + 1] = ft_substr(cmds->prompt, xref, ((x + 1) - xref));
+        ft_multicommand(cmds, i, xref, x);
+    }
+    else
+    {
+        i = -1;
+        cmds->tokens = (char **)malloc(sizeof(char *) * (ft_doublestrlen(tmp) + 2));
+        while (tmp[++i])
+            cmds->tokens[i] = ft_strdup(tmp[i]);
+        cmds->tokens[i] = ft_substr(cmds->prompt, xref, ((x + 1) - xref));
+        cmds->tokens[i + 1] = 0;
+    }
+    free(tmp2);
 }
 
-//es inpar
-int	isodd(int n)
+int  ft_quotes(t_cmds *cmds, int xref, char c)
 {
-	return (n & 1);
-}
+    char    **tmp;
+    int     x;
 
-char	*ft_manage_quotes(char *command)
-{	
-	if (isodd(ft_ncinstr('\'', command)))
-	{
-		printf("quotes no cerradas\n");
-		return (command);
-	}
-	if (ft_check_quotes(command, '\''))
-		return (ft_strtrim(command, "\'"));
-	if (ft_check_quotes(command, '\"'))
-		return (ft_strtrim(command, "\""));
-	return (command);
+    x = xref + 1;
+    tmp = ft_doublestrdup(cmds->tokens);
+    if (xref != 0 && cmds->prompt[xref - 1] != ' ')
+        xref = ft_composed_quotes_ref(cmds, xref);
+    while (cmds->prompt[x] != c)
+        x++;
+    if (cmds->prompt[x + 1] && cmds->prompt[x + 1] != ' ')
+        x = ft_composed_quotes_len(cmds, x);
+    if (tmp[0])
+        ft_isnotfirst(cmds, tmp, xref, x);
+    else
+    {
+        cmds->tokens = (char **)malloc(sizeof(char *) * 2);
+        if (cmds->prompt[x + 1] && cmds->prompt[x + 1] != '"')
+            cmds->tokens[0] = ft_substr(cmds->prompt, xref, ((x + 2) - xref));
+        else
+            cmds->tokens[0] = ft_substr(cmds->prompt, xref, ((x + 1) - xref));
+        cmds->tokens[1] = 0;
+    }
+    ft_doublefree(tmp);
+    return (x + 1);
 }
