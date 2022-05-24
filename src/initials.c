@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initials.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 07:44:17 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/21 07:12:38 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/05/24 10:48:43 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,5 @@ void ft_initcmds(t_cmds *cmds)
     cmds->tokens[0] = 0;
 
     cmds->n_cmds = 1;
+    cmds->redir_flag = -1;
 }

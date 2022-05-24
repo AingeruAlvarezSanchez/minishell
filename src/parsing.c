@@ -6,12 +6,13 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 17:13:14 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/05/23 21:13:30 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/05/24 12:32:04 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 #include <stdio.h>
+#include <fcntl.h>
 
 void	ft_parser(t_cmds *cmds, char **arr, int cmd_pos)
 {
@@ -61,6 +62,15 @@ void admin_comands(t_cmds *cmds, char **tkn)
             if (!tkn[n_tkn + 1])
             {
                 ft_until_pipe(cmds, n_tkn + 1, n_comand, tkn);
+                if(cmds->redir_flag == n_comand)///////////////////////////////////////////////////creo fd del command
+                {
+                    cmds->redir_fd = open(cmds->command[n_comand][0], O_RDWR | O_CREAT | O_APPEND);
+                    if (cmds->redir_fd == -1)
+                    {
+                        perror("open error");
+                        exit(EXIT_FAILURE);
+                    }
+                }
                 return;
             }
             ft_until_pipe(cmds, n_tkn, n_comand, tkn);

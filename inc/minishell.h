@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 05:41:11 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/23 21:03:53 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/05/24 12:11:03 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_cmds {
     pid_t	pid;
     int     **pipefd;
     int     redir_flag;//*redir_flag
+    int     redir_fd;
     
 }   t_cmds;
 

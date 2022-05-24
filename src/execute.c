@@ -6,12 +6,13 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 20:54:41 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/05/19 23:08:27 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/05/24 12:14:47 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 #include <stdio.h>
+#include <fcntl.h>
 
 void	ft_execute(t_data *data, char **command)
 {
@@ -35,7 +36,10 @@ void	ft_execute(t_data *data, char **command)
 void	ft_init_execute(t_cmds *cmds, int pos)
 {
 	if (cmds->n_cmds != 1)
-	{
+	{	
+		if(cmds->redir_flag == pos)
+			dup2(cmds->redir_fd, STDOUT_FILENO);
+		
 		if (pos == 0)
 		{
 			if (cmds->n_cmds > 2)
@@ -66,10 +70,14 @@ void	ft_create_forks(t_cmds *cmds, t_data *data, int pos)
 	if (cmds->pid == 0)
 	{
 		ft_init_execute(cmds, pos);
+		
 		close(cmds->pipefd[0][READ]);
 		close(cmds->pipefd[0][WRITE]);
 		close(cmds->pipefd[1][READ]);
 		close(cmds->pipefd[1][WRITE]);
+		
+		
+		
 		ft_execute(data, cmds->command[pos]);
 		
 	}

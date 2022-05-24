@@ -51,7 +51,7 @@ static int  ft_manage_special_character(t_cmds *cmds, int xref, char c)
     sp = malloc(sizeof(char) * 2);
     sp[0] = c;
     sp[1] = 0;
-    if (c == '<' || c == '>')
+    if (c == '<' || c == '>' || c == '|')
     { 
         if (ft_pipes_error(prompt, sp))
             return (-1);
@@ -63,13 +63,6 @@ static int  ft_manage_special_character(t_cmds *cmds, int xref, char c)
         if (!ft_has_final(cmds, xref, c))
             return (-1);
         result = ft_quotes(cmds, xref, c);
-    }
-    else if (c == '|')
-    {
-        if (ft_pipes_error(prompt, sp))
-            return (-1);
-        result = ft_pipes(cmds, xref, sp);
-        cmds->n_cmds++;
     }
     free(sp);
     free(prompt);

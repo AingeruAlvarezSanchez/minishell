@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 05:41:15 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/23 21:11:27 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/05/24 11:43:55 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,21 +74,6 @@ void	ft_check_builtins(t_cmds *cmds, t_data *data)
 	i = -1;
 	while (++i < cmds->n_cmds)
 	{
-		if(cmds->redir_flag == i)//////////////////////////////////////////////////////////
-		{
-			printf("comand-->%d--->",cmds->redir_flag);
-			int fd = open(cmds->command[i][0], O_RDWR | O_CREAT);
-			if (fd == -1)
-			{
-				perror("open");
-				exit(EXIT_FAILURE);
-   			}
-			write(fd, &cmds->command[i][0], sizeof(cmds->command[i][0]));
-			close(fd);
-			continue;
-			
-			break;
-		}
 		if (!ft_check_parent(cmds->command[i][0]))
 		{
 			ft_create_forks(cmds, data, i);
