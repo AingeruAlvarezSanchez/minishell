@@ -34,6 +34,7 @@ static int  ft_manage_special_character(t_cmds *cmds, int xref, char c)
     char *sp;
     char *prompt = ft_substr(cmds->prompt, xref + 1, sizeof(cmds->prompt) - xref);
 
+	result = 0;
     if ((c == '<' || c == '>') &&  *prompt == c)//append
     {
         sp = malloc(sizeof(char) * 3);
