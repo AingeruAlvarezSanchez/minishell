@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 05:41:15 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/24 11:43:55 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/06/13 04:02:17 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ int main(int argc, char **argv, char **envp)
 {
     t_cmds  cmds;
     t_data  data;
+	int		status;
 	
 	ft_interactive(1);
 	ft_signals();	
@@ -144,7 +145,8 @@ int main(int argc, char **argv, char **envp)
 		cmds.prompt = readline("ejemplo1 ₺ ");
 		add_history(cmds.prompt);
         ft_commands(&cmds, &data);
-        waitpid(cmds.pid, NULL, WUNTRACED);
+        waitpid(cmds.pid, &status, WUNTRACED);
+		data.last_out = WEXITSTATUS(status);
 		ft_interactive(1);
     }
     return (0);
