@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 19:07:31 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/06/13 22:22:07 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/06/13 22:27:11 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static void  ft_first_cut(t_cmds *cmds, int xref)
 {
     char    *tmp;
 
-    ft_doublefree(cmds->tokens);
     cmds->tokens = (char **)malloc(sizeof(char *) * 2);
     tmp = ft_substr(cmds->prompt, 0, xref);
     cmds->tokens[0] = ft_strtrim(tmp, " ");

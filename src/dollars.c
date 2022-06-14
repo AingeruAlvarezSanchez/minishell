@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 07:52:52 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/06/13 22:25:47 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/06/13 22:29:43 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ void    ft_dollars(t_cmds *cmds, t_data *data)
         {
             if (cmds->tokens[i][x] == '$' && cmds->tokens[i][0] != '\'' && (cmds->tokens[i][x + 1] && cmds->tokens[i][x + 1] != '$'))
             {
+                //under maintenance
                 if (cmds->tokens[i][x + 1] == '?')
                 {
                     ft_lastoutdollar(cmds, data, i, x);
