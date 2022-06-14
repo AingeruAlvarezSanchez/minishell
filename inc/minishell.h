@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 05:41:11 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/24 12:11:03 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/06/13 22:21:43 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	ft_is_special_char(char c);
 int ft_has_special_char(t_cmds *cmds);
 
 /* First case function */
-void ft_check_first(t_cmds *cmds);
+int ft_check_first(t_cmds *cmds);
 
 /* Quotes managing function */
 int  ft_quotes(t_cmds *cmds, int xref, char c);
@@ -65,7 +65,7 @@ int ft_pipes(t_cmds *cmds, int xref, char *sp);
 int	ft_is_pipe_or_redir(char c);
 
 /* Join after checking special chars */
-void ft_lastjoin(t_cmds *cmds);
+void ft_lastjoin(t_cmds *cmds, int check);
 
 /* Dollar expanding function */
 void    ft_dollars(t_cmds *cmds, t_data *data);

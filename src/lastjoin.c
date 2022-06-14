@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 19:41:26 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/21 05:56:36 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/05/21 05:56:36by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ static void ft_prevtokens(t_cmds *cmds, char **split)
     ft_doublefree(tmp);
 }
 
-static int ft_islastmulti(t_cmds *cmds, char **split)
+static int ft_islastmulti(t_cmds *cmds, char **split, int check)
 {
     int i;
 
     if (ft_doublestrlen(split) != 1)
     {
-        if (cmds->tokens[0])
+        if (check == 1 && cmds->tokens[0])
             ft_prevtokens(cmds, split);
         else
         {
@@ -53,19 +53,28 @@ static int ft_islastmulti(t_cmds *cmds, char **split)
     return (0);
 }
 
-void ft_lastjoin(t_cmds *cmds)
+void ft_lastjoin(t_cmds *cmds, int check)
 {
     char    **tmp;
     int     i;
 
     i = -1;
-    if (ft_islastmulti(cmds, ft_split(cmds->prompt, ' ')))
+    if (ft_islastmulti(cmds, ft_split(cmds->prompt, ' '), check))
         return ;
-    tmp = ft_doublestrdup(cmds->tokens);
-    cmds->tokens = (char **)malloc(sizeof(char *) * (ft_doublestrlen(tmp) + 2));
-    while (tmp[++i])
-        cmds->tokens[i] = ft_strdup(tmp[i]);
-    cmds->tokens[i] = ft_strdup(cmds->prompt);
-    cmds->tokens[i + 1] = 0;
-    ft_doublefree(tmp);
+    if (check)
+    {
+        tmp = ft_doublestrdup(cmds->tokens);
+        cmds->tokens = (char **)malloc(sizeof(char *) * (ft_doublestrlen(tmp) + 2));
+        while (tmp[++i])
+            cmds->tokens[i] = ft_strdup(tmp[i]);
+        cmds->tokens[i] = ft_strdup(cmds->prompt);
+        cmds->tokens[i + 1] = 0;
+        ft_doublefree(tmp);
+    }
+    else
+    {
+        cmds->tokens = (char **)malloc(sizeof(char *) * 2);
+        cmds->tokens[0] = ft_strdup(cmds->prompt);
+        cmds->tokens[1] = 0;
+    }
 }

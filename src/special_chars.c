@@ -75,9 +75,11 @@ int ft_has_special_char(t_cmds *cmds)
     char    *tmp;
     int     x;
     int     ref;
+    int     check;
 
     x = -1;
-    ft_check_first(cmds);
+    check = 0;
+    check = ft_check_first(cmds);
     while (cmds->prompt[++x])
     {
         if (ft_is_special_char(cmds->prompt[x]))
@@ -87,6 +89,7 @@ int ft_has_special_char(t_cmds *cmds)
                 return (1);
             tmp = ft_substr(cmds->prompt, ref, (ft_strlen(cmds->prompt) - ref));
             free(cmds->prompt);
+            check = 1;
             if (!tmp[0])
             {
                 cmds->prompt = ft_strdup("");
@@ -99,6 +102,6 @@ int ft_has_special_char(t_cmds *cmds)
         }
     }
     if (cmds->prompt[0])
-        ft_lastjoin(cmds);
+        ft_lastjoin(cmds, check);
     return (0);
 }

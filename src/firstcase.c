@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 19:07:31 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/21 05:51:01 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/06/13 22:22:07 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static int ft_firstcut_quotejoin(t_cmds *cmds, int xref)
     return (x);
 }
 
-void ft_check_first(t_cmds *cmds)
+int ft_check_first(t_cmds *cmds)
 {
     char    *tmp;
     int     x;
@@ -94,7 +94,7 @@ void ft_check_first(t_cmds *cmds)
         if (ft_is_special_char(cmds->prompt[x]))
         {
             if (x == 0)
-                return ;
+                return (0);
             if (cmds->prompt[x - 1] == ' ' || (cmds->prompt[x] != '"' && cmds->prompt[x] != '\''))
             {
                 ft_first_cut(cmds, x);
@@ -108,7 +108,8 @@ void ft_check_first(t_cmds *cmds)
             free(cmds->prompt);
             cmds->prompt = ft_strtrim(tmp, " ");
             free(tmp);
-            return ;
+            return (1);
         }
     }
+    return (0);
 }

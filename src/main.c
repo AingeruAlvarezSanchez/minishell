@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 05:41:15 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/06/13 04:02:17 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/06/13 22:15:33 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,6 @@ void	ft_check_builtins(t_cmds *cmds, t_data *data)
 	close(cmds->pipefd[0][WRITE]);
 	close(cmds->pipefd[1][READ]);
 	close(cmds->pipefd[1][WRITE]);
-	printf("data->last pre: %d\n", data->last_out);
-	data->last_out = WEXITSTATUS(status); //data last out no se rellena bien con el WEXITSTATUS 
-	printf("data->last post: %d\n", data->last_out);
 	ft_triplefree(cmds->command);
 }
 
@@ -124,7 +121,7 @@ static void ft_commands(t_cmds *cmds, t_data *data)
         return ;
     }
 	free(cmds->prompt);
-	print_bi_array(cmds->tokens, "token:");
+	//print_bi_array(cmds->tokens, "token:");
 	ft_dollars(cmds, data);
     ft_parsing(cmds);
     ft_check_builtins(cmds, data);
