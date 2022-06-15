@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 07:52:52 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/06/13 22:29:43 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/06/14 17:24:19 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,9 @@ void    ft_dollars(t_cmds *cmds, t_data *data)
                 if (cmds->tokens[i][x + 1] == '?')
                 {
                     ft_lastoutdollar(cmds, data, i, x);
-                    if (cmds->tokens[i][x + 2] && cmds->tokens[i][x + 2] == ' ')//segfault porque el programa no puede comprobar la posicion + 2 si no existe
-                        x += 2;
+                    if (cmds->tokens[i][x + 1])
+                        if (cmds->tokens[i][x + 2] && cmds->tokens[i][x + 2] == ' ')
+                            x += 2;
                     continue ;
                 }
                 if (ft_check_dollars(cmds, data, i, x))

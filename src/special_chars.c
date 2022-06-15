@@ -87,7 +87,8 @@ int ft_has_special_char(t_cmds *cmds)
             ref = ft_manage_special_character(cmds, x, cmds->prompt[x]);
             if (ref == -1)
                 return (1);
-            tmp = ft_substr(cmds->prompt, ref, (ft_strlen(cmds->prompt) - ref));
+            //tmp = ft_substr(cmds->prompt, ref, (ft_strlen(cmds->prompt) - ref)); //with -ref it was giving invalid read of size 1
+            tmp = ft_substr(cmds->prompt, ref, ft_strlen(cmds->prompt)); //with -ref it was giving invalid read of size 1
             free(cmds->prompt);
             check = 1;
             if (!tmp[0])
