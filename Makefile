@@ -35,7 +35,7 @@ OBJS	=	$(addsuffix .o, $(FILES))
 
 all: $(NAME)
 
-.c.o: $(FILES)
+.c.o:
 	@$(CC) $(FLAGS) -c -o $@ $<
 
 $(NAME): $(OBJS) $(SRCS)
