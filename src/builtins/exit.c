@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 06:40:11 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/11 10:18:35 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/08/03 11:47:23 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,33 +34,21 @@ void	ft_free(t_cmds *cmds, t_data *data)
 	ft_doublefree(data->path);
 }
 */
-static void	ft_checkargs(char *flag, t_data *data, int cmd_n)
-{
-	(void) data;
-	//if (!cmds->proccess[2])
-	//{
-		while (flag)
+static void	ft_checkargs(char *flag, __attribute__((unused)) t_data *data, int cmd_n)
+{ 
+	while (flag)
+	{
+		if (ft_isstrdigit(flag))
 		{
-			if (!ft_isstrdigit(flag))
-			{
-				printf("exit: %s: numeric argument required\n", flag);
-				if (cmd_n != 0)
-					return ;
-				else
-				{
-					//ft_free(cmds, data);
-					exit(0);
-				}
-			}
+			printf("exit: %s: numeric argument required\n", flag);
+			if (cmd_n != 0)
+				return ;
 			else
-				exit (ft_atoi(flag));
+				exit(0);
 		}
-	//}
-	//else
-	//{
-	//	write(1, "exit: too many arguments\n", 25);
-	//	data->last_out = 1;
-	//}
+		else
+			exit (ft_atoi(flag));
+	}
 }
 
 void	ft_exit(char *flag, t_data *data, int cmd_n)
