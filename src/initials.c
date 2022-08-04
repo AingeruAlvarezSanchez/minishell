@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initials.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 07:44:17 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/06/13 22:15:33 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/08/04 14:24:52 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,8 @@ void	ft_create_pipes(t_cmds *cmds)
 
 void ft_initcmds(t_cmds *cmds)
 {
-    //cmds->tokens = (char **)malloc(sizeof(char *));
-    //cmds->tokens[0] = 0;
-
+    cmds->tokens = (char **)malloc(sizeof(char *));
+    cmds->tokens[0] = 0;
     cmds->n_cmds = 1;
     cmds->redir_flag = -1;
 }

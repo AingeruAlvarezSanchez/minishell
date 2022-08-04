@@ -19,6 +19,7 @@ static void ft_prevtokens(t_cmds *cmds, char **split)
     int     x;
 
     tmp = ft_doublestrdup(cmds->tokens);
+    //ft_doublefree(cmds->tokens);
     i = -1;
     cmds->tokens = (char **)malloc(sizeof(char *) * (ft_doublestrlen(tmp) + ft_doublestrlen(split) + 1));
     while (tmp[++i])

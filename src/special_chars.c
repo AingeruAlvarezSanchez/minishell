@@ -102,6 +102,8 @@ int ft_has_special_char(t_cmds *cmds)
             x = -1;
         }
     }
+    if(check == 0)
+        ft_doublefree(cmds->tokens);
     if (cmds->prompt[0])
         ft_lastjoin(cmds, check);
     return (0);

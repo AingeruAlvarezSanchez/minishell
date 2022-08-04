@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 06:40:11 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/08/04 12:09:32 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/08/04 14:14:10 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	ft_free(t_cmds *cmds, t_data *data)
 */
 static void	ft_checkargs(char *flag, t_data *data, int cmd_n, t_cmds *cmds)
 {
-
 	if(!cmds->command[0][2])
 	{
 		while (flag)

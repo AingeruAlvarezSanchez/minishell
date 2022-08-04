@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 07:49:07 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/11 10:09:09 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/08/04 14:29:48 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ char	**ft_oldpwd(t_data *data)
 		else
 			new_env[i] = ft_strdup(data->env[i]);
 	}
+	printf("%s\n", tmp);
 	new_env[i] = 0;
 	i = -1;
 	ft_doublefree(data->env);
@@ -84,7 +85,7 @@ void	ft_minusflag(t_data *data)
 			oldpwd = ft_strtrim(data->env[i], "OLDPWD=");
 	}
 	data->env = ft_oldpwd(data);
-	printf("%s\n", oldpwd);
+	
 	chdir(oldpwd);
 	data->last_out = 0;
 	data->env = ft_newpwd(data);
@@ -105,7 +106,7 @@ void	ft_cd(char *flag, t_data *data, int cmd_pos)
 	else
 	{
 		data->env = ft_oldpwd(data);
-		if (!opendir(flag))
+		if (chdir(flag) == 1)
 		{
 			printf("cd: %s: No such file or directory\n", flag);
 			data->last_out = 1;
@@ -113,7 +114,7 @@ void	ft_cd(char *flag, t_data *data, int cmd_pos)
 		}
 		if (cmd_pos != 0)
 			return ;
-		chdir(flag);
+		//chdir(flag);
 		data->last_out = 0;
 		data->env = ft_newpwd(data);
 	}
