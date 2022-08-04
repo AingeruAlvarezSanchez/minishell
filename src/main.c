@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 05:41:15 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/06/13 22:15:33 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/08/04 11:23:42 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@
  * @param cmd_n This is the actual executing command number in
  * all the commands sent by pipes
  */
-void	ft_parent_builtin(char** command, t_data *data, int cmd_n)
+void	ft_parent_builtin(char** command, t_data *data, int cmd_n, t_cmds *cmds)
 {    
 	if (!ft_strncmp(command[0], "exit", 4)/* && !command[0][4]*/)
-		ft_exit(command[1], data, cmd_n);
+		ft_exit(command[1], data, cmd_n, cmds);
 	else if (!ft_strncmp(command[0], "cd", 2)/* && !command[2]*/)
 		ft_cd(command[1], data, cmd_n);
 	else if (!ft_strncmp(command[0], "export", 6)/* && !command[6]*/)
@@ -89,7 +89,7 @@ void	ft_check_builtins(t_cmds *cmds, t_data *data)
 			}
 		}
 		else
-			ft_parent_builtin(cmds->command[i], data, i);
+			ft_parent_builtin(cmds->command[i], data, i, cmds);
 	}
 	close(cmds->pipefd[0][READ]);
 	close(cmds->pipefd[0][WRITE]);

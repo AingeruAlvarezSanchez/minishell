@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 06:40:11 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/08/03 11:47:23 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/08/04 12:09:32 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,24 +34,33 @@ void	ft_free(t_cmds *cmds, t_data *data)
 	ft_doublefree(data->path);
 }
 */
-static void	ft_checkargs(char *flag, __attribute__((unused)) t_data *data, int cmd_n)
-{ 
-	while (flag)
+static void	ft_checkargs(char *flag, t_data *data, int cmd_n, t_cmds *cmds)
+{
+
+	if(!cmds->command[0][2])
 	{
-		if (ft_isstrdigit(flag))
+		while (flag)
 		{
-			printf("exit: %s: numeric argument required\n", flag);
-			if (cmd_n != 0)
-				return ;
+			if (ft_isstrdigit(flag))
+			{
+				printf("exit: %s: numeric argument required\n", flag);
+				if (cmd_n != 0)
+					return ;
+				else
+					exit(0);
+			}
 			else
-				exit(0);
-		}
-		else
-			exit (ft_atoi(flag));
+				exit (ft_atoi(flag));
+		}	
+	}
+	else
+	{
+		write(1, "exit: too many arguments\n", 25);
+		data->last_out = 1;
 	}
 }
 
-void	ft_exit(char *flag, t_data *data, int cmd_n)
+void	ft_exit(char *flag, t_data *data, int cmd_n, t_cmds *cmds)
 {
 	if (!flag)
 	{
@@ -62,5 +71,5 @@ void	ft_exit(char *flag, t_data *data, int cmd_n)
 		exit(0);
 	}
 	else
-		ft_checkargs(flag, data, cmd_n);
+		ft_checkargs(flag, data, cmd_n, cmds);
 }

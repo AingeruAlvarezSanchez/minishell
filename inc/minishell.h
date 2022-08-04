@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 05:41:11 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/06/13 22:21:43 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/08/04 11:25:01 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void    ft_dollars(t_cmds *cmds, t_data *data);
 void ft_parsing(t_cmds *cmds);
 
 /* builtins */
-void	ft_exit(char *flag, t_data *data, int cmd_n);
+void	ft_exit(char *flag, t_data *data, int cmd_n, t_cmds *cmds);
 void	ft_cd(char *flag, t_data *data, int cmd_pos);
 void	ft_check_export(char **command, t_data *data, int cmd_n);
 void	ft_check_unset(char **command, t_data *data, int cmd_n);
