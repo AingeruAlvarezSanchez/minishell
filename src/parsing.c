@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 17:13:14 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/05/24 12:32:04 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/08/23 12:15:44 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,23 @@ void	ft_parser(t_cmds *cmds, char **arr, int cmd_pos)
 {
     int     i;
     char    *tmp;
+    char    *tmp2;
 
     tmp = ft_deletechar(arr[0], '\"');
-    cmds->binary[cmd_pos] = ft_strtrim(tmp, " ");
+    tmp2 = ft_deletechar(tmp, '\'');
+    cmds->binary[cmd_pos] = ft_strtrim(tmp2, " ");
     free(tmp);
+    free(tmp2);
     cmds->command[cmd_pos][0] = ft_strdup(cmds->binary[cmd_pos]);
     i = 0;
     while (arr[++i])
-        cmds->command[cmd_pos][i] = ft_deletechar(arr[i],'\"');
+    {
+        tmp = ft_deletechar(arr[i],'\"');
+        cmds->command[cmd_pos][i] = ft_deletechar(tmp,'\'');
+        free(tmp);
+    }
 }
+
 
 void ft_until_pipe(t_cmds *cmds, int n_tkn, int n_comand, char ** tkn)
 {

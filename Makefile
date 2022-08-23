@@ -8,6 +8,9 @@ FILES		=	src/main		\
 			src/builtins/cd		\
 			src/builtins/export	\
 			src/builtins/unset	\
+			src/builtins/echo	\
+			src/builtins/pwd	\
+			src/builtins/env	\
 			src/initials		\
 			src/special_chars	\
 			src/firstcase		\

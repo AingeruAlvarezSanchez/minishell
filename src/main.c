@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 05:41:15 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/08/04 11:23:42 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/08/23 11:35:47 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,16 @@ void	ft_parent_builtin(char** command, t_data *data, int cmd_n, t_cmds *cmds)
 		ft_check_export(command, data, cmd_n);
 	else if (!ft_strncmp(command[0], "unset", 5)/* && !command[5]*/)
 		ft_check_unset(command, data, cmd_n);
+}
+
+void	ft_ischild_builtin(t_cmds *Cmds, t_data *Data) 					//TODO [0][0] verificar (int cmd_n)
+{
+	if (!ft_strncmp(Cmds->command[0][0], "pwd", 3))
+		ft_pwd();
+	else if (!ft_strncmp(Cmds->command[0][0], "echo", 4))
+		ft_check_echo(Cmds);
+	else if (!ft_strncmp(Cmds->command[0][0], "env", 3))
+		ft_env(Data);
 }
 
 /**

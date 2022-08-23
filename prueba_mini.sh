@@ -1,3 +1,16 @@
+/bin/ls
+/bin/pwd
+echo -n jamon
+echo -n jamon
+echo "jamon"
+echo $?
+echo "cat lol.c | cat > lol.c"
+"ls" -l | grep "a"
+' '
+''
+'ls' -l | grep 'a'
+echo '$USER'
+
 #- Ejecuta un comando simple con una ruta absoluta como /bin/ls, u otro
 #comando con argumentos pero sin comillas simples y comillas dobles.
 /bin/ls
@@ -12,7 +25,7 @@
 #echo
 #- Ejecuta el comando echo con o sin argumentos, y con o sin -n.
 echo -n jamon
-echo -a -b "jamon"
+echo -n jamon
 echo "jamon"
 
 #exit
@@ -166,3 +179,10 @@ echo "$HOME"
 echo '$HOME'
 env | grep USER
 echo $USER
+
+
+echo -a -b "jamon"
+exit                ----> leaks
+
+' '?                ---> heap-buffer-overflow
+

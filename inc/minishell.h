@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 05:41:11 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/08/04 11:25:01 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/08/22 11:30:11 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,9 @@ void	ft_exit(char *flag, t_data *data, int cmd_n, t_cmds *cmds);
 void	ft_cd(char *flag, t_data *data, int cmd_pos);
 void	ft_check_export(char **command, t_data *data, int cmd_n);
 void	ft_check_unset(char **command, t_data *data, int cmd_n);
+void	ft_check_echo(t_cmds *Cmds);
+void	ft_env(t_data *Data);
+void	ft_pwd(void);
 
 /* utils */
 void    print_bi_array(char **arr, char *text);
