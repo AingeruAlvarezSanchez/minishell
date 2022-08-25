@@ -3,98 +3,72 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42Urduli>       +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/10 12:42:00 by aalvarez          #+#    #+#             */
-/*   Updated: 2021/06/10 12:56:12 by aalvarez         ###   ########.fr       */
+/*   Created: 2022/08/17 13:41:44 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/08/17 20:08:00 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-static char	**ft_free(char **result)
+/**
+ * @brief calculates the size of the double string for allocation.
+ * 
+ * @param s the string to be splitted.
+ * @param c the splitting character.
+ * @return int the number of strings needed on the double string result
+ * (not counting the NULL string).
+ */
+static int	ft_doublesize(const char *s, char c)
 {
-	unsigned int	i;
+	int		size;
 
-	i = 0;
-	while (result[i])
+	size = 0;
+	while (*s)
 	{
-		free(result[i]);
-		i++;
+		if ((s[1] == c || !s[1]) && *s != c)
+			size++;
+		s++;
 	}
-	free(result);
-	return (NULL);
+	return (size);
 }
 
-static unsigned int	ft_words(char const *s, char c)
-{
-	unsigned int	i;
-	unsigned int	words;
-
-	if (!s[0])
-		return (0);
-	i = 0;
-	words = 0;
-	while (s[i] && s[i] == c)
-		i++;
-	while (s[i])
-	{
-		if (s[i] == c)
-		{
-			words++;
-			while (s[i] && s[i] == c)
-				i++;
-			continue ;
-		}
-		i++;
-	}
-	if (s[i - 1] != c)
-		words++;
-	return (words);
-}
-
-static void	ft_chopchop(char **n_str, unsigned int *str_len, char c)
-{
-	unsigned int	i;
-
-	*n_str += *str_len;
-	*str_len = 0;
-	i = 0;
-	while (**n_str && **n_str == c)
-		(*n_str)++;
-	while ((*n_str)[i])
-	{
-		if ((*n_str)[i] == c)
-			return ;
-		(*str_len)++;
-		i++;
-	}
-}
-
+/**
+ * @brief takes the string pointed by s and creates a double
+ * array splitted by the character c (wich is eliminated).
+ * 
+ * @param s the string to split.
+ * @param c the splitting character.
+ * @return char** the resultant allocation of the splitted
+ * string pointed by s.
+ */
 char	**ft_split(char const *s, char c)
 {
-	char			**result;
-	char			*n_str;
-	unsigned int	str_len;
-	unsigned int	i;
+	char	**result;
+	size_t	i;
+	int		j;
+	int		start;
 
 	if (!s)
 		return (NULL);
-	result = (char **)malloc(sizeof(char *) * (ft_words(s, c) + 1));
+	result = (char **)malloc(sizeof(char *) * (ft_doublesize(s, c) + 1));
 	if (!result)
 		return (NULL);
-	i = 0;
-	n_str = (char *)s;
-	str_len = 0;
-	while (i < ft_words(s, c))
+	start = -1;
+	i = -1;
+	j = 0;
+	while (++i <= ft_strlen(s))
 	{
-		ft_chopchop(&n_str, &str_len, c);
-		result[i] = (char *)malloc(sizeof(char) * (str_len + 1));
-		if (!result[i])
-			return (ft_free(result));
-		ft_strlcpy(result[i], n_str, str_len + 1);
-		i++;
+		if (s[i] != c && start < 0)
+			start = i;
+		else if (start >= 0 && (s[i] == c || i == ft_strlen(s)))
+		{
+			result[j++] = ft_substr(s, start, (i - start));
+			start = -1;
+		}
 	}
-	result[i] = NULL;
+	result[j] = NULL;
 	return (result);
 }

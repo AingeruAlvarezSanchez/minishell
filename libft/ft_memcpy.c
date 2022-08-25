@@ -3,28 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/26 10:14:40 by aalvarez          #+#    #+#             */
-/*   Updated: 2021/09/26 12:14:06 by aalvarez         ###   ########.fr       */
+/*   Created: 2022/08/16 19:31:19 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/08/19 22:11:21 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/**
+ * @brief copies up to n bytes from the void pointed by src to the
+ * void pointed by dst.
+ * 
+ * @param dst string to be filled with a copy of n bytes.
+ * @param src string to copy.
+ * @param n maximun number of bytes to copy.
+ * @return void* a pointer to the new string resultant of the copy.
+ */
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
 	size_t	i;
 
-	i = 0;
-	if (dst || src)
+	i = -1;
+	if (dst && src)
 	{
-		while (i < n)
-		{
-			((unsigned char *)dst)[i] = ((const char *)src)[i];
-			i++;
-		}
-		return (dst);
+		while (++i < n)
+			((unsigned char *)dst)[i] = ((unsigned char *)src)[i];
 	}
-	return (NULL);
+	return (dst);
 }

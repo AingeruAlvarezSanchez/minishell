@@ -1,34 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize.c                                       :+:      :+:    :+:   */
+/*   ft_getfile_size.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/17 22:40:41 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/08/17 23:06:49 by aalvarez         ###   ########.fr       */
+/*   Created: 2022/08/20 20:40:29 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/08/21 18:19:41 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <unistd.h>
 
 /**
- * @brief iterates over a list and returns its total size.
+ * @brief checks the number of lines a valid file has, giving an invalid file
+ * descriptor to this function may result in undefined behaviour.
  * 
- * @param lst the list to be iterated.
- * @return int the total size of the list.
+ * @param fd the file descriptor to evaluate.
+ * @return int the number of lines the content of the file descriptor has.
  */
-int	ft_lstsize(t_list *lst)
+int	ft_getfile_size(int fd)
 {
-	int	i;
+	char	character;
+	int		size;
 
-	if (!lst)
-		return (0);
-	i = 0;
-	while (lst)
+	size = 0;
+	while (read(fd, &character, 1))
 	{
-		lst = lst->next;
-		i++;
+		if (character == '\n')
+			size++;
 	}
-	return (i);
+	return (size);
 }

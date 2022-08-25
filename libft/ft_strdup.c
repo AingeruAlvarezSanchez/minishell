@@ -3,27 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/28 12:22:14 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/03/29 22:06:17 by ecorreia         ###   ########.fr       */
+/*   Created: 2022/08/17 01:37:30 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/08/17 20:10:21 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
+#include <stdlib.h>
 
+/**
+ * @brief allocates a copy of the string pointed by s1 and returns it.
+ * 
+ * @param s1 the string to be copied.
+ * @return char* the allocated copy.
+ */
 char	*ft_strdup(const char *s1)
 {
-	char	*s;
+	char	*result;
 	int		i;
 
-	s = (char *)malloc(ft_strlen(s1) * sizeof(char) + 1);
-	if (!s)
+	result = malloc(sizeof(char) * (ft_strlen(s1) + 1));
+	if (!result)
 		return (NULL);
 	i = -1;
 	while (s1[++i])
-		s[i] = s1[i];
-	s[i] = 0;
-	return (s);
+		result[i] = s1[i];
+	result[i] = 0;
+	return (result);
 }

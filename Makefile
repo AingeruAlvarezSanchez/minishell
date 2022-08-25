@@ -42,7 +42,7 @@ all: $(NAME)
 	@$(CC) $(FLAGS) -c -o $@ $<
 
 $(NAME): $(OBJS) $(SRCS)
-	@$(MAKE) -C libft/
+	@$(MAKE) ext -C libft/
 	@$(CC) $(FLAGS) $(OBJS) $(LIB) $(READLINE) -o $(NAME)
 	@echo compilado ok
 

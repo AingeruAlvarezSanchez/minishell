@@ -3,28 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/26 11:30:04 by aalvarez          #+#    #+#             */
-/*   Updated: 2021/09/26 11:32:55 by aalvarez         ###   ########.fr       */
+/*   Created: 2022/08/17 20:39:35 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/08/17 23:06:10 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
+/**
+ * @brief allocates a new node for a linked list
+ * and fills its content with the void pointer content.
+ * 
+ * @param content content to be added to the node.
+ * @return t_list* a new allocated node.
+ */
 t_list	*ft_lstnew(void *content)
 {
-	t_list	*new_node;
+	t_list	*node;
 
-	new_node = malloc(sizeof(t_list));
-	if (!new_node)
-	{
-		free (new_node);
-		return (0);
-	}
-	if (!content)
-		new_node->content = 0;
-	new_node->content = content;
-	new_node->next = NULL;
-	return (new_node);
+	node = (t_list *)malloc(sizeof(t_list));
+	if (!node)
+		return (NULL);
+	node->content = content;
+	node->next = NULL;
+	return (node);
 }

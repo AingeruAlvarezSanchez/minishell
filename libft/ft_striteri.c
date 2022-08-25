@@ -1,34 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize.c                                       :+:      :+:    :+:   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/17 22:40:41 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/08/17 23:06:49 by aalvarez         ###   ########.fr       */
+/*   Created: 2022/08/17 18:50:42 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/08/17 20:11:35 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 /**
- * @brief iterates over a list and returns its total size.
+ * @brief takes a string pointed by s and applies the function (*f)
+ * to each of its characters.
  * 
- * @param lst the list to be iterated.
- * @return int the total size of the list.
+ * @param s the string to travel.
+ * @param f the function to apply to every charracter
+ * of the string pointted by s.
  */
-int	ft_lstsize(t_list *lst)
+void	ft_striteri(char *s, void (*f)(unsigned int, char *))
 {
 	int	i;
 
-	if (!lst)
-		return (0);
-	i = 0;
-	while (lst)
-	{
-		lst = lst->next;
-		i++;
-	}
-	return (i);
+	i = -1;
+	while (s[++i])
+		f(i, &s[i]);
 }

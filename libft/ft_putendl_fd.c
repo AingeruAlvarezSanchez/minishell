@@ -3,26 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/02 15:11:48 by aalvarez          #+#    #+#             */
-/*   Updated: 2021/06/07 16:59:47 by aalvarez         ###   ########.fr       */
+/*   Created: 2022/08/17 18:57:27 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/08/17 20:02:53 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <unistd.h>
 
+/**
+ * @brief writes a string on a fd and a closing endline.
+ * 
+ * @param c string to write.
+ * @param fd fd to be written.
+ */
 void	ft_putendl_fd(char *s, int fd)
 {
-	int	i;
-
-	i = 0;
-	if (s == NULL)
-		return ;
-	while (s[i] != '\0')
-	{
-		write(fd, &s[i], 1);
-		i++;
-	}
-	write(fd, &"\n", 1);
+	ft_putstr_fd(s, fd);
+	ft_putchar_fd('\n', fd);
 }

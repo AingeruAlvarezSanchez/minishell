@@ -3,67 +3,70 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/03 14:49:31 by aalvarez          #+#    #+#             */
-/*   Updated: 2021/06/08 16:07:39 by aalvarez         ###   ########.fr       */
+/*   Created: 2022/08/17 18:30:13 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/08/17 19:58:11 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-static long	ft_arr_size(long j)
+/**
+ * @brief calculates the size of the allocation
+ * needed for the string.
+ * 
+ * @param n integer to be representd as a string.
+ * @return int the size needed to the allocation,
+ * this funtion does not count the NULL terminating
+ * byte.
+ */
+static int	ft_arrsize(int n)
 {
-	int	i;
+	int	size;
 
-	i = 0;
-	if (j == 0)
-		i++;
-	if (j < 0)
+	size = 0;
+	if (n <= 0)
+		size++;
+	while (n)
 	{
-		i++;
-		j *= -1;
+		size++;
+		n /= 10;
 	}
-	while (j > 0)
-	{
-		j /= 10;
-		i++;
-	}
-	return (i);
+	return (size);
 }
 
-static char	*ft_nospace(long j, long i, char *s)
-{
-	if (j < 0)
-	{
-		s[0] = '-';
-		j *= -1;
-	}
-	while (j > 0)
-	{
-		s[i - 1] = j % 10 + '0';
-		j /= 10;
-		i--;
-	}
-	return (s);
-}
-
+/**
+ * @brief converts the integer
+ * n to its string representation.
+ * 
+ * @param n integer to be represented as a string.
+ * @return char* result of the string representation of n.
+ */
 char	*ft_itoa(int n)
 {
-	char	*s;
-	long	j;
-	long	i;
+	char	*result;
+	int		size;
+	long	nbr;
 
-	j = (long)n;
-	i = ft_arr_size(n);
-	s = (char *)malloc(i * sizeof(char) + 1);
-	if (!s)
+	size = ft_arrsize(n);
+	nbr = n;
+	result = malloc(sizeof(char) * (size + 1));
+	if (!result)
 		return (NULL);
-	s[i] = '\0';
-	if (!n)
+	if (nbr < 0)
 	{
-		s[i - 1] = n + '0';
-		return (s);
+		result[0] = '-';
+		nbr *= -1;
 	}
-	return (ft_nospace(j, i, s));
+	if (!nbr)
+		result[0] = '0';
+	result[size--] = 0;
+	while (nbr)
+	{
+		result[size--] = (nbr % 10) + '0';
+		nbr /= 10;
+	}
+	return (result);
 }

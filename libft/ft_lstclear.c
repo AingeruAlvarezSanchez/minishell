@@ -3,29 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/26 11:41:00 by aalvarez          #+#    #+#             */
-/*   Updated: 2021/09/26 11:54:08 by aalvarez         ###   ########.fr       */
+/*   Created: 2022/08/17 22:52:37 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/08/17 23:08:48 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
+/**
+ * @brief iterates over a list and frees the content and nodes with free().
+ * 
+ * @param lst the list to be iterated.
+ * @param del the function that will delete the content of the node.
+ */
 void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
 	t_list	*tmp;
 
-	tmp = NULL;
-	if (lst && del)
+	if (!*lst)
+		return ;
+	while (*lst)
 	{
-		while (*lst)
-		{
-			tmp = (*lst)->next;
-			del((*lst)->content);
-			free (*lst);
-			*lst = tmp;
-		}
-		lst = NULL;
+		tmp = *lst;
+		del((*lst)->content);
+		*lst = (*lst)->next;
+		free(tmp);
 	}
 }

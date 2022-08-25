@@ -13,12 +13,16 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 #include "../libft/libft.h"
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 # define WRITE 1
 # define READ 0
 
 typedef struct s_data {
     char    **env;
+	char    **export_env;
     char    **paths;
     int     last_out;
 }   t_data;

@@ -3,50 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/04 18:25:02 by aalvarez          #+#    #+#             */
-/*   Updated: 2021/06/07 17:00:16 by aalvarez         ###   ########.fr       */
+/*   Created: 2022/08/17 03:37:17 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/08/19 22:19:28 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-static int	char_in_str(char c, char const *set)
+/**
+ * @brief searches for the string pointed by set on the start and the end of
+ * the string pointed by s1 and returns an allocation of a new string without
+ * the set characters in the string s1.
+ * 
+ * @param s1 the string to be searched.
+ * @param set the string to search.
+ * @return char* the allocation result of the trimming.
+ */
+char	*ft_strtrim(const char *s1, const char *set)
 {
-	int	i;
-
-	i = 0;
-	while (set[i])
-	{
-		if (set[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-char	*ft_strtrim(char const *s1, char const *set)
-{
-	char	*str;
+	char	*result;
 	int		i;
-	int		front;
-	int		back;
 
-	if (s1 == NULL || set == NULL)
+	if (!s1)
 		return (NULL);
-	front = 0;
-	i = 0;
-	while (s1[front] != '\0' && char_in_str(s1[front], set) != 0)
-		front++;
-	back = ft_strlen(s1);
-	while (char_in_str(s1[back - 1], set) != 0 && back > front)
-		back--;
-	str = (char *)malloc((*s1) * ((back - front) * sizeof(char) + 1));
-	if (str == NULL)
-		return (NULL);
-	while (front < back)
-		str[i++] = s1[front++];
-	str[i] = '\0';
-	return (str);
+	if (!set)
+		return ((char *)s1);
+	while (*s1 && ft_strchr(set, *s1))
+		s1++;
+	i = ft_strlen(s1);
+	while (i && ft_strchr(set, s1[i]))
+		i--;
+	result = ft_substr((char *)s1, 0, (i + 1));
+	return (result);
 }

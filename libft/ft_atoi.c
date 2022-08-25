@@ -3,38 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/25 11:19:58 by aalvarez          #+#    #+#             */
-/*   Updated: 2021/06/08 13:57:50 by aalvarez         ###   ########.fr       */
+/*   Created: 2022/08/17 01:07:26 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/08/17 19:22:12 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/**
+ * @brief converts the string pointed by
+ * str to its integer representation.
+ * 
+ * @param str the string containing the integer to be represented.
+ * @return int the result of the representation of the string
+ * pointed by str.
+ */
 int	ft_atoi(const char *str)
 {
-	int	num;
+	int	result;
 	int	i;
-	int	var;
+	int	sign;
 
-	num = 0;
 	i = 0;
-	var = 1;
-	while ((str[i] == ' ') || (str[i] >= 9 && str[i] <= 13))
+	sign = 1;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
 		i++;
 	if (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-')
-			var = -1;
+			sign = -1;
 		i++;
 	}
-	while (str[i] != '\0')
+	result = 0;
+	while (str[i])
 	{
-		if (str[i] < 48 || str[i] > 57)
+		if (!ft_isdigit(str[i]))
 			break ;
-		num = num * 10 + (str[i] - 48);
-		i++;
+		result = result * 10 + (str[i++] - 48);
 	}
-	return (num * var);
+	return (result * sign);
 }

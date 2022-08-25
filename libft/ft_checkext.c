@@ -1,32 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memccpy.c                                       :+:      :+:    :+:   */
+/*   ft_checkext.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/26 10:48:48 by aalvarez          #+#    #+#             */
-/*   Updated: 2021/05/26 17:22:36 by aalvarez         ###   ########.fr       */
+/*   Created: 2022/08/19 23:09:32 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/08/19 23:21:55 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memccpy(void *dst, const void *src, int c, size_t n)
+int	ft_checkext(const char *str, const char *ext)
 {
-	size_t			i;
-	unsigned char	chr;
-
-	i = 0;
-	chr = c;
-	while (i < n)
-	{
-		((char *)dst)[i] = ((const char *)src)[i];
-		if (((unsigned char *)src)[i] == chr)
-		{
-			return (&dst[i] + 1);
-		}
-		i++;
-	}
+	if (!ft_strrchr(str, '.')
+		|| ft_strncmp(ft_strrchr(str, '.'), ext, ft_strlen(str)))
+		return (1);
 	return (0);
 }

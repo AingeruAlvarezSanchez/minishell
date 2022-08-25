@@ -3,32 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/26 11:44:47 by aalvarez          #+#    #+#             */
-/*   Updated: 2021/09/26 12:11:15 by aalvarez         ###   ########.fr       */
+/*   Created: 2022/08/17 22:58:18 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/08/17 23:13:47 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
+/**
+ * @brief iterates the list pointed to by lst and applies the function
+ * f to the content of every node. Creates a new list resulting of the
+ * sucessive apllications of the function f. The del function is used to
+ * delete the content of a node if needed.
+ * 
+ * @param lst the address of a pointer to a node.
+ * @param f the address of the function used to iterate on the list.
+ * @param del the address of the function used to delete.
+ * @return t_list* the new list.
+ */
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
 	t_list	*head;
-	t_list	*to_add;
+	t_list	*new;
 
 	if (!lst || !f)
-		return (0);
+		return (NULL);
 	head = NULL;
 	while (lst)
 	{
-		to_add = ft_lstnew((*f)(lst->content));
-		if (!to_add)
+		new = ft_lstnew((*f)(lst->content));
+		if (!new)
 		{
 			ft_lstclear(&head, del);
-			return (0);
+			return (NULL);
 		}
-		ft_lstadd_back(&head, to_add);
+		ft_lstadd_back(&head, new);
 		lst = lst->next;
 	}
 	return (head);

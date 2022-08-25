@@ -3,31 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/03 11:50:17 by aalvarez          #+#    #+#             */
-/*   Updated: 2021/06/08 14:42:38 by aalvarez         ###   ########.fr       */
+/*   Created: 2022/08/17 18:45:31 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/08/19 22:15:11 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
+/**
+ * @brief iterates over the string pointed by s and creates a new string result
+ * of aplying the function pointed by f to every character of s.
+ * 
+ * @param s the source string to iterate.
+ * @param f the function used in every character of the string pointed by s.
+ * @return char* the new string result of aplying the function pointed by f
+ * to every character of s.
+ */
+char	*ft_strmapi(const char *s, char (*f)(unsigned int, char))
 {
-	unsigned int		i;
-	char				*s2;
+	char	*result;
+	int		i;
 
-	i = 0;
-	if (s == NULL)
+	i = -1;
+	result = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1));
+	if (!result)
 		return (NULL);
-	s2 = (char *)malloc(ft_strlen(s) * sizeof(char) + 1);
-	if (s2 == NULL)
-		return (NULL);
-	while (s[i] != '\0')
-	{
-		s2[i] = f(i, s[i]);
-		i++;
-	}
-	s2[i] = '\0';
-	return (s2);
+	while (s[++i])
+		result[i] = f(i, s[i]);
+	result[i] = 0;
+	return (result);
 }

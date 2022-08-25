@@ -3,36 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/28 13:07:51 by aalvarez          #+#    #+#             */
-/*   Updated: 2021/06/08 11:32:33 by aalvarez         ###   ########.fr       */
+/*   Created: 2022/08/17 01:43:23 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/08/17 20:28:41 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
+/**
+ * @brief takes a string and allocates a new string composed of len bytes from
+ * the starting index start.
+ * 
+ * @param s the string to be substracted.
+ * @param start the starting point of the substraction.
+ * @param len the bytes to be substracted.
+ * @return char* the allocated result of the substraction.
+ */
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*s_mall;
-	size_t	i;
+	char	*result;
 
-	i = 0;
-	s_mall = (char *)malloc(len * sizeof(char) + 1);
-	if (s == NULL || s_mall == NULL)
+	if (start >= ft_strlen(s))
+		return (ft_strdup("\0"));
+	s += start;
+	if (len > ft_strlen(s))
+		len = ft_strlen(s);
+	result = (char *)malloc(sizeof(char) * (len + 1));
+	if (!result)
 		return (NULL);
-	while (start > ft_strlen(s))
-	{
-		*s_mall = '\0';
-		return (s_mall);
-	}
-	while (len > 0)
-	{
-		s_mall[i] = s[start];
-		i++;
-		start++;
-		len--;
-	}
-	s_mall[i] = '\0';
-	return (s_mall);
+	ft_strlcpy(result, s, len + 1);
+	return (result);
 }

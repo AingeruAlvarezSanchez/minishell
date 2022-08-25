@@ -1,56 +1,49 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2021/05/24 12:12:22 by aalvarez          #+#    #+#              #
-#    Updated: 2022/05/21 06:01:34 by aalvarez         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = libft.a
 
-SRC = ft_isalpha.c			\
-	  ft_isdigit.c			\
-	  ft_isalnum.c			\
-	  ft_isascii.c			\
-	  ft_isprint.c			\
-	  ft_strlen.c			\
-	  ft_doublestrlen.c		\
-	  ft_strlcpy.c			\
-	  ft_strlcat.c			\
-	  ft_strncmp.c			\
-	  ft_toupper.c			\
-	  ft_tolower.c			\
-	  ft_strnstr.c			\
-	  ft_num_to_binary.c	\
-	  ft_atoi.c				\
-	  ft_strchr.c			\
-	  ft_strrchr.c			\
-	  ft_memset.c			\
-	  ft_bzero.c			\
-	  ft_memchr.c			\
-	  ft_memcmp.c			\
-	  ft_memcpy.c			\
-	  ft_memmove.c			\
-	  ft_calloc.c			\
-	  ft_strdup.c			\
-	  ft_substr.c			\
-	  ft_strjoin.c			\
-	  ft_strtrim.c			\
-	  ft_split.c			\
-	  ft_itoa.c				\
-	  ft_putchar_fd.c		\
-	  ft_putstr_fd.c		\
-	  ft_putendl_fd.c		\
-	  ft_putnbr_fd.c		\
-	  ft_strmapi.c			\
-	  ft_doublefree.c		\
-	  ft_triplefree.c		\
-	  ft_doublestrdup.c		\
-	  ft_deletechar.c
+## COMPILING AND LINKING RELATED VARIABLES ##
+AR = ar rc
+CC = gcc
+CFLAGS = -Wall -Werror -Wextra
+SANITIZE = -fsanitize=address -g3
+RM = rm -f
+#############################################
+
+########## FILES RELATED VARIABLES ##########
+INCLUDES = libft.h
+SRC =	ft_isalpha.c		\
+		ft_isdigit.c		\
+		ft_isalnum.c		\
+		ft_isascii.c		\
+		ft_isprint.c		\
+		ft_strlen.c			\
+		ft_memset.c			\
+		ft_bzero.c			\
+		ft_memcpy.c			\
+		ft_memmove.c		\
+		ft_strlcpy.c		\
+		ft_strlcat.c		\
+		ft_toupper.c		\
+		ft_tolower.c		\
+		ft_strchr.c			\
+		ft_strrchr.c		\
+		ft_strncmp.c		\
+		ft_memchr.c			\
+		ft_memcmp.c			\
+		ft_strnstr.c		\
+		ft_atoi.c			\
+		ft_calloc.c			\
+		ft_strdup.c			\
+		ft_substr.c			\
+		ft_strjoin.c		\
+		ft_strtrim.c		\
+		ft_split.c			\
+		ft_itoa.c			\
+		ft_strmapi.c		\
+		ft_striteri.c		\
+		ft_putchar_fd.c		\
+		ft_putstr_fd.c		\
+		ft_putendl_fd.c		\
+		ft_putnbr_fd.c		\
 
 SRC_BONUS = ft_lstnew.c			\
 			ft_lstadd_front.c	\
@@ -60,35 +53,51 @@ SRC_BONUS = ft_lstnew.c			\
 			ft_lstdelone.c		\
 			ft_lstclear.c		\
 			ft_lstiter.c		\
-			ft_lstmap.c
+			ft_lstmap.c			\
 
-INCLUDES = libft.h
+SRC_EXT =	ft_isempty.c		\
+			ft_checkext.c		\
+			ft_checkfile.c		\
+			ft_getfile_size.c	\
+			ft_doublestrdup.c	\
+			ft_doublefree.c		\
+			ft_doublestrlen.c	\
+			ft_triplefree.c 	\
+			ft_deletechar.c		\
 
-OBJ_BONUS = $(SRC_BONUS:.c=.o)
 OBJ = $(SRC:.c=.o)
+OBJ_BONUS = $(SRC_BONUS:.c=.o)
+OBJ_EXT = $(SRC_EXT:.c=.o)
+#############################################
 
-CC = gcc
-AR = ar rc
-CFLAGS = -Wall -Wextra -Werror
-RM = /bin/rm -f
+.SILENT:
 
 all: $(NAME)
 
-$(NAME) : $(OBJ) $(INCLUDES)
-	@$(AR) $(NAME) $(OBJ)
+$(NAME): $(OBJ) $(INCLUDES)
+	$(AR) $(NAME) $(OBJ)
 
-bonus: $(OBJ_BONUS) $(INCLUDES)
-	@$(AR) $(NAME) $(OBJ_BONUS)
+$(OBJ): $(SRC) 
+	$(CC) $(CFLAGS) -c $^
 
-%.o : %.c
-	@$(CC) $(CFLAGS) -c $(SRC) $(SRC_BONUS)
+bonus: $(OBJ_BONUS) $(OBJ) $(INCLUDES)
+	$(AR) $(NAME) $^
+
+$(OBJ_BONUS): $(SRC_BONUS)
+	$(CC) $(CFLAGS) -c $^
+
+ext: $(OBJ_EXT) $(OBJ) $(INCLUDES)
+	$(AR) $(NAME) $^
+
+$(OBJ_EXT): $(SRC_EXT)
+	$(CC) $(CFLAGS) -c $^
 
 clean:
-	@$(RM) $(OBJ) $(OBJ_BONUS)
+	$(RM) $(OBJ) $(OBJ_BONUS) $(OBJ_EXT)
 
 fclean: clean
-	@$(RM) $(NAME)
+	$(RM) $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re bonus ext

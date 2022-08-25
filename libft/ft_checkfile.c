@@ -1,34 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize.c                                       :+:      :+:    :+:   */
+/*   ft_checkfile.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/17 22:40:41 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/08/17 23:06:49 by aalvarez         ###   ########.fr       */
+/*   Created: 2022/08/19 23:34:19 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/08/21 18:17:45 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <fcntl.h>
+#include <unistd.h>
 
 /**
- * @brief iterates over a list and returns its total size.
+ * @brief checks if the string pointed by file is a valid file descriptor.
  * 
- * @param lst the list to be iterated.
- * @return int the total size of the list.
+ * @param file the file to be checked.
+ * @return int returns 1 if the file is invalid (non existing, no reading
+ * permission, etc.) or 0 if file is valid to open and read.
  */
-int	ft_lstsize(t_list *lst)
+int	ft_checkfile(const char *file)
 {
-	int	i;
+	int	fd;
 
-	if (!lst)
-		return (0);
-	i = 0;
-	while (lst)
+	fd = open(file, O_RDONLY);
+	if (fd < 0)
 	{
-		lst = lst->next;
-		i++;
+		close(fd);
+		return (1);
 	}
-	return (i);
+	close(fd);
+	return (0);
 }

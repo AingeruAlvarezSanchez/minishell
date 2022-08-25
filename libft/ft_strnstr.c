@@ -3,33 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/27 14:45:50 by aalvarez          #+#    #+#             */
-/*   Updated: 2021/06/08 19:12:14 by aalvarez         ###   ########.fr       */
+/*   Created: 2022/08/17 00:54:42 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/08/19 22:17:54 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/**
+ * @brief tries to find the string pointed by needle inside the string pointed
+ * by haystack.
+ * 
+ * @param haystack the string to be searched.
+ * @param needle the string to search.
+ * @param len the maximun length to search.
+ * @return char* the pointer to the first character of needle inside the string
+ * poined by haystack.
+ */
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
 	size_t	i;
-	size_t	j;
 
-	i = 0;
-	if (*needle == '\0')
+	if (!*needle)
 		return ((char *)haystack);
-	while (haystack[i] != '\0' && i < len)
+	i = -1;
+	while (haystack[++i] && i < len)
 	{
-		j = 0;
-		while (haystack[i + j] == needle[j] && (i + j) < len)
-		{
-			if (needle[j + 1] == 0)
-				return ((char *)&haystack[i]);
-			j++;
-		}
-		i++;
+		if (ft_strlen(needle) + i > len)
+			return (NULL);
+		if (haystack[i] == needle[0] && !ft_strncmp(&haystack[i],
+				needle, ft_strlen(needle)))
+			return ((char *)&haystack[i]);
 	}
-	return (0);
+	return (NULL);
 }

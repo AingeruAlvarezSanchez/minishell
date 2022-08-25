@@ -28,13 +28,14 @@ static void    ft_createpaths(t_data *data)
             while (tmp[++i])
                 data->paths[i] = ft_strjoin(tmp[i], "/");
             data->paths[i] = 0;
+			data->export_env = ft_doublestrdup(data->env);
             ft_doublefree(tmp);
             break ;
         }
     }
 }
 
-void    ft_cpyenv(char **envp, t_data *data)
+void	ft_cpyenv(char **envp, t_data *data)
 {
     int i;
 

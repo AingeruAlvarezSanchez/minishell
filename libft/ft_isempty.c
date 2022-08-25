@@ -1,34 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize.c                                       :+:      :+:    :+:   */
+/*   ft_isempty.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/17 22:40:41 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/08/17 23:06:49 by aalvarez         ###   ########.fr       */
+/*   Created: 2022/08/21 21:02:27 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/08/24 00:29:18 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 /**
- * @brief iterates over a list and returns its total size.
+ * @brief checks if the string pointed by str has at least onw character
+ * that differs from a space bar or its significants.
  * 
- * @param lst the list to be iterated.
- * @return int the total size of the list.
+ * @param str the string to be evaluated.
+ * @return int 1 if it finds a character differing from printable char, 0
+ * otherwise.
  */
-int	ft_lstsize(t_list *lst)
+int	ft_isempty(const char *str)
 {
-	int	i;
-
-	if (!lst)
+	if (!str)
 		return (0);
-	i = 0;
-	while (lst)
+	while (*str)
 	{
-		lst = lst->next;
-		i++;
+		if (ft_isprint(*str))
+			return (1);
+		str++;
 	}
-	return (i);
+	return (0);
 }
