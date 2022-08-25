@@ -85,7 +85,6 @@ void	ft_minusflag(t_data *data)
 			oldpwd = ft_strtrim(data->env[i], "OLDPWD=");
 	}
 	data->env = ft_oldpwd(data);
-	
 	chdir(oldpwd);
 	data->last_out = 0;
 	data->env = ft_newpwd(data);

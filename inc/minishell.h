@@ -12,36 +12,35 @@
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-#include "../libft/libft.h"
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
+# include "../libft/libft.h"
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
 
 # define WRITE 1
 # define READ 0
 
 typedef struct s_data {
-    char    **env;
-	char    **export_env;
-    char    **paths;
-    int     last_out;
-}   t_data;
+	char	**env;
+	char	**export_env;
+	char	**paths;
+	int		last_out;
+}	t_data;
 
 typedef struct s_cmds {
-    char    *prompt;
-    char    *token_value;
-    char    **tokens;
-    
-    int     n_cmds;
-    char    **binary;
-    char    ***command;
+	char	*prompt;
+	char	*token_value;
+	char	**tokens;
+	int		n_cmds;
+	char	**binary;
+	char	***command;
 
-    pid_t	pid;
-    int     **pipefd;
-    int     redir_flag;//*redir_flag
-    int     redir_fd;
-    
-}   t_cmds;
+	pid_t	pid;
+	int		**pipefd;
+	int		redir_flag;//*redir_flag
+	int		redir_fd;
+		
+}	t_cmds;
 
 /* Initials */
 void    ft_cpyenv(char **envp, t_data *data);

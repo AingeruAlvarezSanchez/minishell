@@ -19,7 +19,7 @@ void	ft_execute(t_data *data, char **command)
 	char	*tmp;
 	int		i;
 
-    i = -1;
+	i = -1;
 	while (data->paths[++i])
 	{
 		if (access(command[0], X_OK) == 0)
@@ -37,9 +37,8 @@ void	ft_init_execute(t_cmds *cmds, int pos)
 {
 	if (cmds->n_cmds != 1)
 	{	
-		if(cmds->redir_flag == pos)
+		if (cmds->redir_flag == pos)
 			dup2(cmds->redir_fd, STDOUT_FILENO);
-		
 		if (pos == 0)
 		{
 			if (cmds->n_cmds > 2)

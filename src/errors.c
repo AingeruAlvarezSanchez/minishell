@@ -13,29 +13,29 @@
 #include "../inc/minishell.h"
 #include <stdio.h>
 
-int  ft_has_final(t_cmds *cmds, int xref, char c)
+int	ft_has_final(t_cmds *cmds, int xref, char c)
 {
-    while (cmds->prompt[++xref])
-    {
-        if (cmds->prompt[xref] == c)
-            return (1);
-    }
-    printf("Syntax error, one ore more quotes are not closed\n");
-    return (0);
+	while (cmds->prompt[++xref])
+	{
+		if (cmds->prompt[xref] == c)
+			return (1);
+	}
+	printf("Syntax error, one ore more quotes are not closed\n");
+	return (0);
 }
 
-int  ft_pipes_error(char *prompt, char *sp)
+int	ft_pipes_error(char *prompt, char *sp)
 {
-    if (!*prompt/* || ft_nomorecommand(cmds, iref, jref)*/)
+	if (!*prompt/* || ft_nomorecommand(cmds, iref, jref)*/)
 	{
 		printf("Syntax error near unexpected token '%c'\n", sp[0]);
 		return (1);
 	}
-	while(*prompt == ' ')
+	while (*prompt == ' ')
 		prompt++;
-    if (ft_is_pipe_or_redir(*prompt))
+	if (ft_is_pipe_or_redir(*prompt))
 	{
-		while(*prompt  == ' ')
+		while (*prompt == ' ')
 			prompt++;
 		if (ft_is_pipe_or_redir(*prompt))
 		{

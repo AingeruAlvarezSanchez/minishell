@@ -56,6 +56,7 @@ char	**ft_newenv(t_data *data, char *value, char *find)
 {
 	int		i;
 	char	**tmp;
+    (void)  find;
 
 	i = 0;
 	while (data->env[i])
@@ -72,7 +73,7 @@ char	**ft_newenv(t_data *data, char *value, char *find)
 	}
 	else
 	{
-		tmp[i] = ft_strjoin(find, value);
+		tmp[i] = ft_strdup(value);
 		tmp[i + 1] = 0;
 	}
 	return (tmp);
@@ -109,36 +110,64 @@ void	ft_export(t_data *data, char **command, int i, int j)
 
 int sizeOf2Array(char **array)
 {
-	int i = 0;
+	int i;
+
+	if(!array)
+		return 0;
+	i = 0;
 	while (array[i])
 		i++;
 	return (i);
 }
-
-void ft_uninitexport(t_data *data, char** command)
+/*
+void ftUninitexport(t_data *data, char* command)
 {
 	char** tmp;
 	int i;
-	int u;
 
-	tmp = (char**)malloc(sizeof(char*))
-		+ (sizeOf2Array(data->export_env))
-		+ ((sizeOf2Array(command) + 1));
-
+    tmp = (char **)malloc(sizeof(char *) * sizeOf2Array(data->export_env) + 2);
+    int j = sizeof(char *) * sizeOf2Array(data->export_env) + 2;
+    printf("%d", j);
 	i = -1;
 	while(data->export_env[++i])
 	{
-		printf("%s\n", data->export_env[i]);
 		tmp[i] = ft_strdup(data->export_env[i]);
-		printf("%s\n", tmp[i]);
 	}
 	ft_doublefree(data->export_env);
 
-	u = 0;
-	while(command[++u])
-		tmp[i] = ft_strdup(command[u]);
+    tmp[i] = ft_strdup(command);
+
 	tmp[i + 1] = 0;
-	data->export_env = ft_doublestrdup(tmp);
+
+	while(tmp[++i])
+	{
+		data->export_env[i] = ft_strdup(tmp[i]);
+	}
+    data->export_env[i + 1] = 0;
+	//data->export_env = ft_doublestrdup(tmp);
+	free(tmp);
+}*/
+
+void	ftUninitexport(t_data *data, char *value)
+{
+	int		i;
+	char	**tmp;
+
+	i = 0;
+	while (data->export_env[i])
+		i++;
+	//tmp = (char **)malloc(sizeof(char *) * sizeOf2Array(data->export_env) + 2);
+	tmp = (char **)malloc(sizeof(char *) * (i + 2));
+	i = -1;
+	while (data->export_env[++i])
+	    tmp[i] = ft_strdup(data->export_env[i]);
+	ft_doublefree(data->export_env);
+	tmp[i] = ft_strdup(value);
+	tmp[i + 1] = 0;
+	while(tmp[++i])
+		data->export_env[i] = ft_strdup(tmp[i]);
+	data->export_env[i] = 0;
+	free(tmp);
 }
 
 void	ft_check_export(char **command, t_data *data, int cmd_n)
@@ -149,7 +178,7 @@ void	ft_check_export(char **command, t_data *data, int cmd_n)
 	if (!command[1])
 	{
 		i = -1;
-		while (data->env[++i])
+		while (data->export_env[++i])
 			printf("declare -x %s\n", data->export_env[i]);
 		data->last_out = 0;
 	}
@@ -164,9 +193,11 @@ void	ft_check_export(char **command, t_data *data, int cmd_n)
 				if (cmd_n != 0)
 					return ;
 				ft_export(data, command, i, j);
+				break ;
 			}
+			else if (command[i][j + 1] == 0 && command[i] != command[0])
+				ftUninitexport(data, command[i]);
 		}
-		ft_uninitexport(data, command);
 	}
 	data->last_out = 0;
 }
