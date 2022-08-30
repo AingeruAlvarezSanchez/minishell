@@ -39,14 +39,14 @@ void	ft_parent_builtin(char** command, t_data *data, int cmd_n, t_cmds *cmds)
 		ft_check_unset(command, data, cmd_n);
 }
 
-void	ft_ischild_builtin(t_cmds *Cmds, t_data *Data) 					//TODO [0][0] verificar (int cmd_n)
+void	ft_child_builtin(char *command)
 {
-	if (!ft_strncmp(Cmds->command[0][0], "pwd", 3))
-		ft_pwd();
-	else if (!ft_strncmp(Cmds->command[0][0], "echo", 4))
-		ft_check_echo(Cmds);
-	else if (!ft_strncmp(Cmds->command[0][0], "env", 3))
-		ft_env(Data);
+    if (!ft_strncmp(Cmds->command, "pwd", 3))
+        ft_pwd();
+    else if (!ft_strncmp(Cmds->command, "echo", 4))
+        ft_check_echo(Cmds);
+    else if (!ft_strncmp(Cmds->command, "env", 3))
+        ft_env(Data);
 }
 
 /**
@@ -90,6 +90,7 @@ void	ft_check_builtins(t_cmds *cmds, t_data *data)
 		if (!ft_check_parent(cmds->command[i][0]))
 		{
 			ft_create_forks(cmds, data, i);
+
 			if (cmds->n_cmds > 2)
 			{
 				close(cmds->pipefd[0][0]);
@@ -133,7 +134,6 @@ static void ft_commands(t_cmds *cmds, t_data *data)
         return ;
     }
 	free(cmds->prompt);
-	//print_bi_array(cmds->tokens, "token:");
 	ft_dollars(cmds, data);
     ft_parsing(cmds);
     ft_check_builtins(cmds, data);

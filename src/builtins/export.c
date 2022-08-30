@@ -108,62 +108,27 @@ void	ft_export(t_data *data, char **command, int i, int j)
 	free(find);
 }
 
-int sizeOf2Array(char **array)
-{
-	int i;
-
-	if(!array)
-		return 0;
-	i = 0;
-	while (array[i])
-		i++;
-	return (i);
-}
-/*
-void ftUninitexport(t_data *data, char* command)
-{
-	char** tmp;
-	int i;
-
-    tmp = (char **)malloc(sizeof(char *) * sizeOf2Array(data->export_env) + 2);
-    int j = sizeof(char *) * sizeOf2Array(data->export_env) + 2;
-    printf("%d", j);
-	i = -1;
-	while(data->export_env[++i])
-	{
-		tmp[i] = ft_strdup(data->export_env[i]);
-	}
-	ft_doublefree(data->export_env);
-
-    tmp[i] = ft_strdup(command);
-
-	tmp[i + 1] = 0;
-
-	while(tmp[++i])
-	{
-		data->export_env[i] = ft_strdup(tmp[i]);
-	}
-    data->export_env[i + 1] = 0;
-	//data->export_env = ft_doublestrdup(tmp);
-	free(tmp);
-}*/
-
 void	ftUninitexport(t_data *data, char *value)
 {
 	int		i;
 	char	**tmp;
+    int size;
 
-	i = 0;
-	while (data->export_env[i])
-		i++;
-	//tmp = (char **)malloc(sizeof(char *) * sizeOf2Array(data->export_env) + 2);
-	tmp = (char **)malloc(sizeof(char *) * (i + 2));
+    size = 0;
+	while (data->export_env[size])
+		size++;
+	tmp = (char **)malloc(sizeof(char *) * (size + 2));
 	i = -1;
 	while (data->export_env[++i])
 	    tmp[i] = ft_strdup(data->export_env[i]);
+    tmp[i] = ft_strdup(value);
+    tmp[i + 1] = 0;
+
 	ft_doublefree(data->export_env);
-	tmp[i] = ft_strdup(value);
-	tmp[i + 1] = 0;
+
+    data->export_env = (char **)malloc(sizeof(char *) * (size + 2));
+
+    i = -1;
 	while(tmp[++i])
 		data->export_env[i] = ft_strdup(tmp[i]);
 	data->export_env[i] = 0;
