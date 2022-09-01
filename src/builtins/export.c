@@ -43,13 +43,18 @@ void	ft_alreadyenv(t_data *data, char *value, char *find, int x)
 	if (!value)
 	{
 		free(data->env[x]);
+        free(data->export_env[x]);
 		data->env[x] = ft_strdup(find);
+        data->export_env[x] = ft_strdup(find);
 	}
 	else
 	{
 		free(data->env[x]);
+        free(data->export_env[x]);
 		data->env[x] = ft_strjoin(find, value);
+        data->export_env[x] = ft_strjoin(find, value);
 	}
+
 }
 
 char	**ft_newenv(t_data *data, char *value, char *find)

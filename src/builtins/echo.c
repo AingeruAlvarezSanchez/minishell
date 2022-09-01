@@ -12,7 +12,7 @@
 
 #include "../../inc/minishell.h"
 
-void	ft_echo(t_cmds *Cmds, char *flag)
+void	ft_echo(char **command, char *flag)
 {
 	int	i;
 	int	j;
@@ -20,12 +20,12 @@ void	ft_echo(t_cmds *Cmds, char *flag)
 	i = 0;
 	if (flag)
 		i = 1;
-	while (Cmds->command[0][++i])
+	while (command[++i])
 	{
 		j = -1;
-		while (Cmds->command[0][i][++j])
-			write(1, &Cmds->command[0][i][j], 1);
-		if (Cmds->command[0][i + 1])
+		while (command[i][++j])
+			write(1, &command[i][j], 1);
+		if (command[i + 1])
 			write(1, " ", 1);
 	}
 	if (flag)
@@ -34,18 +34,18 @@ void	ft_echo(t_cmds *Cmds, char *flag)
 	exit(0);
 }
 
-void	ft_check_echo(t_cmds *Cmds)
+void	ft_check_echo(char **command)
 {
-	if (!Cmds->command[0][1])
+	if (!command[1])
 	{
 		write(1, "\n", 1);
 		exit (0);
 	}
 	else
 	{
-		if (!ft_strncmp(Cmds->command[0][1], "-n", 2))
-			ft_echo(Cmds, Cmds->command[0][1]);
+		if (!ft_strncmp(command[1], "-n", 2))
+			ft_echo(command, command[1]);
 		else
-			ft_echo(Cmds, NULL);
+			ft_echo(command, NULL);
 	}
 }

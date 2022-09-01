@@ -12,7 +12,7 @@
 
 #include "../inc/minishell.h"
 #include <stdio.h>
-#include <fcntl.h>
+
 
 void	ft_execute(t_data *data, char **command)
 {
@@ -20,6 +20,7 @@ void	ft_execute(t_data *data, char **command)
 	int		i;
 
 	i = -1;
+    //updatePath(data);
 	while (data->paths[++i])
 	{
 		if (access(command[0], X_OK) == 0)
@@ -68,6 +69,7 @@ void	ft_create_forks(t_cmds *cmds, t_data *data, int pos)
 	ft_interactive(0);
 	if (cmds->pid == 0)
 	{
+        //ft_child_builtin(cmds->command[0], data);
 		ft_init_execute(cmds, pos);
 		close(cmds->pipefd[0][READ]);
 		close(cmds->pipefd[0][WRITE]);

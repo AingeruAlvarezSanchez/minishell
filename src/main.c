@@ -39,13 +39,13 @@ void	ft_parent_builtin(char** command, t_data *data, int cmd_n, t_cmds *cmds)
 		ft_check_unset(command, data, cmd_n);
 }
 
-void	ft_child_builtin(char *command)
+void	ft_child_builtin(char **command, t_data *Data)
 {
-    if (!ft_strncmp(Cmds->command, "pwd", 3))
+    if (!ft_strncmp(command[0], "pwd", 3))
         ft_pwd();
-    else if (!ft_strncmp(Cmds->command, "echo", 4))
-        ft_check_echo(Cmds);
-    else if (!ft_strncmp(Cmds->command, "env", 3))
+    else if (!ft_strncmp(command[0], "echo", 4))
+        ft_check_echo(command);
+    else if (!ft_strncmp(command[0], "env", 3))
         ft_env(Data);
 }
 

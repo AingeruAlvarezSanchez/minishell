@@ -81,9 +81,10 @@ void	ft_exit(char *flag, t_data *data, int cmd_n, t_cmds *cmds);
 void	ft_cd(char *flag, t_data *data, int cmd_pos);
 void	ft_check_export(char **command, t_data *data, int cmd_n);
 void	ft_check_unset(char **command, t_data *data, int cmd_n);
-void	ft_check_echo(t_cmds *Cmds);
+void	ft_check_echo(char **command);
 void	ft_env(t_data *Data);
 void	ft_pwd(void);
+void	ft_child_builtin(char **command, t_data *Data);
 
 /* utils */
 void    print_bi_array(char **arr, char *text);
