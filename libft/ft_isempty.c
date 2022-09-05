@@ -6,7 +6,7 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 21:02:27 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/08/24 00:29:18 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/09/04 17:23:56 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_isempty(const char *str)
 		return (0);
 	while (*str)
 	{
-		if (ft_isprint(*str))
+		if (ft_isprint(*str) && *str != ' ')
 			return (1);
 		str++;
 	}

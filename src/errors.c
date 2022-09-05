@@ -3,15 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/10 23:29:19 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/23 19:46:40 by ecorreia         ###   ########.fr       */
+/*   Created: 2022/09/04 16:55:57 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/09/04 19:18:34 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 #include <stdio.h>
+
+int	ft_pipes_error(t_cmds *cmds, int xref, int check)
+{
+	if (!cmds->prompt[xref + 1] || cmds->prompt[xref + 1] == '|'
+		|| (xref == 0 && check != 1))
+		return (printf("Syntax error near unexpected token '|'\n"), 1);
+	return (0);
+}
 
 int	ft_has_final(t_cmds *cmds, int xref, char c)
 {
@@ -20,28 +28,6 @@ int	ft_has_final(t_cmds *cmds, int xref, char c)
 		if (cmds->prompt[xref] == c)
 			return (1);
 	}
-	printf("Syntax error, one ore more quotes are not closed\n");
-	return (0);
-}
-
-int	ft_pipes_error(char *prompt, char *sp)
-{
-	if (!*prompt/* || ft_nomorecommand(cmds, iref, jref)*/)
-	{
-		printf("Syntax error near unexpected token '%c'\n", sp[0]);
-		return (1);
-	}
-	while (*prompt == ' ')
-		prompt++;
-	if (ft_is_pipe_or_redir(*prompt))
-	{
-		while (*prompt == ' ')
-			prompt++;
-		if (ft_is_pipe_or_redir(*prompt))
-		{
-			printf("Syntax error near unexpected token '%c'\n", sp[0]);
-			return (1);
-		}
-	}
+	printf("Syntax error, one or more quotes are not closed\n");
 	return (0);
 }

@@ -5,80 +5,37 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/16 18:08:50 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/17 04:09:09by aalvarez         ###   ########.fr       */
+/*   Created: 2022/09/04 17:59:54 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/09/04 19:15:55 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static void ft_pipes_multicommand(t_cmds *cmds, char **split, char* sp)
+int	ft_pipes(t_cmds *cmds, int xref)
 {
-    char    **tmp;
-    int     i;
-    int     x;
+	char	**tmp3;
+	int		i;
 
-    if (ft_doublestrlen(split) == 1)
-    {
-        ft_doublefree(split);
-        return ;
-    }
-    tmp = ft_doublestrdup(cmds->tokens);
-    cmds->tokens = (char **)malloc(sizeof(char *) * (ft_doublestrlen(tmp) + ft_doublestrlen(split)));
-    i = -1;
-    while (++i < (ft_doublestrlen(tmp) - 2))
-        cmds->tokens[i] = ft_strdup(tmp[i]);
-    x = 0;
-    while (split[x])
-        cmds->tokens[i++] = ft_strdup(split[x++]);
-    cmds->tokens[i] = ft_strdup(sp);
-    cmds->tokens[i + 1] = 0;
-    ft_doublefree(split);
-    ft_doublefree(tmp);
+	tmp3 = ft_doublestrdup(cmds->tokens);
+	ft_doublefree(cmds->tokens);
+	if (!tmp3)
+	{
+		cmds->tokens = (char **)malloc(sizeof(char *) * 3);
+		cmds->tokens[0] = ft_substr(cmds->prompt, 0, xref);
+		cmds->tokens[1] = ft_strdup("|");
+		cmds->tokens[2] = 0;
+	}
+	else
+	{
+		i = -1;
+		cmds->tokens = (char **)malloc(sizeof(char *)
+				* (ft_doublestrlen(tmp3) + 3));
+		while (tmp3[++i])
+			cmds->tokens[i] = ft_strdup(tmp3[i]);
+		cmds->tokens[i] = ft_substr(cmds->prompt, 0, xref);
+		cmds->tokens[i + 1] = ft_strdup("|");
+		cmds->tokens[i + 2] = 0;
+	}
+	return (ft_doublefree(tmp3), xref + 1);
 }
-
-static void ft_pipes_prev(t_cmds *cmds, char **tmp, int result, char *sp)
-{
-    int     i;
-    char    *tmp2;
-
-    i = -1;
-    cmds->tokens = (char **)malloc(sizeof(char *) * (ft_doublestrlen(tmp) * (ft_doublestrlen(tmp) + 3)));
-    while (tmp[++i])
-        cmds->tokens[i] = ft_strdup(tmp[i]);
-    tmp2 = ft_substr(cmds->prompt, 0, (result - 1));
-    cmds->tokens[i] = ft_strtrim(tmp2, " ");
-    cmds->tokens[i + 1] = ft_strdup(sp);
-    cmds->tokens[i + 2] = 0;
-    ft_pipes_multicommand(cmds, ft_split(cmds->tokens[i], ' '), sp);
-    free(tmp2);
-}
-
-int ft_pipes(t_cmds *cmds, int xref, char *sp)
-{
-    int     result;
-    int     i;
-    char    **tmp;
-    char    *tmp2;
-
-    result = xref;
-    while (cmds->prompt[result] == sp[0])
-        result++;
-    tmp = ft_doublestrdup(cmds->tokens);
-    tmp2 = ft_substr(cmds->prompt, 0, xref);
-    if (tmp2[0] && tmp2[0] != sp[0])
-        ft_pipes_prev(cmds, tmp, result, sp);
-    else
-    {
-        i = -1;
-        cmds->tokens = (char **)malloc(sizeof(char *) * (ft_doublestrlen(tmp) * (ft_doublestrlen(tmp) + 2)));
-        while (tmp[++i])
-            cmds->tokens[i] = ft_strdup(tmp[i]);
-        cmds->tokens[i] = ft_strdup(sp);
-        cmds->tokens[i + 1] = 0;
-    }
-    ft_doublefree(tmp);
-    free(tmp2);
-    return (result);
-}
-

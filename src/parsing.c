@@ -3,109 +3,92 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/19 17:13:14 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/08/23 12:15:44 by ecorreia         ###   ########.fr       */
+/*   Created: 2022/09/04 23:22:38 by aalvarez          #+#    #+#             */
+/*   Updated: 2022/09/05 01:00:02 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-#include <stdio.h>
-#include <fcntl.h>
 
-void	ft_parser(t_cmds *cmds, char **arr, int cmd_pos)
-{
-	int     i;
-	char    *tmp;
-	char    *tmp2;
-
-	tmp = ft_deletechar(arr[0], '\"');
-	tmp2 = ft_deletechar(tmp, '\'');
-	cmds->binary[cmd_pos] = ft_strtrim(tmp2, " ");
-	free(tmp);
-	free(tmp2);
-	cmds->command[cmd_pos][0] = ft_strdup(cmds->binary[cmd_pos]);
-	i = 0;
-	while (arr[++i])
-	{
-		tmp = ft_deletechar(arr[i],'\"');
-		cmds->command[cmd_pos][i] = ft_deletechar(tmp,'\'');
-		free(tmp);
-	}
-}
-
-void	ft_until_pipe(t_cmds *cmds, int n_tkn, int n_comand, char ** tkn)
+static void	ft_trimquotes(t_cmds *cmds)
 {
 	int		i;
-	char	**arr;// tokens until pipe
-	arr = (char**)malloc(sizeof(char*) * (n_tkn + 1));
-	arr[n_tkn] = 0;
+	char	*tmp;
+
 	i = -1;
-	while(n_tkn > ++i)
-		arr[i] = ft_strdup(tkn[i]);//guarda tokens hasta pipe
-	arr[i] = 0;
-	//print_bi_array(arr, "arr"); //los printeos dan tanto invalid reads (segfaults internos) como leaks
-	cmds->command[n_comand] = (char**)malloc(sizeof(char*) * (n_tkn + 1));
-	cmds->command[n_comand][n_tkn] = 0;
-	ft_parser(cmds, arr, n_comand);
-	ft_doublefree(arr);
+	while (cmds->tokens[++i])
+	{
+		if (cmds->tokens[i][0] == '"'
+				&& cmds->tokens[i][ft_strlen(cmds->tokens[i]) - 1] == '"')
+		{
+			tmp = ft_strtrim(cmds->tokens[i], "\"");
+			free(cmds->tokens[i]);
+			cmds->tokens[i] = ft_strdup(tmp);
+			free(tmp);
+		}
+		else
+		{
+			tmp = ft_strtrim(cmds->tokens[i], "'");
+			free(cmds->tokens[i]);
+			cmds->tokens[i] = ft_strdup(tmp);
+			free(tmp);
+		}
+		printf("token: ///%s///\n", cmds->tokens[i]);
+	}
 }
 
-void admin_comands(t_cmds *cmds, char **tkn)
+static int	ft_find_next_pipe(t_cmds *cmds, int xref)
 {
-	int n_tkn;//token position
-	int n_comand; //comand position
+	while (cmds->tokens[xref] && cmds->tokens[xref][0] != '|')
+		xref++;
+	if (!ft_isempty(cmds->tokens[xref + 1]))
+		xref++;
+	return (xref + 1);
+}
 
-	n_tkn = 0;
-	n_comand = 0;
-	while(tkn[n_tkn])
+static void	ft_noquotes_binary(t_cmds *cmds, int i, int x)
+{
+	char	*tmp;
+	int		j;
+
+	j = 0;
+	tmp = ft_strtrim(cmds->tokens[x], " ");
+	while (tmp[j] && tmp[j] != ' ')
+		j++;
+	cmds->binary[i] = ft_substr(tmp, 0, j);
+	free(tmp);
+}
+
+static void	ft_getbinary(t_cmds *cmds)
+{
+	int	i;
+	int	x;
+
+	i = -1;
+	x = 0;
+	cmds->binary = (char **)malloc(sizeof(char *) * (cmds->n_cmds + 1));
+	while (++i < cmds->n_cmds)
 	{
-		if(ft_is_pipe_or_redir(tkn[n_tkn][0]) || !tkn[n_tkn + 1])//encuentra pos de pipe
-		{	
-            if(tkn[n_tkn][0] == '>')/////////////////////tendria que ser cualquier redir pero asi para probar
-                cmds->redir_flag = n_comand + 1;
-            if (!tkn[n_tkn + 1])
-            {
-                ft_until_pipe(cmds, n_tkn + 1, n_comand, tkn);
-                if(cmds->redir_flag == n_comand)///////////////////////////////////////////////////creo fd del command
-                {
-                    cmds->redir_fd = open(cmds->command[n_comand][0], O_RDWR | O_CREAT | O_APPEND);
-                    if (cmds->redir_fd == -1)
-                    {
-                        perror("open error");
-                        exit(EXIT_FAILURE);
-                    }
-                }
-                return;
-            }
-            ft_until_pipe(cmds, n_tkn, n_comand, tkn);
-            tkn = tkn + n_tkn + 1;
-        	n_tkn = 0;
-            n_comand++;   
-			continue;
+		if (cmds->tokens[x][0] == '"' || cmds->tokens[x][0] == '\'')
+		{
+			if (cmds->tokens[x][0] == '"')
+				cmds->binary[i] = ft_strtrim(cmds->tokens[x], "\"");
+			else
+				cmds->binary[i] = ft_strtrim(cmds->tokens[x], "\'");
 		}
-		n_tkn++;
+		else
+			ft_noquotes_binary(cmds, i, x);
+		if (cmds->n_cmds > 1 && i != cmds->n_cmds - 1)
+			x = ft_find_next_pipe(cmds, x);
+		printf("binary: --%s--\n", cmds->binary[i]);
 	}
+	cmds->binary[i] = 0;
 }
 
 void	ft_parsing(t_cmds *cmds)
 {
-	char	**tkn;
-
-	cmds->binary = (char**)malloc(sizeof(char*) * (cmds->n_cmds + 1));
-	cmds->binary[cmds->n_cmds] = 0;
-	cmds->command = (char***)malloc(sizeof(char**) * (cmds->n_cmds + 1));
-	cmds->command[cmds->n_cmds] = 0;
-	tkn = ft_doublestrdup(cmds->tokens);
-	admin_comands(cmds, tkn);
-	
-    //los printeos dan tanto invalid reads (segfaults internos) como leaks
-	//print_bi_array(cmds->tokens, "tokens");
- 	//print_bi_array(cmds->binary, "binaries");
-    //int i = 0;
-    //while(cmds->command[i])
-	//    print_bi_array(cmds->command[i++], "comands");
-	ft_doublefree(tkn);
-	ft_doublefree(cmds->binary);
+	ft_getbinary(cmds);
+	ft_trimquotes(cmds);
 }

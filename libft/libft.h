@@ -6,17 +6,18 @@
 /*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 18:40:01 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/08/21 21:02:55 by aalvarez         ###   ########.fr       */
+/*   Updated: 2022/09/04 17:42:08 by aalvarez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
-#include <stddef.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
+# include <stddef.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+
 typedef struct s_list
 {
 	void			*content;
@@ -77,7 +78,7 @@ int		ft_getfile_size(int fd);
 char	**ft_doublestrdup(char **str);
 int		ft_doublestrlen(char **str);
 int		ft_doublefree(char **str);
-void    ft_triplefree(char ***str);
-char *ft_deletechar(const char *str, const char delete);
+void	ft_triplefree(char ***str);
+char	*ft_deletechar(const char *str, const char delete);
 
 #endif

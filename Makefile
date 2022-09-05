@@ -3,27 +3,15 @@ NAME = minishell
 CC		=	gcc
 RM		=	rm -rf
 FLAGS	=	-Wall -Wextra -Werror -g -g3 -fsanitize=address
-FILES		=	src/main		\
-			src/builtins/exit	\
-			src/builtins/cd		\
-			src/builtins/export	\
-			src/builtins/unset	\
-			src/builtins/echo	\
-			src/builtins/pwd	\
-			src/builtins/env	\
-			src/initials		\
-			src/special_chars	\
-			src/firstcase		\
-			src/errors			\
-			src/quotes			\
-			src/parsing			\
-			src/pipes			\
-			src/utils			\
-			src/lastjoin		\
-			src/execute			\
-			src/signals			\
-			src/composed_quotes	\
-			src/dollars
+FILES		=	src/main			\
+				src/initials		\
+				src/signals			\
+				src/special_chars	\
+				src/errors			\
+				src/quotes			\
+				src/pipes			\
+				src/dollars			\
+				src/parsing			\
 
 INCLUDE =	inc/minishell.h
 LIB		=	libft/libft.a
