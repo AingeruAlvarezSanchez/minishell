@@ -35,7 +35,7 @@ static void	ft_trimquotes(t_cmds *cmds)
 			cmds->tokens[i] = ft_strdup(tmp);
 			free(tmp);
 		}
-		printf("token: ///%s///\n", cmds->tokens[i]);
+		printf("token: ///%s///\n", cmds->tokens[i]); //TODO borrar
 	}
 }
 
@@ -61,7 +61,44 @@ static void	ft_noquotes_binary(t_cmds *cmds, int i, int x)
 	free(tmp);
 }
 
-static void	ft_getbinary(t_cmds *cmds)
+void ft_binary_exists(t_cmds *cmds, t_data *data, int iref)
+{
+	char	*tmp;
+	char	**spl_tmp;
+	int		i;
+
+	i = -1;
+	while (data->env[++i])
+	{
+		if (!ft_strncmp(data->env[i], "PATH=", 5))
+		{
+			spl_tmp = ft_split(data->env[i], ':');
+			i = -1;
+			while (spl_tmp[++i])
+			{
+				tmp = ft_strjoin(spl_tmp[i], "/");
+				free(spl_tmp[i]);
+				spl_tmp[i] = ft_strjoin(tmp, cmds->binary[iref]);
+				free(tmp);
+			}
+			i = -1;
+			while (spl_tmp[++i])
+			{
+				if (access(spl_tmp[i], X_OK) != -1)
+				{
+					ft_doublefree(spl_tmp);
+					return ;
+				}
+			}
+			ft_doublefree(spl_tmp);
+			break ;
+		}
+	}
+	free(cmds->binary[iref]);
+	cmds->binary[iref] = NULL;
+}
+
+static void	ft_getbinary(t_cmds *cmds, t_data *data)
 {
 	int	i;
 	int	x;
@@ -74,15 +111,16 @@ static void	ft_getbinary(t_cmds *cmds)
 		if (cmds->tokens[x][0] == '"' || cmds->tokens[x][0] == '\'')
 		{
 			if (cmds->tokens[x][0] == '"')
-				cmds->binary[i] = ft_strtrim(cmds->tokens[x], "\"");
+				cmds->binary[i] = ft_strtrim(cmds->tokens[x], "\""); //TODO concatenar a PATH y si no existe rellenar cmds binary con NULL
 			else
 				cmds->binary[i] = ft_strtrim(cmds->tokens[x], "\'");
+			ft_binary_exists(cmds, data, i);
 		}
 		else
 			ft_noquotes_binary(cmds, i, x);
 		if (cmds->n_cmds > 1 && i != cmds->n_cmds - 1)
 			x = ft_find_next_pipe(cmds, x);
-		printf("binary: --%s--\n", cmds->binary[i]);
+		printf("binary: --%s--\n", cmds->binary[i]); //TODO borrar
 	}
 	cmds->binary[i] = 0;
 }
@@ -152,12 +190,12 @@ void ft_getCommand(t_cmds *cmds)
     }
 }
 
-void	ft_parsing(t_cmds *cmds)
+void	ft_parsing(t_cmds *cmds, t_data *data)
 {
-	ft_getbinary(cmds);
+	ft_getbinary(cmds, data);
 	ft_trimquotes(cmds);
 
     cmds->command = (char***)malloc(sizeof(char**) * (cmds->n_cmds + 1));
     cmds->command[cmds->n_cmds] = 0;
-    ft_getCommand( cmds);
+    ft_getCommand(cmds);
 }

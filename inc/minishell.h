@@ -47,6 +47,6 @@ int		ft_pipes_error(t_cmds *cmds, int xref, int check);
 int		ft_quotes(t_cmds *cmds, int xref, char c);
 int		ft_pipes(t_cmds *cmds, int xref);
 void	ft_dollars(t_cmds *cmds, t_data *data);
-void	ft_parsing(t_cmds *cmds);
+void	ft_parsing(t_cmds *cmds, t_data *data);
 
 #endif

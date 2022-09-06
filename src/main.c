@@ -90,7 +90,7 @@ static void	ft_commands(t_cmds *cmds, t_data *data)
 	if (!cmds->tokens)
 		return ;
 	ft_dollars(cmds, data);
-	ft_parsing(cmds);
+	ft_parsing(cmds, data);
 }
 
 int	main(int argc, char **argv, char **envp)
