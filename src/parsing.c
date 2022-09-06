@@ -95,26 +95,56 @@ int sizeofA(char ** array)
     return i;
 }
 
+
+int until_pipe(char ** tokens, int a)
+{
+    while(tokens[a])
+    {
+        if(tokens[a][0] == '|')
+            break;
+        a++;
+    }
+    return a;
+}
+
+
 void ft_getCommand(t_cmds *cmds)
 {
     int i;
     int command_n;
     char **tkn;
+    char * aux;
 
     command_n = 0;
     i = 0;
     while(cmds->n_cmds > command_n)
     {
-        if(cmds->tokens[i][0] == '|')
-        {
-            i++;
-            continue;
-        }
         tkn = ft_split(cmds->tokens[i], ' ');
+        if(until_pipe(cmds->tokens, i) > 1)
+        {
+            aux = ft_strdup(cmds->tokens[i++]);
+            while(cmds->tokens[i])
+            {
+                if(cmds->tokens[i][0] != '|')
+                    aux = ft_strjoin(aux,cmds->tokens[i]);
+                if(cmds->tokens[i][0] == '|')
+                    break;
+                i++;
+            }
+            tkn = ft_split(aux, ' ');
+        }
+        else if(cmds->tokens[i] )
+        {
+            if (cmds->tokens[i][0] == '|')
+            {
+                i++;
+                continue;
+            }
+        }
         cmds->command[command_n] = (char**)malloc(sizeof(char*) * (sizeofA(tkn) + 1));
         cmds->command[command_n][sizeofA(tkn)] = 0;
         cmds->command[command_n] = ft_doublestrdup(tkn);
-        for (int j = 0; j < sizeofA(cmds->command[command_n]); ++j) {                           //TODO:borrar
+        for (int j = 0; j < sizeofA(cmds->command[command_n]); ++j)                        //TODO:borrar
             printf("Command[%d][%d]: %s\n", command_n, j,cmds->command[command_n][j]);        //TODO:borrar
         i++;
         command_n++;
