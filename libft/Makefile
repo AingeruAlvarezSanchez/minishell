@@ -64,6 +64,7 @@ SRC_EXT =	ft_isempty.c		\
 			ft_doublestrlen.c	\
 			ft_triplefree.c 	\
 			ft_deletechar.c		\
+			ft_chr_in_set.c		\
 
 OBJ = $(SRC:.c=.o)
 OBJ_BONUS = $(SRC_BONUS:.c=.o)

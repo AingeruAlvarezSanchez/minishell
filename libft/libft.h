@@ -80,5 +80,6 @@ int		ft_doublestrlen(char **str);
 int		ft_doublefree(char **str);
 void	ft_triplefree(char ***str);
 char	*ft_deletechar(const char *str, const char delete);
+int		ft_chr_in_set(char c, const char *set);
 
 #endif

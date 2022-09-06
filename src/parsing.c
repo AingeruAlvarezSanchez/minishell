@@ -145,7 +145,7 @@ void ft_getCommand(t_cmds *cmds)
         cmds->command[command_n][sizeofA(tkn)] = 0;
         cmds->command[command_n] = ft_doublestrdup(tkn);
         for (int j = 0; j < sizeofA(cmds->command[command_n]); ++j)                        //TODO:borrar
-            printf("Command[%d][%d]: %s\n", command_n, j,cmds->command[command_n][j]);        //TODO:borrar
+            printf("Command[%d][%d]: ->%s<-\n", command_n, j,cmds->command[command_n][j]);        //TODO:borrar
         i++;
         command_n++;
         ft_doublefree(tkn);

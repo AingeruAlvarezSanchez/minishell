@@ -19,7 +19,7 @@ static int	ft_check_dollars(t_cmds *cmds, t_data *data, int iref, int xref)
 	int		x;
 
 	x = xref + 1;
-	while (cmds->tokens[iref][x] && cmds->tokens[iref][x] != ' ')
+	while (cmds->tokens[iref][x] && !ft_chr_in_set(cmds->tokens[iref][x], " !·$%&/=?¿@#¢∞¬÷"))
 		x++;
 	if (cmds->tokens[iref][x - 1] == '"')
 		tmp2 = ft_substr(cmds->tokens[iref], (xref + 1), ((x - 2) - xref));
@@ -50,7 +50,8 @@ static void	ft_lastout_dollar(t_cmds *cmds, int iref, int xref, t_data *data)
 	prev = ft_substr(cmds->tokens[iref], 0, xref);
 	next = ft_strjoin(prev, status);
 	free(prev);
-	while (cmds->tokens[iref][xref] && cmds->tokens[iref][xref] != ' ')
+	xref++;
+	while (cmds->tokens[iref][xref] && !ft_chr_in_set(cmds->tokens[iref][xref], " $!·%&/=¿@#¢∞¬÷"))
 		xref++;
 	if (cmds->tokens[iref][xref - 1] == '"')
 		prev = ft_strdup("\"");
@@ -72,7 +73,8 @@ static void	ft_dollar_value(t_cmds *cmds, int iref, int xref)
 	prev = ft_substr(cmds->tokens[iref], 0, xref);
 	next = ft_strjoin(prev, cmds->token_value);
 	free(prev);
-	while (cmds->tokens[iref][xref] && cmds->tokens[iref][xref] != ' ')
+	xref++;
+	while (cmds->tokens[iref][xref] && !ft_chr_in_set(cmds->tokens[iref][xref], " $!·%&/=?¿@#¢∞¬÷"))
 		xref++;
 	if (cmds->tokens[iref][xref - 1] == '"')
 		prev = ft_strdup("\"");
@@ -93,7 +95,7 @@ static void	ft_dollar_no_value(t_cmds *cmds, int iref, int xref)
 
 	prev = ft_substr(cmds->tokens[iref], 0, xref);
 	xref++;
-	while (cmds->tokens[iref][xref] && cmds->tokens[iref][xref] != ' ')
+	while (cmds->tokens[iref][xref] && !ft_chr_in_set(cmds->tokens[iref][xref], " $!·%&/=?¿@#¢∞¬÷"))
 		xref++;
 	if (cmds->tokens[iref][xref - 1] == '"')
 		next = ft_strdup("\"");
