@@ -87,8 +87,47 @@ static void	ft_getbinary(t_cmds *cmds)
 	cmds->binary[i] = 0;
 }
 
+int sizeofA(char ** array)
+{
+    int i =0;
+    while(array[i])
+        i++;
+    return i;
+}
+
+void ft_getCommand(t_cmds *cmds)
+{
+    int i;
+    int command_n;
+    char **tkn;
+
+    command_n = 0;
+    i = 0;
+    while(cmds->n_cmds > command_n)
+    {
+        if(cmds->tokens[i][0] == '|')
+        {
+            i++;
+            continue;
+        }
+        tkn = ft_split(cmds->tokens[i], ' ');
+        cmds->command[command_n] = (char**)malloc(sizeof(char*) * (sizeofA(tkn) + 1));
+        cmds->command[command_n][sizeofA(tkn)] = 0;
+        cmds->command[command_n] = ft_doublestrdup(tkn);
+        for (int j = 0; j < sizeofA(cmds->command[command_n]); ++j) {                           //TODO:borrar
+            printf("Command[%d][%d]: %s\n", command_n, j,cmds->command[command_n][j]);        //TODO:borrar
+        i++;
+        command_n++;
+        ft_doublefree(tkn);
+    }
+}
+
 void	ft_parsing(t_cmds *cmds)
 {
 	ft_getbinary(cmds);
 	ft_trimquotes(cmds);
+
+    cmds->command = (char***)malloc(sizeof(char**) * (cmds->n_cmds + 1));
+    cmds->command[cmds->n_cmds] = 0;
+    ft_getCommand( cmds);
 }

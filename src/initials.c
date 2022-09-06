@@ -17,7 +17,7 @@ void	ft_cpyenv(char **envp, t_data *data)
 	int	i;
 
 	i = -1;
-	g_last_out = 0;
+	data->g_last_out = 0;
 	data->env = (char **)malloc(sizeof(char *) * (ft_doublestrlen(envp) + 1));
 	while (envp[++i])
 		data->env[i] = ft_strdup(envp[i]);

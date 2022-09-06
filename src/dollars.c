@@ -40,13 +40,13 @@ static int	ft_check_dollars(t_cmds *cmds, t_data *data, int iref, int xref)
 	return (free(tmp), 0);
 }
 
-static void	ft_lastout_dollar(t_cmds *cmds, int iref, int xref)
+static void	ft_lastout_dollar(t_cmds *cmds, int iref, int xref, t_data *data)
 {
 	char	*status;
 	char	*prev;
 	char	*next;
 
-	status = ft_itoa(g_last_out);
+	status = ft_itoa(data->g_last_out);
 	prev = ft_substr(cmds->tokens[iref], 0, xref);
 	next = ft_strjoin(prev, status);
 	free(prev);
@@ -124,7 +124,7 @@ void	ft_dollars(t_cmds *cmds, t_data *data)
 			{
 				if (cmds->tokens[i][x + 1] == '?')
 				{
-					ft_lastout_dollar(cmds, i, x);
+					ft_lastout_dollar(cmds, i, x, data);
 					x = -1;
 					continue ;
 				}

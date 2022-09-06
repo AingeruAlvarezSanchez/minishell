@@ -108,7 +108,7 @@ int	main(int argc, char **argv, char **envp)
 		free(cmds.prompt);
 		ft_doublefree(cmds.tokens);
 		ft_doublefree(cmds.binary);
-		g_last_out = WEXITSTATUS(status);
+		data.g_last_out = WEXITSTATUS(status);
 	}
 	return (0);
 }

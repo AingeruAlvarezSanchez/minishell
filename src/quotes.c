@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-#include <stdio.h>
 
 static void	ft_isnotfirst(t_cmds *cmds, char **tmp, int xref, int x)
 {

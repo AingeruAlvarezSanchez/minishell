@@ -20,11 +20,11 @@
 # define WRITE 1
 # define READ 0
 
-int	g_last_out;
 
 typedef struct s_data {
 	char	**env;
 	char	**export_env;
+    int     g_last_out;
 }	t_data;
 
 typedef struct s_cmds {
