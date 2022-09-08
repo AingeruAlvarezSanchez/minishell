@@ -171,13 +171,10 @@ void ft_getCommand(t_cmds *cmds)
             }
             tkn = ft_split(aux, ' ');
         }
-        else if(cmds->tokens[i] )
+        else if(cmds->tokens[i] && cmds->tokens[i][0] == '|')
         {
-            if (cmds->tokens[i][0] == '|')
-            {
-                i++;
-                continue;
-            }
+            i++;
+            continue;
         }
         cmds->command[command_n] = (char**)malloc(sizeof(char*) * (sizeofA(tkn) + 1));
         cmds->command[command_n][sizeofA(tkn)] = 0;

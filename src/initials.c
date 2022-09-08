@@ -12,6 +12,32 @@
 
 #include "../inc/minishell.h"
 
+
+static void	ft_createpaths(t_data *data)
+{
+    int		i;
+    char	**tmp;
+
+    i = -1;
+    while (data->env[++i])
+    {
+        if (!ft_strncmp(data->env[i], "PATH=", 5))
+        {
+            tmp = ft_split(data->env[i], ':');
+            i = -1;
+            data->paths = (char **)malloc(sizeof(char *)
+                                          * (ft_doublestrlen(tmp) + 1));
+            while (tmp[++i])
+                data->paths[i] = ft_strjoin(tmp[i], "/");
+            data->paths[i] = 0;
+            ft_doublefree(tmp);
+            break ;
+        }
+    }
+    data->export_env = ft_doublestrdup(data->env);
+}
+
+
 void	ft_cpyenv(char **envp, t_data *data)
 {
 	int	i;
@@ -22,6 +48,7 @@ void	ft_cpyenv(char **envp, t_data *data)
 	while (envp[++i])
 		data->env[i] = ft_strdup(envp[i]);
 	data->env[i] = 0;
+    ft_createpaths(data);//TODO: update path
 }
 
 void	ft_initcmds(t_cmds *cmds)

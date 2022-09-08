@@ -4,6 +4,13 @@ CC		=	gcc
 RM		=	rm -rf
 FLAGS	=	-Wall -Wextra -Werror -g -g3 -fsanitize=address
 FILES		=	src/main			\
+				src/builtins/exit	\
+				src/builtins/cd		\
+				src/builtins/export	\
+				src/builtins/unset	\
+				src/builtins/echo	\
+				src/builtins/pwd	\
+				src/builtins/env	\
 				src/initials		\
 				src/signals			\
 				src/special_chars	\
