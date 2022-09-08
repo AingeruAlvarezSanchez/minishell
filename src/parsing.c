@@ -35,7 +35,7 @@ static void	ft_trimquotes(t_cmds *cmds)
 			cmds->tokens[i] = ft_strdup(tmp);
 			free(tmp);
 		}
-		printf("token: ///%s///\n", cmds->tokens[i]); //TODO borrar
+		//printf("token: ///%s///\n", cmds->tokens[i]); //TODO borrar
 	}
 }
 
@@ -120,7 +120,7 @@ static void	ft_getbinary(t_cmds *cmds, t_data *data)
 			ft_noquotes_binary(cmds, i, x);
 		if (cmds->n_cmds > 1 && i != cmds->n_cmds - 1)
 			x = ft_find_next_pipe(cmds, x);
-		printf("binary: --%s--\n", cmds->binary[i]); //TODO borrar
+		//printf("binary: --%s--\n", cmds->binary[i]); //TODO borrar
 	}
 	cmds->binary[i] = 0;
 }
@@ -191,8 +191,8 @@ void ft_getCommand(t_cmds *cmds)
             continue;
         }
         cmds->command[command_n] = ft_doublestrdup(tkn);
-        for (int j = 0; j < sizeofA(cmds->command[command_n]); ++j)                        //TODO:borrar
-            printf("Command[%d][%d]: ->%s<-\n", command_n, j,cmds->command[command_n][j]);        //TODO:borrar
+        //for (int j = 0; j < sizeofA(cmds->command[command_n]); ++j)                        //TODO:borrar
+            //printf("Command[%d][%d]: ->%s<-\n", command_n, j,cmds->command[command_n][j]);        //TODO:borrar
         i++;
         command_n++;
         ft_doublefree(tkn);

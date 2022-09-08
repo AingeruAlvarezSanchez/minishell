@@ -19,10 +19,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="20954b7d-73ed-4e55-84ca-9b480fa1d980" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inc/minishell.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/minishell.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/builtins/export.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtins/export.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/initials.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/initials.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/builtins/cd.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtins/cd.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/parsing.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/parsing.c" afterDir="false" />
     </list>

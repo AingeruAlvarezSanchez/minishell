@@ -96,6 +96,8 @@ void	ft_init_execute(t_cmds *cmds, int pos)
 
 void	ft_child_builtin(char **command, t_data *Data)
 {
+    if (!command[0])
+        return ;
     if (!ft_strncmp(command[0], "pwd", 3))
         ft_pwd();
     else if (!ft_strncmp(command[0], "echo", 4))
@@ -155,6 +157,8 @@ void	ft_create_forks(t_cmds *cmds, t_data *data, int pos)
  */
 void	ft_parent_builtin(char** command, t_data *data, int cmd_n, t_cmds *cmds)
 {
+    if (!command[cmd_n])
+        return ;
     if (!ft_strncmp(command[0], "exit", 4)/* && !command[0][4]*/)
         ft_exit(command[1], data, cmd_n, cmds);
     else if (!ft_strncmp(command[0], "cd", 2)/* && !command[2]*/)
@@ -174,6 +178,8 @@ void	ft_parent_builtin(char** command, t_data *data, int cmd_n, t_cmds *cmds)
  */
 int	ft_check_parent(char *command)
 {
+    if (!command)
+        return (1);
     if (!ft_strncmp(command, "exit", 4) && !command[4])
         return (1);
     else if (!ft_strncmp(command, "cd", 2) && !command[2])

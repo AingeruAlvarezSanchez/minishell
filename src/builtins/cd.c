@@ -96,7 +96,7 @@ void	ft_cd(char *flag, t_data *data, int cmd_pos)
 	if (!flag)
 	{
 		data->env = ft_oldpwd(data);
-		chdir("/");
+		chdir("/"); //TODO go to $HOME not to "/"
 		data->g_last_out = 0;
 		data->env = ft_newpwd(data);
 	}
@@ -113,7 +113,6 @@ void	ft_cd(char *flag, t_data *data, int cmd_pos)
 		}
 		if (cmd_pos != 0)
 			return ;
-		//chdir(flag);
 		data->g_last_out = 0;
 		data->env = ft_newpwd(data);
 	}
