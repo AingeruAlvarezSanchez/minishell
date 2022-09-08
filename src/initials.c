@@ -58,4 +58,5 @@ void	ft_initcmds(t_cmds *cmds)
 	cmds->n_cmds = 1;
 	cmds->token_value = NULL;
 	cmds->tokens = NULL;
+    cmds->pid = getpid();
 }

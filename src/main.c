@@ -197,8 +197,10 @@ void	    ft_check_builtins(t_cmds *cmds, t_data *data) //TODO: mover
     //int	status;
 
    // status = 0;
+
     pipe(cmds->pipefd[0]);
     pipe(cmds->pipefd[1]);
+
     i = -1;
     while (++i < cmds->n_cmds)
     {
@@ -267,12 +269,13 @@ int	main(int argc, char **argv, char **envp)
     ft_signals();
     ft_cpyenv(envp, &data);
     ft_create_pipes(&cmds);
+    status = 0;
 	while (argc && argv)
 	{
 		cmds.prompt = readline("ejemplo1 ₺ ");
 		add_history(cmds.prompt);
 		ft_commands(&cmds, &data);
-        waitpid(cmds.pid, &status, WUNTRACED);
+        waitpid(cmds.pid, NULL, WUNTRACED);
 		free(cmds.prompt);
 		ft_doublefree(cmds.tokens);
 		ft_doublefree(cmds.binary);

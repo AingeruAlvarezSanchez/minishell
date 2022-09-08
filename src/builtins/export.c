@@ -16,22 +16,11 @@
 char	*ft_create_value(char **command, int x, int i)
 {
 	char	*value;
-	//int		size;
-	//int		ref;
 
-	//size = 0;
-	//ref = x;
 	if (command[i][x])
 	{
 		x = x - 1;
 		value = ft_strdup(command[i]);
-		/*while (command[i][++x])
-			size++;
-		value = (char *)malloc(sizeof(char) * (size + 1));
-		x = 0;
-		while (command[i][ref])
-			value[x++] = command[i][ref++];
-		value[x] = 0;*/
 	}
 	else
 		return (NULL);
@@ -51,8 +40,8 @@ void	ft_alreadyenv(t_data *data, char *value, char *find, int x)
 	{
 		free(data->env[x]);
         free(data->export_env[x]);
-		data->env[x] = ft_strjoin(find, value);
-        data->export_env[x] = ft_strjoin(find, value);
+		data->env[x] = ft_strdup(value);
+        data->export_env[x] = ft_strdup(value);
 	}
 
 }
@@ -137,7 +126,7 @@ void	ftUninitexport(t_data *data, char *value)
 	while(tmp[++i])
 		data->export_env[i] = ft_strdup(tmp[i]);
 	data->export_env[i] = 0;
-	free(tmp);
+    ft_doublefree(tmp);
 }
 
 void	ft_check_export(char **command, t_data *data, int cmd_n)

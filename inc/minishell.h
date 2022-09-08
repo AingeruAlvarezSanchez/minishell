@@ -20,7 +20,6 @@
 # define WRITE 1
 # define READ 0
 
-
 typedef struct s_data {
 	char	**env;
 	char	**export_env;
