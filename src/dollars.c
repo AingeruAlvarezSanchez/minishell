@@ -12,7 +12,7 @@
 
 #include "../inc/minishell.h"
 
-static int	ft_check_dollars(t_cmds *cmds, t_data *data, int iref, int xref)
+int	ft_check_dollars(t_cmds *cmds, t_data *data, int iref, int xref)
 {
 	char	*tmp;
 	char	*tmp2;
@@ -40,7 +40,7 @@ static int	ft_check_dollars(t_cmds *cmds, t_data *data, int iref, int xref)
 	return (free(tmp), 0);
 }
 
-static void	ft_lastout_dollar(t_cmds *cmds, int iref, int xref, t_data *data)
+void	ft_lastout_dollar(t_cmds *cmds, int iref, int xref, t_data *data)
 {
 	char	*status;
 	char	*prev;
@@ -65,7 +65,7 @@ static void	ft_lastout_dollar(t_cmds *cmds, int iref, int xref, t_data *data)
 	free(next);
 }
 
-static void	ft_dollar_value(t_cmds *cmds, int iref, int xref)
+void	ft_dollar_value(t_cmds *cmds, int iref, int xref)
 {
 	char	*prev;
 	char	*next;
@@ -88,7 +88,7 @@ static void	ft_dollar_value(t_cmds *cmds, int iref, int xref)
 	free(next);
 }
 
-static void	ft_dollar_no_value(t_cmds *cmds, int iref, int xref)
+void	ft_dollar_no_value(t_cmds *cmds, int iref, int xref)
 {
 	char	*prev;
 	char	*next;

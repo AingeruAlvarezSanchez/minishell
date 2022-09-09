@@ -12,8 +12,28 @@
 
 #include "../inc/minishell.h"
 
+void	ft_init_execute(t_cmds *cmds, int pos)
+{
+    if (cmds->n_cmds != 1)
+    {
+        if (pos == 0)
+        {
+            if (cmds->n_cmds > 2)
+                dup2(cmds->pipefd[1][WRITE], STDOUT_FILENO);
+            else
+                dup2(cmds->pipefd[0][WRITE], STDOUT_FILENO);
+        }
+        else if (pos != 0 && pos != cmds->n_cmds - 1)
+        {
+            dup2(cmds->pipefd[1][WRITE], STDOUT_FILENO);
+            dup2(cmds->pipefd[0][READ], STDIN_FILENO);
+        }
+        else if (pos == cmds->n_cmds - 1)
+            dup2(cmds->pipefd[0][READ], STDIN_FILENO);
+    }
+}
 
-static void	ft_createpaths(t_data *data)
+void	ft_createpaths(t_data *data)
 {
     int		i;
     char	**tmp;

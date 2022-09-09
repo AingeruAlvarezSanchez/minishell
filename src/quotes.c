@@ -12,7 +12,34 @@
 
 #include "../inc/minishell.h"
 
-static void	ft_isnotfirst(t_cmds *cmds, char **tmp, int xref, int x)
+void	ft_trimquotes(t_cmds *cmds)
+{
+    int		i;
+    char	*tmp;
+
+    i = -1;
+    while (cmds->tokens[++i])
+    {
+        if (cmds->tokens[i][0] == '"'
+            && cmds->tokens[i][ft_strlen(cmds->tokens[i]) - 1] == '"')
+        {
+            tmp = ft_strtrim(cmds->tokens[i], "\"");
+            free(cmds->tokens[i]);
+            cmds->tokens[i] = ft_strdup(tmp);
+            free(tmp);
+        }
+        else
+        {
+            tmp = ft_strtrim(cmds->tokens[i], "'");
+            free(cmds->tokens[i]);
+            cmds->tokens[i] = ft_strdup(tmp);
+            free(tmp);
+        }
+        //printf("token: ///%s///\n", cmds->tokens[i]); //TODO borrar
+    }
+}
+
+void	ft_isnotfirst(t_cmds *cmds, char **tmp, int xref, int x)
 {
 	char	*tmp2;
 	int		i;
@@ -40,7 +67,7 @@ static void	ft_isnotfirst(t_cmds *cmds, char **tmp, int xref, int x)
 	free(tmp2);
 }
 
-static void	ft_checkprevious(t_cmds *cmds, int xref, int x)
+void	ft_checkprevious(t_cmds *cmds, int xref, int x)
 {
 	if (xref != 0)
 	{

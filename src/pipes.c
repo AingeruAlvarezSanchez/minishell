@@ -12,6 +12,24 @@
 
 #include "../inc/minishell.h"
 
+void	ft_create_pipes(t_cmds *cmds) // TODO: mover a otro sitio
+{
+    cmds->pipefd = (int **)malloc(sizeof(int *) * 2);
+    cmds->pipefd[0] = (int *)malloc(sizeof(int) * 2);
+    cmds->pipefd[1] = (int *)malloc(sizeof(int) * 2);
+}
+
+int until_pipe(char ** tokens, int a)
+{
+    while(tokens[a])
+    {
+        if(tokens[a][0] == '|')
+            break;
+        a++;
+    }
+    return a;
+}
+
 int	ft_pipes(t_cmds *cmds, int xref)
 {
 	char	**tmp3;

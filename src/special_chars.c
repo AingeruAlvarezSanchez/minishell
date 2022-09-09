@@ -12,14 +12,14 @@
 
 #include "../inc/minishell.h"
 
-static int	ft_is_special_char(char c)
+int	ft_is_special_char(char c)
 {
 	if (c == '\'' || c == '"' || c == '|')
 		return (1);
 	return (0);
 }
 
-static int	ft_manage_special_character(t_cmds *cmds, int xref, char c)
+int	ft_manage_special_character(t_cmds *cmds, int xref, char c)
 {
 	int			result;
 	static int	check;

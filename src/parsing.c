@@ -12,43 +12,16 @@
 
 #include "../inc/minishell.h"
 
-static void	ft_trimquotes(t_cmds *cmds)
+int	ft_find_next_pipe(t_cmds *cmds, int xref)
 {
-	int		i;
-	char	*tmp;
-
-	i = -1;
-	while (cmds->tokens[++i])
-	{
-		if (cmds->tokens[i][0] == '"'
-				&& cmds->tokens[i][ft_strlen(cmds->tokens[i]) - 1] == '"')
-		{
-			tmp = ft_strtrim(cmds->tokens[i], "\"");
-			free(cmds->tokens[i]);
-			cmds->tokens[i] = ft_strdup(tmp);
-			free(tmp);
-		}
-		else
-		{
-			tmp = ft_strtrim(cmds->tokens[i], "'");
-			free(cmds->tokens[i]);
-			cmds->tokens[i] = ft_strdup(tmp);
-			free(tmp);
-		}
-		//printf("token: ///%s///\n", cmds->tokens[i]); //TODO borrar
-	}
+    while (cmds->tokens[xref] && cmds->tokens[xref][0] != '|')
+        xref++;
+    if (!ft_isempty(cmds->tokens[xref + 1]))
+        xref++;
+    return (xref + 1);
 }
 
-static int	ft_find_next_pipe(t_cmds *cmds, int xref)
-{
-	while (cmds->tokens[xref] && cmds->tokens[xref][0] != '|')
-		xref++;
-	if (!ft_isempty(cmds->tokens[xref + 1]))
-		xref++;
-	return (xref + 1);
-}
-
-static void	ft_noquotes_binary(t_cmds *cmds, int i, int x)
+void	ft_noquotes_binary(t_cmds *cmds, int i, int x)
 {
 	char	*tmp;
 	int		j;
@@ -98,7 +71,7 @@ void ft_binary_exists(t_cmds *cmds, t_data *data, int iref)
 	cmds->binary[iref] = NULL;
 }
 
-static void	ft_getbinary(t_cmds *cmds, t_data *data)
+void	ft_getbinary(t_cmds *cmds, t_data *data)
 {
 	int	i;
 	int	x;
@@ -125,25 +98,7 @@ static void	ft_getbinary(t_cmds *cmds, t_data *data)
 	cmds->binary[i] = 0;
 }
 
-int sizeofA(char ** array)
-{
-    int i =0;
-    while(array[i])
-        i++;
-    return i;
-}
 
-
-int until_pipe(char ** tokens, int a)
-{
-    while(tokens[a])
-    {
-        if(tokens[a][0] == '|')
-            break;
-        a++;
-    }
-    return a;
-}
 
 
 void ft_getCommand(t_cmds *cmds)

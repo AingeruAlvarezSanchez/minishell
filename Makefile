@@ -19,6 +19,7 @@ FILES		=	src/main			\
 				src/pipes			\
 				src/dollars			\
 				src/parsing			\
+				src/execute			\
 
 INCLUDE =	inc/minishell.h
 LIB		=	libft/libft.a
