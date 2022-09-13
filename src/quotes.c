@@ -52,7 +52,10 @@ void	ft_isnotfirst(t_cmds *cmds, char **tmp, int xref, int x)
 	{
 		while (tmp[++i])
 			cmds->tokens[i] = ft_strdup(tmp[i]);
-		cmds->tokens[i] = ft_strdup(" ");
+        //if(cmds->tokens[i] == NULL)//
+            cmds->tokens[i] = ft_strdup("");
+       // else//
+		//    cmds->tokens[i] = ft_strdup(" ");//
 		cmds->tokens[i + 1] = ft_substr(cmds->prompt, xref, ((x + 1) - xref));
 		cmds->tokens[i + 2] = 0;
 	}

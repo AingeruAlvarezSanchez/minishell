@@ -3,10 +3,10 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
-  <component name="CMakePresetLoader"><![CDATA[{
-  "useNewFormat": true
-}]]></component>
-  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+  <component name="CMakePresetLoader">{
+  &quot;useNewFormat&quot;: true
+}</component>
+  <component name="CMakeRunConfigurationManager">
     <generated>
       <config projectName="minishell" targetName="make re" />
       <config projectName="minishell" targetName="all" />
@@ -22,17 +22,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="20954b7d-73ed-4e55-84ca-9b480fa1d980" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/customTargets.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inc/minishell.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/minishell.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dollars.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/dollars.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/initials.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/initials.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parsing.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/parsing.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pipes.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/pipes.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/quotes.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/quotes.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/special_chars.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/special_chars.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/builtins/export.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtins/export.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,9 +57,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="CLionExternalConfigurable" />
-  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;//wsl$/Ubuntu-20.04/home/ecorreia/42/minishell/src&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;CLionExternalConfigurable&quot;,
+    &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;
+  }
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="\\wsl$\Ubuntu-20.04\home\ecorreia\42\minishell\src" />
@@ -76,7 +78,12 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="make" type="CLionExternalRunConfiguration" factoryName="Application" nameIsGenerated="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" WORKING_DIR="file://$PROJECT_DIR$" PASS_PARENT_ENVS_2="true" PROJECT_NAME="minishell" TARGET_NAME="make" CONFIG_NAME="make" RUN_PATH="$PROJECT_DIR$/minishell">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="a" type="CLionExternalRunConfiguration" factoryName="Application" nameIsGenerated="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" WORKING_DIR="file://$PROJECT_DIR$" PASS_PARENT_ENVS_2="true" PROJECT_NAME="minishell" TARGET_NAME="a" CONFIG_NAME="a" RUN_PATH="$PROJECT_DIR$/minishell">
       <method v="2">
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
@@ -97,7 +104,9 @@
       <workItem from="1662046591354" duration="4650000" />
       <workItem from="1662554446761" duration="128000" />
       <workItem from="1662620739243" duration="10351000" />
-      <workItem from="1662708839063" duration="9370000" />
+      <workItem from="1662708839063" duration="11150000" />
+      <workItem from="1662727022391" duration="4000" />
+      <workItem from="1663052325175" duration="4961000" />
     </task>
     <servers />
   </component>
@@ -114,5 +123,21 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/builtins/export.c</url>
+          <line>53</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="CLionExternalRunConfiguration">
+        <watch expression="data-&gt;env[x]" language="ObjectiveC" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

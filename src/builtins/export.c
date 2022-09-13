@@ -43,14 +43,34 @@ void	ft_alreadyenv(t_data *data, char *value, char *find, int x)
 		data->env[x] = ft_strdup(value);
         data->export_env[x] = ft_strdup(value);
 	}
+}
 
+void ft_alreadyenvexport( t_data *data, char*value, char *find)
+{
+    int x = -1;
+    while (data->export_env[++x])
+    {
+        if (!ft_strncmp(data->export_env[x], find, ft_strlen(find) -1))
+        {
+            if (!value)
+            {
+                free(data->export_env[x]);
+                data->export_env[x] = ft_strdup(find);
+            }
+            else
+            {
+                free(data->export_env[x]);
+                data->export_env[x] = ft_strdup(value);
+            }
+            return ;
+        }
+    }
 }
 
 char	**ft_newenv(t_data *data, char *value, char *find)
 {
 	int		i;
 	char	**tmp;
-    (void)  find;
 
 	i = 0;
 	while (data->env[i])
@@ -97,6 +117,7 @@ void	ft_export(t_data *data, char **command, int i, int j)
 		}
 	}
 	data->env = ft_newenv(data, value, find);
+    ft_alreadyenvexport(data, value, find);//
 	data->g_last_out = 0;
 	free(value);
 	free(find);
