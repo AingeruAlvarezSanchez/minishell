@@ -1,173 +1,77 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aalvarez <aalvarez@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/04 08:40:53 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/05/21 06:24:59 by aalvarez         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "../../include/minishell.h"
 
-#include "../../inc/minishell.h"
-#include <stdio.h>
-
-char	*ft_create_value(char **command, int x, int i)
-{
-	char	*value;
-	//int		size;
-	//int		ref;
-
-	//size = 0;
-	//ref = x;
-	if (command[i][x])
-	{
-		x = x - 1;
-		value = ft_strdup(command[i]);
-		/*while (command[i][++x])
-			size++;
-		value = (char *)malloc(sizeof(char) * (size + 1));
-		x = 0;
-		while (command[i][ref])
-			value[x++] = command[i][ref++];
-		value[x] = 0;*/
-	}
-	else
-		return (NULL);
-	return (value);
-}
-
-void	ft_alreadyenv(t_data *data, char *value, char *find, int x)
-{
-	if (!value)
-	{
-		free(data->env[x]);
-        free(data->export_env[x]);
-		data->env[x] = ft_strdup(find);
-        data->export_env[x] = ft_strdup(find);
-	}
-	else
-	{
-		free(data->env[x]);
-        free(data->export_env[x]);
-		data->env[x] = ft_strjoin(find, value);
-        data->export_env[x] = ft_strjoin(find, value);
-	}
-
-}
-
-char	**ft_newenv(t_data *data, char *value, char *find)
-{
-	int		i;
-	char	**tmp;
-    (void)  find;
-
-	i = 0;
-	while (data->env[i])
-		i++;
-	tmp = (char **)malloc(sizeof(char *) * (i + 2));
-	i = -1;
-	while (data->env[++i])
-		tmp[i] = ft_strdup(data->env[i]);
-	ft_doublefree(data->env);
-	if (!value)
-	{
-		tmp[i] = ft_strdup(find);
-		tmp[i + 1] = 0;
-	}
-	else
-	{
-		tmp[i] = ft_strdup(value);
-		tmp[i + 1] = 0;
-	}
-	return (tmp);
-}
-
-void	ft_export(t_data *data, char **command, int i, int j)
+static void	ft_replace_env(char *variable, t_msh_var *msh, char **tmp)
 {
 	int		x;
-	char	*find;
-	char	*value;
+	char	*to_search;
 
-	find = (char *)malloc(sizeof(char) * (j + 2));
+	x = 0;
+	while (variable[x] != '=')
+			x++;
+	to_search = ft_substr(variable, 0, (x + 1));
+	msh->own_envp = (char **)malloc(sizeof(char *)
+			* (ft_doublestrlen(tmp) + 1));
 	x = -1;
-	while (++x <= j)
-		find[x] = command[i][x];
-	find[x] = 0;
-	value = ft_create_value(command, x, i);
-	x = -1;
-	while (data->env[++x])
+	while (tmp[++x])
 	{
-		if (!ft_strncmp(data->env[x], find, (j + 1)))
+		if (!ft_strncmp(tmp[x], to_search, ft_strlen(to_search)))
+			msh->own_envp[x] = ft_strdup(variable);
+		else
 		{
-			ft_alreadyenv(data, value, find, x);
-			free(value);
-			free(find);
-			return ;
+			msh->own_envp[x] = ft_strdup(tmp[x]);
 		}
 	}
-	data->env = ft_newenv(data, value, find);
-	data->last_out = 0;
-	free(value);
-	free(find);
+	free(to_search);
+	msh->own_envp[x] = 0;
 }
 
-void	ftUninitexport(t_data *data, char *value)
+static void	ft_create_variable(char *variable, t_msh_var *msh)
 {
-	int		i;
 	char	**tmp;
-    int size;
+	int		i;
 
-    size = 0;
-	while (data->export_env[size])
-		size++;
-	tmp = (char **)malloc(sizeof(char *) * (size + 2));
+	tmp = ft_doublestrdup(msh->own_envp);
+	ft_doublefree(msh->own_envp);
 	i = -1;
-	while (data->export_env[++i])
-	    tmp[i] = ft_strdup(data->export_env[i]);
-    tmp[i] = ft_strdup(value);
-    tmp[i + 1] = 0;
-
-	ft_doublefree(data->export_env);
-
-    data->export_env = (char **)malloc(sizeof(char *) * (size + 2));
-
-    i = -1;
-	while(tmp[++i])
-		data->export_env[i] = ft_strdup(tmp[i]);
-	data->export_env[i] = 0;
-	free(tmp);
+	if (ft_already_in(variable, tmp))
+		ft_replace_env(variable, msh, tmp);
+	else
+	{
+		msh->own_envp = (char **)malloc(sizeof(char *)
+				* (ft_doublestrlen(tmp) + 2));
+		while (tmp[++i])
+			msh->own_envp[i] = ft_strdup(tmp[i]);
+		msh->own_envp[i] = ft_strdup(variable);
+		msh->own_envp[i + 1] = 0;
+	}
+	ft_doublefree(tmp);
 }
 
-void	ft_check_export(char **command, t_data *data, int cmd_n)
+static void	ft_export(char *variable, t_msh_var *msh)
+{
+	if (ft_check_variable(variable))
+		return ;
+	ft_create_variable(variable, msh);
+}
+
+int	ft_export_check(t_command *command, t_msh_var *msh, int c_num, int count)
 {
 	int	i;
-	int	j;
 
-	if (!command[1])
+	if (c_num != count - 1)
+		return (1);
+	if (command->command[1])
+	{
+		i = 0;
+		while (command->command[++i])
+			ft_export(command->command[i], msh);
+	}
+	else
 	{
 		i = -1;
-		while (data->export_env[++i])
-			printf("declare -x %s\n", data->export_env[i]);
-		data->last_out = 0;
+		while (msh->own_envp[++i])
+			printf("declare -x %s\n", msh->own_envp[i]);
 	}
-	i = -1;
-	while (command[++i])
-	{
-		j = -1;
-		while (command[i][++j])
-		{
-			if (command[i][j] == '=')
-			{
-				if (cmd_n != 0)
-					return ;
-				ft_export(data, command, i, j);
-				break ;
-			}
-			else if (command[i][j + 1] == 0 && command[i] != command[0])
-				ftUninitexport(data, command[i]);
-		}
-	}
-	data->last_out = 0;
+	g_exit_status = 0;
+	return (0);
 }

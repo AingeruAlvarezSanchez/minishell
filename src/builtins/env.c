@@ -1,29 +1,19 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/22 10:09:57 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/08/22 10:47:19 by ecorreia         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "../../include/minishell.h"
 
-#include "../../inc/minishell.h"
-
-void	ft_env(t_data *Data)
+void	ft_env(t_msh_var *msh, t_command *command)
 {
 	int	i;
-	int	j;
 
-	i = -1;
-	while (Data->env[++i])
+	if (!command->command[1])
 	{
-		j = -1;
-		while (Data->env[i][++j])
-			write(1, &Data->env[i][j], 1);
-		write(1, "\n", 1);
+		i = -1;
+		while (msh->own_envp[++i])
+			printf("%s\n", msh->own_envp[i]);
+		g_exit_status = 0;
 	}
-	exit(0);
+	else
+	{
+		printf("env: %s: No such file or directory\n", command->command[1]);
+		g_exit_status = 1;
+	}
 }

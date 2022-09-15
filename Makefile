@@ -1,64 +1,70 @@
-SHELL = /bin/sh
-NAME = minishell
-CC		=	gcc
-RM		=	rm -rf
-FLAGS	=	-Wall -Wextra -Werror -g -g3 -fsanitize=address
-FILES		=	src/main		\
-			src/builtins/exit	\
-			src/builtins/cd		\
-			src/builtins/export	\
-			src/builtins/unset	\
-			src/builtins/echo	\
-			src/builtins/pwd	\
-			src/builtins/env	\
-			src/initials		\
-			src/special_chars	\
-			src/firstcase		\
-			src/errors			\
-			src/quotes			\
-			src/parsing			\
-			src/pipes			\
-			src/utils			\
-			src/lastjoin		\
-			src/execute			\
-			src/signals			\
-			src/composed_quotes	\
-			src/dollars
+CC				= gcc
+NAME			= minishell
+LIBFT			= include/Libft/
+INCLUDE			= /include/minishell.h
+LIB				= include/Libft/libft.a
+READLINE_PATH	= ~/.brew/opt/readline
+READLINE		= -I$(READLINE_PATH)/include -lreadline -L $(READLINE_PATH)/lib
+FLAGS			=  -Wall -Wextra -Werror -g -fsanitize=address -g3
 
-INCLUDE =	inc/minishell.h
-LIB		=	libft/libft.a
+SRCS			= src/main.c									\
+				src/environment/environment.c					\
+				src/parser/parser.c								\
+				src/errors/error.c								\
+				src/errors/string_errors.c						\
+				src/specials/redir.c							\
+				src/utils/utils.c								\
+				src/utils/free_things.c							\
+				src/dollars/dollars.c							\
+				src/dollars/dollar_value.c						\
+				src/builtins/unset.c							\
+				src/builtins/export.c							\
+				src/builtins/export_utils.c						\
+				src/builtins/echo.c								\
+				src/builtins/cd.c								\
+				src/builtins/cd_utils.c							\
+				src/builtins/pwd.c								\
+				src/builtins/env.c								\
+				src/builtins/exit.c								\
+				src/builtins/check_builtins.c					\
+				src/execution/execute.c							\
+				src/execution/binary_manage.c					\
+				src/execution/binary_manage_utils.c				\
+				src/signals/signals.c							\
+				src/specials/pipes.c							\
+				src/specials/quotes.c								\
 
-PWD = ~/.brew/opt/readline
-
-READLINE =	-lreadline -L /Users/$(USER)/.brew/opt/readline/lib\
-			-I /Users/$(USER)/.brew/opt/readline/include\
-					
-SRCS	=	$(addsuffix .c, $(FILES))
-OBJS	=	$(addsuffix .o, $(FILES))
+OBJS	= $(SRCS:.c=.o)
 
 all: $(NAME)
 
-.c.o:
-	@$(CC) $(FLAGS) -c -o $@ $<
+.SILENT:
 
-$(NAME): $(OBJS) $(SRCS)
-	@$(MAKE) ext -C libft/
-	@$(CC) $(FLAGS) $(OBJS) $(LIB) $(READLINE) -o $(NAME)
-	@echo compilado ok
+$(NAME) : $(OBJS)
+	echo "Compiling"
+	make -C $(LIBFT)
+	@$(CC) $(FLAGS) -o $(NAME) $(OBJS) $(LIB) $(READLINE)
+	echo "Compilation done"
+
+%.o: %.c
+	@${CC} ${FLAGS} -c $< -o $@
 
 clean:
-	@$(RM) libft/*.o
-	@$(RM) src/*.o
-	@$(RM) src/builtins/*.o
-	@$(RM) *.o
-	@ echo "clean done"
+	make fclean -C $(LIBFT)
+	$(RM) ./*/*/*.o
+	$(RM) $(OBJS)
+	echo "clean done"
 
 fclean: clean
-	@$(MAKE) fclean -C libft/
-	@$(RM) minishell.dSYM
-	@$(RM) $(NAME)
-	@ echo "fclean done"
+	$(MAKE) fclean -C include/Libft/
+	$(RM) $(OBJS)
+	$(RM) $(NAME)
+	rm -rf .DS_Store
+	rm -rf .vscode
+	rm -rf minishell.dSYM
+	echo "fclean done"
 
 re: clean all
 
 .PHONY: all clean fclean re
+

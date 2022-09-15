@@ -1,120 +1,82 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/04 07:49:07 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/08/04 14:29:48 by ecorreia         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "../../include/minishell.h"
 
-#include "../../inc/minishell.h"
-#include <stdio.h>
-#include <dirent.h>
-
-char	**ft_oldpwd(t_data *data)
+char	*ft_get_home(t_msh_var *msh)
 {
-	char	**new_env;
-	char	*pwd;
-	int		i;
-	char	*tmp;
+	int	i;
 
-	i = 0;
-	pwd = getcwd(NULL, 0);
-	tmp = ft_strjoin("OLDPWD=", pwd);
-	while (data->env[i])
-		i++;
-	new_env = (char **)malloc(sizeof(char *) * (i + 1));
 	i = -1;
-	while (data->env[++i])
+	while (msh->own_envp[++i])
 	{
-		if (!ft_strncmp(data->env[i], "OLDPWD=", 7))
-			new_env[i] = ft_strdup(tmp);
-		else
-			new_env[i] = ft_strdup(data->env[i]);
+		if (!ft_strncmp(msh->own_envp[i], "HOME=", 5))
+			return (ft_substr(msh->own_envp[i], 5,
+					ft_strlen(msh->own_envp[i]) - 5));
 	}
-	printf("%s\n", tmp);
-	new_env[i] = 0;
-	i = -1;
-	ft_doublefree(data->env);
-	free(pwd);
-	free(tmp);
-	return (new_env);
+	printf("HOME not set\n");
+	return (NULL);
 }
 
-char	**ft_newpwd(t_data *data)
-{
-	char	**new_env;
-	int		i;
-	char	*pwd;
-	char	*tmp;
-
-	i = 0;
-	pwd = getcwd(NULL, 0);
-	tmp = ft_strjoin("PWD=", pwd);
-	while (data->env[i])
-		i++;
-	new_env = (char **)malloc(sizeof(char *) * (i + 1));
-	i = -1;
-	while (data->env[++i])
-	{
-		if (!ft_strncmp(data->env[i], "PWD=", 4))
-			new_env[i] = ft_strdup(tmp);
-		else
-			new_env[i] = ft_strdup(data->env[i]);
-	}
-	new_env[i] = 0;
-	ft_doublefree(data->env);
-	free(tmp);
-	free(pwd);
-	return (new_env);
-}
-
-void	ft_minusflag(t_data *data)
+void	ft_firstoldpwd(t_msh_var *msh)
 {
 	int		i;
-	char	*oldpwd;
+	int		j;
+	char	**tmp;
 
 	i = -1;
-	oldpwd = 0;
-	while (data->env[++i])
+	j = 0;
+	tmp = ft_doublestrdup(msh->own_envp);
+	ft_doublefree(msh->own_envp);
+	msh->own_envp = (char **)malloc(sizeof(char *)
+			*(ft_doublestrlen(tmp) + 2));
+	while (tmp[++i])
 	{
-		if (!ft_strncmp(data->env[i], "OLDPWD=", 7))
-			oldpwd = ft_strtrim(data->env[i], "OLDPWD=");
+		if (!ft_strncmp(tmp[i], "PWD=", 4))
+		{
+			msh->own_envp[j] = ft_strjoin("OLDPWD=", msh->oldpwd);
+			j++;
+		}
+		msh->own_envp[j++] = ft_strdup(tmp[i]);
 	}
-	data->env = ft_oldpwd(data);
-	chdir(oldpwd);
-	data->last_out = 0;
-	data->env = ft_newpwd(data);
-	free(oldpwd);
+	msh->own_envp[j] = 0;
+	ft_doublefree(tmp);
 }
 
-void	ft_cd(char *flag, t_data *data, int cmd_pos)
+bool	cd_extension(t_command *command, t_msh_var *msh)
 {
-	if (!flag)
+	ft_getoldpwd(msh, command->command[1]);
+	if (chdir(command->command[1]) == -1)
 	{
-		data->env = ft_oldpwd(data);
-		chdir("/");
-		data->last_out = 0;
-		data->env = ft_newpwd(data);
+		printf("cd: %s: No such file or directory\n", command->command[1]);
+		g_exit_status = 1;
+		free(msh->oldpwd);
+		return (true);
 	}
-	else if (flag[0] == '-')
-		ft_minusflag(data);
+	ft_getnewpwd(msh);
+	return (false);
+}
+
+bool	ft_cd(t_command *command, t_msh_var *msh, int count)
+{
+	char	*home;
+
+	if (count != 1)
+		return (true);
+	if (!command->command[1] || command->command[1][0] == '~')
+	{
+		home = ft_get_home(msh);
+		ft_getoldpwd(msh, home);
+		chdir(home);
+		ft_getnewpwd(msh);
+		free(home);
+	}
+	else if (command->command[1][0] == '-')
+		ft_previous_dir(msh);
 	else
 	{
-		data->env = ft_oldpwd(data);
-		if (chdir(flag) == 1)
-		{
-			printf("cd: %s: No such file or directory\n", flag);
-			data->last_out = 1;
-			return ;
-		}
-		if (cmd_pos != 0)
-			return ;
-		//chdir(flag);
-		data->last_out = 0;
-		data->env = ft_newpwd(data);
+		if (cd_extension(command, msh))
+			return (false);
 	}
+	free(msh->oldpwd);
+	free(msh->pwd);
+	g_exit_status = 0;
+	return (false);
 }

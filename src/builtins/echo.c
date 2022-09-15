@@ -1,51 +1,42 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/22 10:09:14 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/08/22 11:10:13 by ecorreia         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "../../include/minishell.h"
 
-#include "../../inc/minishell.h"
-
-void	ft_echo(char **command, char *flag)
+static void	ft_exec_echo(t_command *command, int start)
 {
-	int	i;
-	int	j;
+	int	x;
 
-	i = 0;
-	if (flag)
-		i = 1;
-	while (command[++i])
+	if (command->command[start])
 	{
-		j = -1;
-		while (command[i][++j])
-			write(1, &command[i][j], 1);
-		if (command[i + 1])
-			write(1, " ", 1);
+		while (command->command[++start])
+		{
+			x = -1;
+			while (command->command[start][++x])
+				write(1, &command->command[start][x], 1);
+			if (command->command[start + 1])
+				write(1, " ", 1);
+		}
 	}
-	if (flag)
-		exit(0);
-	write(1, "\n", 1);
-	exit(0);
+	g_exit_status = 0;
 }
 
-void	ft_check_echo(char **command)
+void	ft_echo(t_command *command)
 {
-	if (!command[1])
+	int	i;
+
+	i = 1;
+	if (command->command[1] && !ft_strncmp(command->command[1], "-n", 2))
 	{
-		write(1, "\n", 1);
-		exit (0);
+		while (command->command[1][++i])
+		{
+			if (command->command[1][i] != 'n')
+			{
+				ft_exec_echo(command, 0);
+				write(1, "\n", 1);
+				return ;
+			}
+		}
+		ft_exec_echo(command, 1);
+		return ;
 	}
-	else
-	{
-		if (!ft_strncmp(command[1], "-n", 2))
-			ft_echo(command, command[1]);
-		else
-			ft_echo(command, NULL);
-	}
+	ft_exec_echo(command, 0);
+	write(1, "\n", 1);
 }

@@ -1,73 +1,55 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/04 06:40:11 by aalvarez          #+#    #+#             */
-/*   Updated: 2022/08/04 14:14:10 by ecorreia         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "../../include/minishell.h"
 
-#include "../../inc/minishell.h"
-
-static int	ft_isstrdigit(char *str)
+static void	ft_exit_arg(t_command_table *table, int c_num, int count)
 {
 	int	i;
 
-	i = -1;
-	while (str[++i])
+	i = 0;
+	while (table->commands[c_num].command[1][i])
 	{
-		if (str[i] < '0' || str[i] > '9')
-			return (1);
-	}
-	return (0);
-}
-/*
-void	ft_free(t_cmds *cmds, t_data *data)
-{
-	ft_doublefree(cmds->commands);
-	ft_doublefree(cmds->proccess);
-	ft_doublefree(data->env);
-	ft_doublefree(data->path);
-}
-*/
-static void	ft_checkargs(char *flag, t_data *data, int cmd_n, t_cmds *cmds)
-{
-	if(!cmds->command[0][2])
-	{
-		while (flag)
+		if (ft_isalpha(table->commands[c_num].command[1][i]))
 		{
-			if (ft_isstrdigit(flag))
+			printf("Minishell : %s %s\n",
+				table->commands[c_num].command[1],
+                ": numeric argument required");
+			g_exit_status = 1;
+			if (count == 1)
 			{
-				printf("exit: %s: numeric argument required\n", flag);
-				if (cmd_n != 0)
-					return ;
-				else
-					exit(0);
+				ft_free_commands(table);
+				exit(255);
 			}
-			else
-				exit (ft_atoi(flag));
-		}	
+		}
+		i++;
 	}
-	else
-	{
-		write(1, "exit: too many arguments\n", 25);
-		data->last_out = 1;
-	}
+	g_exit_status = ft_atoi(table->commands[c_num].command[1]);
+	if (count == 1)
+		exit(ft_atoi(table->commands[c_num].command[1]));
 }
 
-void	ft_exit(char *flag, t_data *data, int cmd_n, t_cmds *cmds)
+int	ft_exit(t_command_table *table, int c_num, int count)
 {
-	if (!flag)
-	{
-		if (cmd_n != 0)
-			return ;
+	int	i;
+
+	if (c_num != count - 1)
+		return (1);
+	if (count == 1)
 		write(1, "exit\n", 5);
-		//ft_free(cmds, data);
+	i = 0;
+	while (table->commands[c_num].command[i])
+		i++;
+	if (i > 2)
+	{
+		printf("Minishell : Too many arguments\n");
+		g_exit_status = 1;
+		return (0);
+	}
+	if (table->commands[c_num].command[1])
+		ft_exit_arg(table, c_num, count);
+	if (count == 1)
+	{
+		ft_free_commands(table);
+		g_exit_status = 0;
 		exit(0);
 	}
-	else
-		ft_checkargs(flag, data, cmd_n, cmds);
+	return (0);
 }
