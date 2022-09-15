@@ -32,7 +32,7 @@ SRCS			= src/main.c									\
 				src/execution/binary_manage_utils.c				\
 				src/signals/signals.c							\
 				src/specials/pipes.c							\
-				src/specials/quotes.c								\
+				src/specials/quotes.c							\
 
 OBJS	= $(SRCS:.c=.o)
 

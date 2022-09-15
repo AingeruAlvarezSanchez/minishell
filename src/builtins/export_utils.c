@@ -21,6 +21,7 @@ bool	ft_already_in(char *variable, char **env)
 	i = 0;
 	while (variable[i] != '=')
 		i++;
+
 	to_search = ft_substr(variable, 0, (i + 1));
 	while (env[++i])
 	{

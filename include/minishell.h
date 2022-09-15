@@ -22,6 +22,7 @@ int		g_exit_status;
 typedef struct s_msh_var
 {
 	char	**own_envp;
+	char	**exp_envp;
 	char	*pwd;
 	char	*oldpwd;
 }	t_msh_var;

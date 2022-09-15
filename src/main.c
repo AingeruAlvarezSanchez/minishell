@@ -67,6 +67,7 @@ int	main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, 
     t_msh_var		var;
 
     var.own_envp = ft_duplicate_environment(environ);
+	var.exp_envp = ft_doublestrdup(var.own_envp);
     g_exit_status = 0;
     while (1)
     {
