@@ -27,8 +27,6 @@ typedef struct s_msh_var
 	char	*oldpwd;
 }	t_msh_var;
 
-/*char *binary; //binary array for error checking
-, ex: "ls " should not execute to s_command*/
 typedef struct s_command
 {
 	char	**command;
@@ -37,7 +35,6 @@ typedef struct s_command
 	bool	is_absolute;
 }	t_command;
 
-//struct only used for dollar expansion
 typedef struct s_dollars
 {
 	char	*beg;
@@ -95,6 +92,7 @@ void	ft_getnewpwd(t_msh_var *msh);
 void	ft_previous_dir(t_msh_var *msh);
 void	ft_firstoldpwd(t_msh_var *msh);
 char	*ft_get_home(t_msh_var *msh);
+void	ft_create_exp_var(char *variable, t_msh_var *msh);
 
 /* Execution */
 char	*ft_get_result(t_command *command, int i);
