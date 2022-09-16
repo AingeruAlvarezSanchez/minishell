@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/16 21:07:54 by ecorreia          #+#    #+#             */
+/*   Updated: 2022/09/16 21:10:30 by ecorreia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 #include <termios.h>
 
@@ -59,31 +71,35 @@ bool	ft_readline(t_msh_var *msh, t_command_table *table, char *str)
 	return (0);
 }
 
-int	main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, char **environ)
+int	main(int argc, char **argv, char **environ)
 {
-    char			*str;
-    char			*tmp;
-    t_command_table	table;
-    t_msh_var		var;
+	char			*str;
+	char			*tmp;
+	t_command_table	table;
+	t_msh_var		var;
 
-    var.own_envp = ft_duplicate_environment(environ);
+	var.own_envp = ft_duplicate_environment(environ);
 	var.exp_envp = ft_doublestrdup(var.own_envp);
-    g_exit_status = 0;
-    while (1)
-    {
-        ft_signals();
-        if (!(tmp = readline("Ejemplo₺ ")))
-            ft_signal_exit();
-        if (!tmp[0])
-        {
-            free(tmp);
-            continue ;
-        }// TODO:aqui hay error con espacio raro + ls
-        str = ft_strtrim(tmp, " ");
-        free(tmp);
-        add_history(str);
-        if (ft_readline(&var, &table, str))
-            continue ;
-    }
-    return (0);
+	g_exit_status = 0;
+	while (1 && argv && argc)
+	{
+		ft_signals();
+		tmp = readline("Ejemplo₺ ");
+		if (!tmp)
+			ft_signal_exit();
+		if (!tmp[0])
+		{
+			free(tmp);
+			continue ;
+		}
+		str = ft_strtrim(tmp, " ");
+		free(tmp);
+		add_history(str);
+		if (ft_readline(&var, &table, str))
+		{
+			free(str);
+			continue ;
+		}
+	}
+	return (0);
 }

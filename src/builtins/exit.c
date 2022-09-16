@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/16 21:12:34 by ecorreia          #+#    #+#             */
+/*   Updated: 2022/09/16 21:12:38 by ecorreia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 static void	ft_exit_arg(t_command_table *table, int c_num, int count)
@@ -11,7 +23,7 @@ static void	ft_exit_arg(t_command_table *table, int c_num, int count)
 		{
 			printf("Minishell : %s %s\n",
 				table->commands[c_num].command[1],
-                ": numeric argument required");
+				": numeric argument required");
 			g_exit_status = 1;
 			if (count == 1)
 			{
