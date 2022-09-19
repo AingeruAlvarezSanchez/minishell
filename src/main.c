@@ -13,91 +13,91 @@
 #include "../include/minishell.h"
 #include <termios.h>
 
-int	lexer(t_command_table *table, t_msh_var *msh)
+int	lexer(t_cmds_all *cmds, t_env *msh)
 {
 	int	i;
 	int	x;
 
 	i = -1;
-	while (++i < table->cmd_count)
+	while (++i < cmds->n_cmds)
 	{
 		x = 0;
-		while (table->commands[i].command[x])
+		while (cmds->cmds[i].cmd[x])
 		{
-			if (ft_check_dollars(table, i, x, msh))
+			if (ft_check_dollars(cmds, i, x, msh))
 			{
 				x = 0;
 				continue ;
 			}
 			x++;
 		}
-		if (contains_redire(table->commands[i].command[x]))
+		if (ft_has_redir(cmds->cmds[i].cmd[x]))
 			return (10);
 	}
 	return (1);
 }
 
-bool	ft_start_program(char *str, t_command_table *table, t_msh_var *msh)
+bool	ft_start_program(char *prompt, t_cmds_all *cmds, t_env *env)
 {
-	if (ft_check_errors(str))
+	if (ft_check_errors(prompt))
 		return (1);
-	if (!ft_error_print(parser(str, table)))
+	if (!ft_print_err(ft_parser(prompt, cmds)))
 	{
-		if (!ft_error_print(lexer(table, msh)))
+		if (!ft_print_err(lexer(cmds, env)))
 		{
-			execute(table, msh);
+			execute(cmds, env);
 			return (0);
 		}
 	}
 	return (1);
 }
 
-bool	ft_readline(t_msh_var *msh, t_command_table *table, char *str)
+bool	ft_readline(t_env *env, t_cmds_all *cmds, char *prompt)
 {
-	struct termios	ter;
-	struct termios	prev;
+	struct termios	termios;
+	struct termios	last;
 
-	tcgetattr(STDIN_FILENO, &prev);
-	tcgetattr(STDIN_FILENO, &ter);
-	ter.c_lflag &= ~(ECHOCTL | ICANON);
-	if (ft_strlen(str) > 0)
+	tcgetattr(STDIN_FILENO, &last);
+	tcgetattr(STDIN_FILENO, &termios);
+    termios.c_lflag &= ~(ECHOCTL | ICANON);
+	if (ft_strlen(prompt) > 0)
 	{
-		if (ft_start_program(str, table, msh))
+		if (ft_start_program(prompt, cmds, env))
 			return (1);
 	}
-	tcsetattr(STDIN_FILENO, TCSANOW, &prev);
-	if (str != NULL)
-		free(str);
+	tcsetattr(STDIN_FILENO, TCSANOW, &last);
+	if (prompt != NULL)
+		free(prompt);
 	return (0);
 }
 
 int	main(int argc, char **argv, char **environ)
 {
-	char			*str;
-	char			*tmp;
-	t_command_table	table;
-	t_msh_var		var;
+	char			*aux;
+	char			*prompt;
+	t_cmds_all	    cmds;
+	t_env		    env;
 
-	var.own_envp = ft_duplicate_environment(environ);
-	var.exp_envp = ft_doublestrdup(var.own_envp);
+    env.env = ft_dup_env(environ);
+    env.exp = ft_doublestrdup(env.env);
 	g_exit_status = 0;
 	while (1 && argv && argc)
 	{
 		ft_signals();
-		tmp = readline("Ejemplo₺ ");
-		if (!tmp)
+        prompt = readline("Ejemplo₺ ");
+		if (!prompt)
 			ft_signal_exit();
-		if (!tmp[0])
+		if (!prompt[0])
 		{
-			free(tmp);
+			free(prompt);
 			continue ;
 		}
-		str = ft_strtrim(tmp, " ");
-		free(tmp);
-		add_history(str);
-		if (ft_readline(&var, &table, str))
+        aux = ft_strtrim(prompt, " ");
+		free(prompt);
+		add_history(aux);
+		if (ft_readline(&env, &cmds, aux))
 		{
-			free(str);
+			free(aux);
 			continue ;
 		}
 	}

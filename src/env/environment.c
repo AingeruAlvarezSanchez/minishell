@@ -1,39 +1,39 @@
 #include "../../include/minishell.h"
 
-static char	**return_heaped_env(int check, char **str)
+static char	**return_heaped_env(bool flag, char **str)
 {
 	char	**result;
 
-	if (check == 1)
+	if (flag == 1)
 		result = (char **)malloc(sizeof(char *) * (ft_doublestrlen(str)));
 	else
 		result = (char **)malloc(sizeof(char *) * (ft_doublestrlen(str) + 1));
 	return (result);
 }
 
-char	**ft_duplicate_environment(char **str)
+char	**ft_dup_env(char **env)
 {
-	char	**result;
+	char	**nw_env;
 	int		i;
-	int		check;
+	bool	flag;
 
 	i = -1;
-	while (str[++i])
+	while (env[++i])
 	{
-		if (!ft_strncmp(str[i], "OLDPWD=", 7))
-			check = 1;
+		if (!ft_strncmp(env[i], "OLDPWD=", 7))
+            flag = 1;
 	}
-	result = return_heaped_env(check, str);
-	if (!result)
+    nw_env = return_heaped_env(flag, env);
+	if (!nw_env)
 		return (NULL);
 	i = -1;
-	while (str[++i])
+	while (env[++i])
 	{
-		if (!ft_strncmp(str[i], "OLDPWD=", 7))
-			str++;
-		if (str[i])
-			result[i] = ft_strdup(str[i]);
+		if (!ft_strncmp(env[i], "OLDPWD=", 7))
+			env++;
+		if (env[i])
+            nw_env[i] = ft_strdup(env[i]);
 	}
-	result[i] = 0;
-	return (result);
+    nw_env[i] = 0;
+	return (nw_env);
 }

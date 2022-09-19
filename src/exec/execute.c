@@ -1,9 +1,9 @@
 #include "../../include/minishell.h"
 #include <sys/wait.h>
 
-static void	ft_last_command(t_command_table *table)
+static void	ft_last_command(t_cmds_all *table)
 {
-	if (table->cmd_count == 2)
+	if (table->n_cmds == 2)
 	{
 		dup2(table->pi[0], 0);
 		close(table->pi[1]);
@@ -17,15 +17,15 @@ static void	ft_last_command(t_command_table *table)
 	}
 }
 
-static void	dup_son_choose(int i, t_command_table *table)
+static void	dup_son_choose(int i, t_cmds_all *table)
 {
-	if (table->cmd_count == 0)
+	if (table->n_cmds == 0)
 	{
 		dup2(table->pi[1], 1);
 		close(table->pi[0]);
 		close(table->pi[1]);
 	}
-	else if (i == table->cmd_count - 1)
+	else if (i == table->n_cmds - 1)
 		ft_last_command(table);
 	else
 	{
@@ -36,30 +36,30 @@ static void	dup_son_choose(int i, t_command_table *table)
 	}
 }
 
-void	ft_childexec(t_msh_var *msh, t_command_table *table, int i)
+void	ft_childexec(t_env *msh, t_cmds_all *table, int i)
 {
 	char	*tmp;
 	char	*tmp2;
 
-	if (table->cmd_count > 1)
+	if (table->n_cmds > 1)
 		dup_son_choose(i, table);
-	if (!ft_child_builtin(&table->commands[i], msh))
+	if (!ft_child_builtin(&table->cmds[i], msh))
 		exit(0);
-	if (table->commands[i].is_absolute)
-		execve(table->commands[i].bin_path,
-			table->commands[i].command, msh->own_envp);
-	tmp = ft_strjoin("/", table->commands[i].command[0]);
-	tmp2 = ft_strjoin(table->commands[i].bin_path, tmp);
+	if (table->cmds[i].is_absolute)
+		execve(table->cmds[i].bin_path,
+               table->cmds[i].cmd, msh->env);
+	tmp = ft_strjoin("/", table->cmds[i].cmd[0]);
+	tmp2 = ft_strjoin(table->cmds[i].bin_path, tmp);
 	if (!access(tmp2, X_OK))
-		execve(ft_strjoin(table->commands[i].bin_path,
-				ft_strjoin("/", table->commands[i].command[0])),
-			table->commands[i].command, msh->own_envp);
-	perror(table->commands[i].command[0]);
+		execve(ft_strjoin(table->cmds[i].bin_path,
+				ft_strjoin("/", table->cmds[i].cmd[0])),
+               table->cmds[i].cmd, msh->env);
+	perror(table->cmds[i].cmd[0]);
 	free(tmp);
 	free(tmp2);
 }
 
-void	ft_exec_proccess(t_command_table *table, t_msh_var *msh, int i)
+void	ft_exec_proccess(t_cmds_all *table, t_env *msh, int i)
 {
 	pid_t	pid;
 	int		status;
@@ -70,7 +70,7 @@ void	ft_exec_proccess(t_command_table *table, t_msh_var *msh, int i)
 		ft_childexec(msh, table, i);
 	else
 	{
-		if (table->cmd_count > 1)
+		if (table->n_cmds > 1)
 			close(table->pi[1]);
 		wait(&status);
 		g_exit_status = WEXITSTATUS(status);
@@ -79,7 +79,7 @@ void	ft_exec_proccess(t_command_table *table, t_msh_var *msh, int i)
 			if (WTERMSIG(status))
 				g_exit_status = 128 + WTERMSIG(status);
 		}
-		if (table->cmd_count > 2)
+		if (table->n_cmds > 2)
 		{
 			table->unipipe = dup(table->pi[0]);
 			close(table->pi[0]);
@@ -88,24 +88,24 @@ void	ft_exec_proccess(t_command_table *table, t_msh_var *msh, int i)
 	}
 }
 
-void	*execute(t_command_table *table, t_msh_var *msh)
+void	*execute(t_cmds_all *table, t_env *msh)
 {	
 	int		i;
 
 	if (gather_bin_path(table, msh))
 		return (NULL);
-	if (table->cmd_count > 1)
+	if (table->n_cmds > 1)
 	{
 		table->pi = malloc(sizeof(int) * 2);
 		pipe(table->pi);
 	}
 	table->unipipe = 3;
 	i = -1;
-	while (++i != table->cmd_count)
+	while (++i != table->n_cmds)
 	{
-		if (ft_parent_builtin(&table->commands[i],
-				msh, table->cmd_count, i)
-			|| ft_isexit(table, i, table->cmd_count))
+		if (ft_parent_builtin(&table->cmds[i],
+                              msh, table->n_cmds, i)
+			|| ft_isexit(table, i, table->n_cmds))
 			continue ;
 		ft_exec_proccess(table, msh, i);
 	}

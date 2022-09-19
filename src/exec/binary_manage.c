@@ -1,25 +1,25 @@
 #include "../../include/minishell.h"
 
-bool	gather_bin_path(t_command_table *table, t_msh_var *msh)
+bool	gather_bin_path(t_cmds_all *table, t_env *msh)
 {
 	int		i;
 
 	i = -1;
-	while (++i != table->cmd_count)
+	while (++i != table->n_cmds)
 	{
-		table->commands[i].bin_path = reach_bin_path(&table->commands[i], msh);
-		if (!ft_checkparent(&table->commands[i]))
+		table->cmds[i].bin_path = reach_bin_path(&table->cmds[i], msh);
+		if (!ft_checkparent(&table->cmds[i]))
 		{
-			if (i == table->cmd_count - 1)
-				return (ft_isfinal(table, i, table->cmd_count, msh));
+			if (i == table->n_cmds - 1)
+				return (ft_isfinal(table, i, table->n_cmds, msh));
 			continue ;
 		}
-		if (table->commands[i].bin_path == NULL)
+		if (table->cmds[i].bin_path == NULL)
 		{
 			if (ft_check_if_is_accesible(table, i))
 				continue ;
-			printf("%s %s %s", "Minishell :", table->commands[i].command[0],
-            ": command not found\n");
+			printf("%s %s %s", "Minishell :", table->cmds[i].cmd[0],
+            ": cmd not found\n");
 			g_exit_status = 127;
 			ft_free_commands(table);
 			return (true);
@@ -39,7 +39,7 @@ bool	return_binary_path(const char *bin_path, char *binary_check)
 		dirp = readdir(dp);
 		while (dirp != NULL)
 		{
-			if (str_exactly_contains(dirp->d_name, binary_check))
+			if (ft_str_has(dirp->d_name, binary_check))
 			{
 				closedir(dp);
 				return (true);
@@ -51,7 +51,7 @@ bool	return_binary_path(const char *bin_path, char *binary_check)
 	return (false);
 }
 
-char	**get_actual_path(t_msh_var *msh)
+char	**get_actual_path(t_env *msh)
 {
 	char	**path;
 	char	*tmp;
@@ -59,11 +59,11 @@ char	**get_actual_path(t_msh_var *msh)
 	int		i;
 
 	i = 0;
-	while (msh->own_envp && msh->own_envp[++i])
+	while (msh->env && msh->env[++i])
 	{
-		if (msh->own_envp[i] && str_contains(msh->own_envp[i], "PATH="))
+		if (msh->env[i] && str_contains(msh->env[i], "PATH="))
 		{
-			tmp = ft_strdup(msh->own_envp[i]);
+			tmp = ft_strdup(msh->env[i]);
 			tmp2 = ft_split(tmp, '=');
 			path = ft_split(tmp2[1], ':');
 			free(tmp);
@@ -74,21 +74,21 @@ char	**get_actual_path(t_msh_var *msh)
 	return (NULL);
 }
 
-void	ft_initials_path(t_command *command, t_msh_var *msh)
+void	ft_initials_path(t_cmd *command, t_env *msh)
 {
 	int	i;	
 
 	i = -1;
 	command->path = get_actual_path(msh);
 	command->is_absolute = false;
-	string_to_lower(command->command[0]);
+	string_to_lower(command->cmd[0]);
 	i = -1;
-	while (command->command[++i])
+	while (command->cmd[++i])
 		ft_trim_algorithm(command, i);
 }
 
 //Distribución principal de la ejecución de comandos
-char	*reach_bin_path(t_command *command, t_msh_var *msh)
+char	*reach_bin_path(t_cmd *command, t_env *msh)
 {	
 	int		i;
 	char	*result;
@@ -99,15 +99,15 @@ char	*reach_bin_path(t_command *command, t_msh_var *msh)
 	{
 		while (command->path[i])
 		{
-			if (return_binary_path(command->path[i], command->command[0]))
+			if (return_binary_path(command->path[i], command->cmd[0]))
 				return (ft_get_result(command, i));
             else
                 command->path[i] = NULL;
 			i++;
 		}
-		if (access(command->command[0], X_OK) == 0)
+		if (access(command->cmd[0], X_OK) == 0)
 		{
-			result = ft_strdup(command->command[0]);
+			result = ft_strdup(command->cmd[0]);
 			command->is_absolute = true;
 			return (result);
 		}

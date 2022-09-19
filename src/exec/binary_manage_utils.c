@@ -1,15 +1,15 @@
 #include "../../include/minishell.h"
 
-bool	ft_isfinal(t_command_table *table, int i, int count, t_msh_var *msh)
+bool	ft_isfinal(t_cmds_all *table, int i, int count, t_env *msh)
 {
 	ft_isexit(table, i, count);
-	ft_parent_builtin(&table->commands[i],
+	ft_parent_builtin(&table->cmds[i],
 		msh, count, i);
 	ft_free_commands(table);
 	return (true);
 }
 
-char	*ft_get_result(t_command *command, int i)
+char	*ft_get_result(t_cmd *command, int i)
 {
 	char	*result;
 

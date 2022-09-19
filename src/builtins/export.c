@@ -12,7 +12,7 @@
 
 #include "../../include/minishell.h"
 
-static void	ft_replace_env(char *variable, t_msh_var *msh, char **tmp)
+static void	ft_replace_env(char *variable, t_env *msh, char **tmp)
 {
 	int		x;
 	char	*to_search;
@@ -21,39 +21,39 @@ static void	ft_replace_env(char *variable, t_msh_var *msh, char **tmp)
 	while (variable[x] != '=')
 			x++;
 	to_search = ft_substr(variable, 0, (x + 1));
-	msh->own_envp = (char **)malloc(sizeof(char *)
-			* (ft_doublestrlen(tmp) + 1));
+	msh->env = (char **)malloc(sizeof(char *)
+                               * (ft_doublestrlen(tmp) + 1));
 	x = -1;
 	while (tmp[++x])
 	{
 		if (!ft_strncmp(tmp[x], to_search, ft_strlen(to_search)))
-			msh->own_envp[x] = ft_strdup(variable);
+			msh->env[x] = ft_strdup(variable);
 		else
-			msh->own_envp[x] = ft_strdup(tmp[x]);
+			msh->env[x] = ft_strdup(tmp[x]);
 	}
 	free(to_search);
-	msh->own_envp[x] = 0;
+	msh->env[x] = 0;
 }
 
-static void	ft_create_env_var(char *variable, t_msh_var *msh)
+static void	ft_create_env_var(char *variable, t_env *msh)
 {
 	char	**tmp;
 	int		i;
 
 	ft_create_exp_var(variable, msh);
 	i = -1;
-	tmp = ft_doublestrdup(msh->own_envp);
-	ft_doublefree(msh->own_envp);
+	tmp = ft_doublestrdup(msh->env);
+	ft_doublefree(msh->env);
 	if (ft_already_in(variable, tmp))
 		ft_replace_env(variable, msh, tmp);
 	else
 	{
-		msh->own_envp = (char **)malloc(sizeof(char *)
-				* (ft_doublestrlen(tmp) + 2));
+		msh->env = (char **)malloc(sizeof(char *)
+                                   * (ft_doublestrlen(tmp) + 2));
 		while (tmp[++i])
-			msh->own_envp[i] = ft_strdup(tmp[i]);
-		msh->own_envp[i] = ft_strdup(variable);
-		msh->own_envp[i + 1] = 0;
+			msh->env[i] = ft_strdup(tmp[i]);
+		msh->env[i] = ft_strdup(variable);
+		msh->env[i + 1] = 0;
 	}
 	ft_doublefree(tmp);
 }
@@ -61,22 +61,22 @@ static void	ft_create_env_var(char *variable, t_msh_var *msh)
 /**
  * @brief check if variable has = to add in export_env or in enviroment
  */
-static void	ft_export(char *variable, t_msh_var *msh)
+static void	ft_export(char *variable, t_env *msh)
 {
 	char	**tmp;
 	int		i;
 
 	if (ft_check_variable(variable))
 	{
-		tmp = ft_doublestrdup(msh->exp_envp);
-		ft_doublefree(msh->exp_envp);
+		tmp = ft_doublestrdup(msh->exp);
+		ft_doublefree(msh->exp);
 		i = -1;
-		msh->exp_envp = (char **)malloc(sizeof(char *)
-				* (ft_doublestrlen(tmp) + 2));
+		msh->exp = (char **)malloc(sizeof(char *)
+                                   * (ft_doublestrlen(tmp) + 2));
 		while (tmp[++i])
-			msh->exp_envp[i] = ft_strdup(tmp[i]);
-		msh->exp_envp[i] = ft_strdup(variable);
-		msh->exp_envp[i + 1] = 0;
+			msh->exp[i] = ft_strdup(tmp[i]);
+		msh->exp[i] = ft_strdup(variable);
+		msh->exp[i + 1] = 0;
 		ft_doublefree(tmp);
 		return ;
 	}
@@ -87,19 +87,19 @@ static void	ft_export(char *variable, t_msh_var *msh)
  * @brief   -Checks if export has arguments
  *          -Check if variables are alphabetic
  */
-int	ft_export_check(t_command *command, t_msh_var *msh, int c_num, int count)
+int	ft_export_check(t_cmd *command, t_env *msh, int c_num, int count)
 {
 	int	i;
 
 	if (c_num != count - 1)
 		return (1);
-	if (command->command[1])
+	if (command->cmd[1])
 	{
 		i = 1;
-		while (command->command[i])
+		while (command->cmd[i])
 		{
-			if (ft_isalpha(command->command[i][0]))
-				ft_export(command->command[i++], msh);
+			if (ft_isalpha(command->cmd[i][0]))
+				ft_export(command->cmd[i++], msh);
 			else
 			{
 				printf("Invalid identifier\n");
@@ -110,8 +110,8 @@ int	ft_export_check(t_command *command, t_msh_var *msh, int c_num, int count)
 	else
 	{
 		i = -1;
-		while (msh->exp_envp[++i])
-			printf("declare -x %s\n", msh->exp_envp[i]);
+		while (msh->exp[++i])
+			printf("declare -x %s\n", msh->exp[i]);
 	}
 	return (g_exit_status = 0, 0);
 }

@@ -22,19 +22,18 @@ bool	check_if_empty_command(char *str)
 	return (false);
 }
 
-static int	get_position(int i, char *not_processed_cmd)
+static int	get_position(int i, char *raw_cmd)
 {
 	int	x;
 
-	x = 0;
-	while (++i < ft_strlen(not_processed_cmd))
+	while (++i < ft_strlen(raw_cmd))
 	{
-		if (not_processed_cmd[i] == '\'' || not_processed_cmd[i] == '"')
+		if (raw_cmd[i] == '\'' || raw_cmd[i] == '"')
 		{
 			x = i + 1;
-			while (not_processed_cmd[x])
+			while (raw_cmd[x])
 			{
-				if (not_processed_cmd[x] == not_processed_cmd[i])
+				if (raw_cmd[x] == raw_cmd[i])
 				{
 					i = x;
 					break ;
@@ -49,14 +48,14 @@ static int	get_position(int i, char *not_processed_cmd)
 	return (false);
 }
 
-int	process_string_quotes(char *not_processed_cmd)
+int	ft_process_quotes(char *raw_cmd)
 {	
 	int		i;
 
 	i = -1;
-	if (!not_processed_cmd)
-		not_processed_cmd = NULL;
-	if (get_position(i, not_processed_cmd))
+	if (!raw_cmd)
+        raw_cmd = NULL;
+	if (get_position(i, raw_cmd))
 		return (true);
 	return (false);
 }

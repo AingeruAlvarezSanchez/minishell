@@ -1,21 +1,21 @@
 #include "../../include/minishell.h"
 
-void	ft_getoldpwd(t_msh_var *msh, char *route)
+void	ft_getoldpwd(t_env *msh, char *route)
 {
 	int		i;
 	char	*tmp;
 
 	i = -1;
 	msh->oldpwd = getcwd(NULL, 0);
-	while (msh->own_envp[++i])
+	while (msh->env[++i])
 	{
-		if (!ft_strncmp(msh->own_envp[i], "OLDPWD=", 7))
+		if (!ft_strncmp(msh->env[i], "OLDPWD=", 7))
 		{
 			tmp = ft_strjoin("PWD=", route);
-			if (ft_strncmp(msh->own_envp[i + 1], tmp, ft_strlen(tmp)))
+			if (ft_strncmp(msh->env[i + 1], tmp, ft_strlen(tmp)))
 			{
-				free(msh->own_envp[i]);
-				msh->own_envp[i] = ft_strjoin("OLDPWD=", msh->oldpwd);
+				free(msh->env[i]);
+				msh->env[i] = ft_strjoin("OLDPWD=", msh->oldpwd);
 			}
 			free(tmp);
 			return ;
@@ -24,40 +24,40 @@ void	ft_getoldpwd(t_msh_var *msh, char *route)
 	ft_firstoldpwd(msh);
 }
 
-void	ft_getnewpwd(t_msh_var *msh)
+void	ft_getnewpwd(t_env *msh)
 {
 	int	i;
 
 	i = -1;
 	msh->pwd = getcwd(NULL, 0);
-	while (msh->own_envp[++i])
+	while (msh->env[++i])
 	{
-		if (!ft_strncmp(msh->own_envp[i], "PWD=", 4))
+		if (!ft_strncmp(msh->env[i], "PWD=", 4))
 		{
-			free(msh->own_envp[i]);
-			msh->own_envp[i] = ft_strjoin("PWD=", msh->pwd);
+			free(msh->env[i]);
+			msh->env[i] = ft_strjoin("PWD=", msh->pwd);
 		}
 	}
 }
 
-void	ft_previous_dir(t_msh_var *msh)
+void	ft_previous_dir(t_env *msh)
 {
 	int		i;
 
 	i = -1;
-	while (msh->own_envp[++i])
+	while (msh->env[++i])
 	{
-		if (!ft_strncmp(msh->own_envp[i], "OLDPWD=", 7))
+		if (!ft_strncmp(msh->env[i], "OLDPWD=", 7))
 		{
-			msh->oldpwd = ft_substr(msh->own_envp[i + 1], 4,
-					(ft_strlen(msh->own_envp[i + 1]) - 4));
-			free(msh->own_envp[i + 1]);
-			msh->pwd = ft_substr(msh->own_envp[i], 7,
-					(ft_strlen(msh->own_envp[i]) - 7));
+			msh->oldpwd = ft_substr(msh->env[i + 1], 4,
+                                    (ft_strlen(msh->env[i + 1]) - 4));
+			free(msh->env[i + 1]);
+			msh->pwd = ft_substr(msh->env[i], 7,
+                                 (ft_strlen(msh->env[i]) - 7));
 			chdir(msh->pwd);
-			msh->own_envp[i + 1] = ft_strjoin("PWD=", msh->pwd);
-			free(msh->own_envp[i]);
-			msh->own_envp[i] = ft_strjoin("OLDPWD=", msh->oldpwd);
+			msh->env[i + 1] = ft_strjoin("PWD=", msh->pwd);
+			free(msh->env[i]);
+			msh->env[i] = ft_strjoin("OLDPWD=", msh->oldpwd);
 			return ;
 		}
 	}

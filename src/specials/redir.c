@@ -1,14 +1,14 @@
 #include "../../include/minishell.h"
 
-bool	contains_redire(char *command)
+bool	ft_has_redir(char *command)
 {
-	if (str_exactly_contains(command, "<<"))
+	if (ft_str_has(command, "<<"))
 		return (true);
-	if (str_exactly_contains(command, ">>"))
+	if (ft_str_has(command, ">>"))
 		return (true);
-	if (str_exactly_contains(command, "<"))
+	if (ft_str_has(command, "<"))
 		return (true);
-	if (str_exactly_contains(command, ">"))
+	if (ft_str_has(command, ">"))
 		return (true);
 	return (false);
 }

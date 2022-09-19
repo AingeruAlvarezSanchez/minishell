@@ -1,20 +1,20 @@
 #include "../../include/minishell.h"
 
-bool	str_contains(char *command, char *str)
+bool	str_contains(const char *cmd, char *str)
 {
 	int	i;
 	int	u;
-	int	maxlength;
+	int	length;
 
 	i = 0;
 	u = 0;
-	maxlength = ft_strlen(str);
-	while (command[i])
+    length = ft_strlen(str);
+	while (cmd[i])
 	{
-		if (command[i] == str[u])
+		if (cmd[i] == str[u])
 		{
 			u++;
-			if (u == maxlength)
+			if (u == length)
 				return (true);
 		}
 		else
@@ -25,7 +25,7 @@ bool	str_contains(char *command, char *str)
 }
 
 
-bool	str_exactly_contains(char *command, char *str)
+bool	ft_str_has(char *command, char *str)
 {
     int	i;
     int	u;
@@ -57,13 +57,13 @@ bool	str_exactly_contains(char *command, char *str)
 void	string_to_lower(char *pnt)
 {
 	int		i;
-	char	aux;
+	char	c;
 
 	i = 0;
 	while (pnt && pnt[i])
 	{
-		aux = ft_tolower(pnt[i]);
-		pnt[i] = aux;
+        c = ft_tolower(pnt[i]);
+		pnt[i] = c;
 		i++;
 	}
 }

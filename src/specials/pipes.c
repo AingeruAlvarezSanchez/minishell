@@ -7,9 +7,9 @@ char	*added_pipe(char *str)
 		printf("Minishell: sytax error near unexpected token '|'\n");
 		str = NULL;
 	}
-	if (last_chr_not_pipe(str))
+	if (ft_last_nopipe(str))
 	{
-		while (last_chr_not_pipe(str))
+		while (ft_last_nopipe(str))
 		{
 			if (ft_strlen(str) > 1)
 				str = ft_strjoin(str, readline("> "));

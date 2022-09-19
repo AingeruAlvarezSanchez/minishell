@@ -12,17 +12,17 @@
 
 #include "../../include/minishell.h"
 
-static void	ft_exit_arg(t_command_table *table, int c_num, int count)
+static void	ft_exit_arg(t_cmds_all *table, int c_num, int count)
 {
 	int	i;
 
 	i = 0;
-	while (table->commands[c_num].command[1][i])
+	while (table->cmds[c_num].cmd[1][i])
 	{
-		if (ft_isalpha(table->commands[c_num].command[1][i]))
+		if (ft_isalpha(table->cmds[c_num].cmd[1][i]))
 		{
 			printf("Minishell : %s %s\n",
-				table->commands[c_num].command[1],
+				table->cmds[c_num].cmd[1],
 				": numeric argument required");
 			g_exit_status = 1;
 			if (count == 1)
@@ -33,12 +33,12 @@ static void	ft_exit_arg(t_command_table *table, int c_num, int count)
 		}
 		i++;
 	}
-	g_exit_status = ft_atoi(table->commands[c_num].command[1]);
+	g_exit_status = ft_atoi(table->cmds[c_num].cmd[1]);
 	if (count == 1)
-		exit(ft_atoi(table->commands[c_num].command[1]));
+		exit(ft_atoi(table->cmds[c_num].cmd[1]));
 }
 
-int	ft_exit(t_command_table *table, int c_num, int count)
+int	ft_exit(t_cmds_all *table, int c_num, int count)
 {
 	int	i;
 
@@ -47,7 +47,7 @@ int	ft_exit(t_command_table *table, int c_num, int count)
 	if (count == 1)
 		write(1, "exit\n", 5);
 	i = 0;
-	while (table->commands[c_num].command[i])
+	while (table->cmds[c_num].cmd[i])
 		i++;
 	if (i > 2)
 	{
@@ -55,7 +55,7 @@ int	ft_exit(t_command_table *table, int c_num, int count)
 		g_exit_status = 1;
 		return (0);
 	}
-	if (table->commands[c_num].command[1])
+	if (table->cmds[c_num].cmd[1])
 		ft_exit_arg(table, c_num, count);
 	if (count == 1)
 	{

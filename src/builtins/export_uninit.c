@@ -54,7 +54,7 @@ bool	ft_already_exp(char *variable, char **env)
 	return (false);
 }
 
-static void	ft_replace_exp(char *variable, t_msh_var *msh, char **tmp)
+static void	ft_replace_exp(char *variable, t_env *msh, char **tmp)
 {
 	int		x;
 	char	*to_search;
@@ -63,38 +63,38 @@ static void	ft_replace_exp(char *variable, t_msh_var *msh, char **tmp)
 	while (variable[x] != '=')
 		x++;
 	to_search = ft_substr(variable, 0, (x));
-	msh->exp_envp = (char **)malloc(sizeof(char *)
-			* (ft_doublestrlen(tmp) + 1));
+	msh->exp = (char **)malloc(sizeof(char *)
+                               * (ft_doublestrlen(tmp) + 1));
 	x = -1;
 	while (tmp[++x])
 	{
 		if (!ft_strncmp(tmp[x], to_search, ft_strlen(to_search)))
-			msh->exp_envp[x] = ft_strdup(variable);
+			msh->exp[x] = ft_strdup(variable);
 		else
-			msh->exp_envp[x] = ft_strdup(tmp[x]);
+			msh->exp[x] = ft_strdup(tmp[x]);
 	}
 	free(to_search);
-	msh->exp_envp[x] = 0;
+	msh->exp[x] = 0;
 }
 
-void	ft_create_exp_var(char *variable, t_msh_var *msh)
+void	ft_create_exp_var(char *variable, t_env *msh)
 {
 	char	**tmp;
 	int		i;
 
 	i = -1;
-	tmp = ft_doublestrdup(msh->exp_envp);
-	ft_doublefree(msh->exp_envp);
+	tmp = ft_doublestrdup(msh->exp);
+	ft_doublefree(msh->exp);
 	if (ft_already_exp(variable, tmp))
 		ft_replace_exp(variable, msh, tmp);
 	else
 	{
-		msh->exp_envp = (char **)malloc(sizeof(char *)
-				* (ft_doublestrlen(tmp) + 2));
+		msh->exp = (char **)malloc(sizeof(char *)
+                                   * (ft_doublestrlen(tmp) + 2));
 		while (tmp[++i])
-			msh->exp_envp[i] = ft_strdup(tmp[i]);
-		msh->exp_envp[i] = ft_strdup(variable);
-		msh->exp_envp[i + 1] = 0;
+			msh->exp[i] = ft_strdup(tmp[i]);
+		msh->exp[i] = ft_strdup(variable);
+		msh->exp[i + 1] = 0;
 	}
 	ft_doublefree(tmp);
 }

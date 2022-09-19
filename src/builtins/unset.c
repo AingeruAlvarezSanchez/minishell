@@ -1,19 +1,19 @@
 #include "../../include/minishell.h"
 
-static bool	ft_not_env(char *variable, t_msh_var *msh)
+static bool	ft_not_env(char *variable, t_env *msh)
 {
 	int	i;
 
 	i = -1;
-	while (msh->own_envp[++i])
+	while (msh->env[++i])
 	{
-		if (!ft_strncmp(msh->own_envp[i], variable, (ft_strlen(variable))))
+		if (!ft_strncmp(msh->env[i], variable, (ft_strlen(variable))))
 			return (false);
 	}
 	return (true);
 }
 
-static void	ft_unset(char *variable, t_msh_var *msh)
+static void	ft_unset(char *variable, t_env *msh)
 {
 	char	**tmp;
 	int		i;
@@ -23,37 +23,37 @@ static void	ft_unset(char *variable, t_msh_var *msh)
 		return ;
 	else
 	{
-		tmp = ft_doublestrdup(msh->own_envp);
-		ft_doublefree(msh->own_envp);
-		msh->own_envp = (char **)malloc(sizeof(char *)
-				* (ft_doublestrlen(tmp)));
+		tmp = ft_doublestrdup(msh->env);
+		ft_doublefree(msh->env);
+		msh->env = (char **)malloc(sizeof(char *)
+                                   * (ft_doublestrlen(tmp)));
 		i = -1;
 		x = -1;
 		while (tmp[++i])
 		{
 			if (ft_strncmp(tmp[i], variable, ft_strlen(variable)))
-				msh->own_envp[++x] = ft_strdup(tmp[i]);
+				msh->env[++x] = ft_strdup(tmp[i]);
 		}
-		msh->own_envp[x + 1] = 0;
+		msh->env[x + 1] = 0;
 	}
 	ft_doublefree(tmp);
 }
 
 
-static bool	ft_not_exp(char *variable, t_msh_var *msh)
+static bool	ft_not_exp(char *variable, t_env *msh)
 {
     int	i;
 
     i = -1;
-    while (msh->exp_envp[++i])
+    while (msh->exp[++i])
     {
-        if (!ft_strncmp(msh->exp_envp[i], variable, (ft_strlen(variable))))
+        if (!ft_strncmp(msh->exp[i], variable, (ft_strlen(variable))))
             return (false);
     }
     return (true);
 }
 
-static void	ft_unset_exp(char *variable, t_msh_var *msh)
+static void	ft_unset_exp(char *variable, t_env *msh)
 {
     char	**tmp;
     int		i;
@@ -63,37 +63,37 @@ static void	ft_unset_exp(char *variable, t_msh_var *msh)
         return ;
     else
     {
-        tmp = ft_doublestrdup(msh->exp_envp);
-        ft_doublefree(msh->exp_envp);
-        msh->exp_envp = (char **)malloc(sizeof(char *)
-                                        * (ft_doublestrlen(tmp)));
+        tmp = ft_doublestrdup(msh->exp);
+        ft_doublefree(msh->exp);
+        msh->exp = (char **)malloc(sizeof(char *)
+                                   * (ft_doublestrlen(tmp)));
         i = -1;
         x = -1;
         while (tmp[++i])
         {
             if (ft_strncmp(tmp[i], variable, ft_strlen(variable)))
-                msh->exp_envp[++x] = ft_strdup(tmp[i]);
+                msh->exp[++x] = ft_strdup(tmp[i]);
         }
-        msh->exp_envp[x + 1] = 0;
+        msh->exp[x + 1] = 0;
     }
     ft_doublefree(tmp);
 }
 
-bool	ft_check_unset(t_command *command, t_msh_var *msh, int c_num, int count)
+bool	ft_check_unset(t_cmd *command, t_env *msh, int c_num, int count)
 {
 	int	i;
 
 	if (c_num != count - 1)
 		return (1);
-	if (command->command[1])
+	if (command->cmd[1])
 	{
 		i = 0;
-		while (command->command[++i])
+		while (command->cmd[++i])
 		{
-			if (ft_check_variable(command->command[i]))
+			if (ft_check_variable(command->cmd[i]))
             {
-				ft_unset(command->command[i], msh);
-                ft_unset_exp(command->command[i], msh);
+				ft_unset(command->cmd[i], msh);
+                ft_unset_exp(command->cmd[i], msh);
             }
 		}
 	}

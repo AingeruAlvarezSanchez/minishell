@@ -42,52 +42,52 @@ bool	ft_next_errors(int errnumb)
 	return (false);
 }
 
-bool	ft_error_print(int errnumb)
+bool	ft_print_err(int error)
 {
-	if (errnumb == 2)
+	if (error == 2)
 	{
 		fprintf(stderr, "ERR : NOTWANNAHANDLE\n");
 		return (true);
 	}
-	else if (errnumb == 3)
+	else if (error == 3)
 	{
 		fprintf(stderr, "ERR : SIGSMTHG\n");
 		return (true);
 	}
-	else if (errnumb == 4)
+	else if (error == 4)
 	{
 		fprintf(stderr, "ERR : UNDEFINED\n");
 		return (true);
 	}
-	else if (errnumb == 6)
+	else if (error == 6)
 	{
 		fprintf(stderr, "ERR : UKNOWN\n");
 		return (true);
 	}
-	if (ft_next_errors(errnumb))
+	if (ft_next_errors(error))
 		return (true);
 	return (false);
 }
 
-void	ft_free_commands(t_command_table *table)
+void	ft_free_commands(t_cmds_all *table)
 {
 	int	i;
 
 	i = -1;
-	while (++i < table->cmd_count && table->cmd_count)
+	while (++i < table->n_cmds && table->n_cmds)
 	{
-		if (table->commands[i].command)
-			ft_doublefree(table->commands[i].command);
-		table->commands[i].command = NULL;
-		if (table->commands[i].bin_path)
+		if (table->cmds[i].cmd)
+			ft_doublefree(table->cmds[i].cmd);
+		table->cmds[i].cmd = NULL;
+		if (table->cmds[i].bin_path)
 		{
-			free(table->commands[i].bin_path);//TODO:si metes el espacio raro lo que peta es esto de aqui
+			free(table->cmds[i].bin_path);//TODO:si metes el espacio raro lo que peta es esto de aqui
 		}
-		table->commands[i].bin_path = NULL;
+		table->cmds[i].bin_path = NULL;
 	}
-	if (!table->commands)
+	if (!table->cmds)
 		return ;
-	free(table->commands);
+	free(table->cmds);
 }
 
 bool	ft_check_errors(char *str)
@@ -95,7 +95,7 @@ bool	ft_check_errors(char *str)
 	str = added_pipe(str);
 	if (str == NULL || !(ft_strlen(str) > 0))//TODO: WTF
 	{
-		ft_error_print(11);
+        ft_print_err(11);
 		if (str)
 			free(str);
 		return (1);
