@@ -101,6 +101,8 @@ char	*reach_bin_path(t_command *command, t_msh_var *msh)
 		{
 			if (return_binary_path(command->path[i], command->command[0]))
 				return (ft_get_result(command, i));
+            else
+                command->path[i] = NULL;
 			i++;
 		}
 		if (access(command->command[0], X_OK) == 0)
