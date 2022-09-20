@@ -1,61 +1,77 @@
+
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
-int	ft_isexit(t_cmds_all *table, int c_num, int count)
+/**
+ * @param cmds struct with commands
+ * @param pos_cmd actual position of command
+ * @param n_cmds number of commands in prompt
+ */
+int ft_is_exit(t_cmds_all *cmds, int pos_cmd, int n_cmds)
 {
-	if (!ft_strncmp(table->cmds[c_num].cmd[0], "exit",
-                    (ft_strlen(table->cmds[c_num].cmd[0]) + 1)))
-		return (ft_exit(table, c_num, count));
+	if (!ft_strncmp(cmds->cmds[pos_cmd].cmd[0], "exit",
+                    (ft_strlen(cmds->cmds[pos_cmd].cmd[0]) + 1)))
+		return (ft_exit(cmds, pos_cmd, n_cmds));
 	return (0);
 }
 
-int	ft_parent_builtin(t_cmd *command, t_env *msh, int count, int c_num)
+/**
+ * @param cmd struct with command
+ * @param env struct with environment
+ * @param pos_cmd actual position of command
+ * @param n_cmds number of commands in prompt
+ * @return 0 if parent
+ */
+int ft_parent_builtin(t_cmd *cmd, t_env *env, int pos_cmd, int n_cmds)
 {
-	if (!ft_strncmp(command->cmd[0], "cd", ft_strlen(command->cmd[0])))
-		return (ft_cd(command, msh, count));
-	else if (!ft_strncmp(command->cmd[0], "export",
-                         (ft_strlen(command->cmd[0]) + 1)))
-		return (ft_export_check(command, msh, c_num, count));
-	else if (!ft_strncmp(command->cmd[0], "unset",
-                         (ft_strlen(command->cmd[0]) + 1)))
-		return (ft_check_unset(command, msh, c_num, count));
+	if (!ft_strncmp(cmd->cmd[0], "cd", ft_strlen(cmd->cmd[0])))
+		return (ft_home_cd(cmd, env, pos_cmd));
+    if (!ft_strncmp(cmd->cmd[0], "export", (ft_strlen(cmd->cmd[0]) + 1)))
+		return (ft_export_check(cmd, env, n_cmds, pos_cmd));
+    if (!ft_strncmp(cmd->cmd[0], "unset", (ft_strlen(cmd->cmd[0]) + 1)))
+		return (ft_check_unset(cmd, env, n_cmds, pos_cmd));
 	return (0);
 }
 
-bool	ft_child_builtin(t_cmd *command, t_env *msh)
+/**
+ * @param cmd struct with command
+ * @param env struct with environment
+ * @return 0 if child
+ */
+bool	ft_child_builtin(t_cmd *cmd, t_env *env)
 {
-	if (!ft_strncmp(command->cmd[0], "echo",
-                    (ft_strlen(command->cmd[0]) + 1)))
+	if (!ft_strncmp(cmd->cmd[0], "echo", (ft_strlen(cmd->cmd[0]) + 1)))
 	{
-		ft_echo(command);
+		ft_echo(cmd);
 		return (false);
 	}
-	else if (!ft_strncmp(command->cmd[0], "pwd",
-                         (ft_strlen(command->cmd[0]) + 1)))
+	if (!ft_strncmp(cmd->cmd[0], "pwd", (ft_strlen(cmd->cmd[0]) + 1)))
 	{
 		ft_pwd();
 		return (false);
 	}
-	else if (!ft_strncmp(command->cmd[0], "env",
-                         (ft_strlen(command->cmd[0]) + 1)))
+	if (!ft_strncmp(cmd->cmd[0], "env", (ft_strlen(cmd->cmd[0]) + 1)))
 	{
-		ft_env(msh, command);
+		ft_env(env, cmd);
 		return (false);
 	}
 	return (true);
 }
 
-int	ft_checkparent(t_cmd *command)
+ /**
+  * @param cmd struct with command
+  * @return 0 if parent
+  */
+int	ft_checkparent(t_cmd *cmd)
 {
-	if (!ft_strncmp(command->cmd[0], "cd", ft_strlen(command->cmd[0])))
+	if (!ft_strncmp(cmd->cmd[0], "cd", ft_strlen(cmd->cmd[0])))
 		return (false);
-	else if (!ft_strncmp(command->cmd[0], "export",
-                         (ft_strlen(command->cmd[0]) + 1)))
+	if (!ft_strncmp(cmd->cmd[0], "export", (ft_strlen(cmd->cmd[0]) + 1)))
 		return (false);
-	else if (!ft_strncmp(command->cmd[0], "unset",
-                         (ft_strlen(command->cmd[0]) + 1)))
+	if (!ft_strncmp(cmd->cmd[0], "unset", (ft_strlen(cmd->cmd[0]) + 1)))
 		return (false);
-	else if (!ft_strncmp(command->cmd[0], "exit",
-                         (ft_strlen(command->cmd[0]) + 1)))
+	if (!ft_strncmp(cmd->cmd[0], "exit", (ft_strlen(cmd->cmd[0]) + 1)))
 		return (false);
 	return (true);
 }

@@ -12,54 +12,66 @@
 
 #include "../../include/minishell.h"
 
-static void	ft_exit_arg(t_cmds_all *table, int c_num, int count)
+/**
+ * @param cmds struct with commands
+ * @param pos_cmd command position
+ * @param n_cmds number of commands
+ */
+static void	ft_exit_with_arg(t_cmds_all *cmds, int pos_cmd, int n_cmds)
 {
-	int	i;
+	int	c;
 
-	i = 0;
-	while (table->cmds[c_num].cmd[1][i])
+    c = 0;
+	while (cmds->cmds[pos_cmd].cmd[1][c])
 	{
-		if (ft_isalpha(table->cmds[c_num].cmd[1][i]))
+		if (ft_isalpha(cmds->cmds[pos_cmd].cmd[1][c]))
 		{
-			printf("Minishell : %s %s\n",
-				table->cmds[c_num].cmd[1],
-				": numeric argument required");
+			printf("Ejemplo₺ : %s %s\n",
+                   cmds->cmds[pos_cmd].cmd[1],
+                   ": numeric argument required");
 			g_exit_status = 1;
-			if (count == 1)
+			if (n_cmds == 1)
 			{
-				ft_free_commands(table);
+				ft_free_commands(cmds);
 				exit(255);
 			}
 		}
-		i++;
+		c++;
 	}
-	g_exit_status = ft_atoi(table->cmds[c_num].cmd[1]);
-	if (count == 1)
-		exit(ft_atoi(table->cmds[c_num].cmd[1]));
+	g_exit_status = ft_atoi(cmds->cmds[pos_cmd].cmd[1]);
+	if (n_cmds == 1)
+		exit(ft_atoi(cmds->cmds[pos_cmd].cmd[1]));
 }
 
-int	ft_exit(t_cmds_all *table, int c_num, int count)
+/**
+ *
+ * @param cmds struct with commands
+ * @param pos_cmd command position
+ * @param n_cmds number of commands
+ * @return
+ */
+int	ft_exit(t_cmds_all *cmds, int pos_cmd, int n_cmds)
 {
-	int	i;
+	int	pos;
 
-	if (c_num != count - 1)
+	if (pos_cmd != n_cmds - 1)
 		return (1);
-	if (count == 1)
+	if (n_cmds == 1)
 		write(1, "exit\n", 5);
-	i = 0;
-	while (table->cmds[c_num].cmd[i])
-		i++;
-	if (i > 2)
+    pos = 0;
+	while (cmds->cmds[pos_cmd].cmd[pos])
+		pos++;
+	if (pos > 2)
 	{
-		printf("Minishell : Too many arguments\n");
+		printf("Ejemplo₺ : Too many arguments\n");
 		g_exit_status = 1;
 		return (0);
 	}
-	if (table->cmds[c_num].cmd[1])
-		ft_exit_arg(table, c_num, count);
-	if (count == 1)
+	if (cmds->cmds[pos_cmd].cmd[1])
+        ft_exit_with_arg(cmds, pos_cmd, n_cmds);
+	if (n_cmds == 1)
 	{
-		ft_free_commands(table);
+		ft_free_commands(cmds);
 		g_exit_status = 0;
 		exit(0);
 	}

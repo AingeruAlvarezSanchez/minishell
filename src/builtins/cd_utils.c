@@ -1,67 +1,51 @@
 #include "../../include/minishell.h"
 
-void	ft_getoldpwd(t_env *msh, char *route)
+/**
+ * @param env struct with environment
+ */
+void	ft_rewrite_pwd(t_env *env)
 {
-	int		i;
-	char	*tmp;
+	int	var;
 
-	i = -1;
-	msh->oldpwd = getcwd(NULL, 0);
-	while (msh->env[++i])
+    var = -1;
+    env->pwd = getcwd(NULL, 0);
+	while (env->env[++var])
 	{
-		if (!ft_strncmp(msh->env[i], "OLDPWD=", 7))
+		if (!ft_strncmp(env->env[var], "PWD=", 4))
 		{
-			tmp = ft_strjoin("PWD=", route);
-			if (ft_strncmp(msh->env[i + 1], tmp, ft_strlen(tmp)))
-			{
-				free(msh->env[i]);
-				msh->env[i] = ft_strjoin("OLDPWD=", msh->oldpwd);
-			}
-			free(tmp);
-			return ;
-		}
-	}
-	ft_firstoldpwd(msh);
-}
-
-void	ft_getnewpwd(t_env *msh)
-{
-	int	i;
-
-	i = -1;
-	msh->pwd = getcwd(NULL, 0);
-	while (msh->env[++i])
-	{
-		if (!ft_strncmp(msh->env[i], "PWD=", 4))
-		{
-			free(msh->env[i]);
-			msh->env[i] = ft_strjoin("PWD=", msh->pwd);
+			free(env->env[var]);
+            env->env[var] = ft_strjoin("PWD=", env->pwd);
 		}
 	}
 }
 
-void	ft_previous_dir(t_env *msh)
-{
-	int		i;
 
-	i = -1;
-	while (msh->env[++i])
+/**
+ * @brief rewrite $pwd and $oldpwd in environment
+ * @param env struct with environment
+ */
+void	ft_previous_dir(t_env *env)
+{
+	int		var;
+
+    var = -1;
+	while (env->env[++var])
 	{
-		if (!ft_strncmp(msh->env[i], "OLDPWD=", 7))
+		if (!ft_strncmp(env->env[var], "OLDPWD=", 7))
 		{
-			msh->oldpwd = ft_substr(msh->env[i + 1], 4,
-                                    (ft_strlen(msh->env[i + 1]) - 4));
-			free(msh->env[i + 1]);
-			msh->pwd = ft_substr(msh->env[i], 7,
-                                 (ft_strlen(msh->env[i]) - 7));
-			chdir(msh->pwd);
-			msh->env[i + 1] = ft_strjoin("PWD=", msh->pwd);
-			free(msh->env[i]);
-			msh->env[i] = ft_strjoin("OLDPWD=", msh->oldpwd);
+            env->oldpwd = ft_substr(env->env[var + 1], 4,
+                                    (ft_strlen(env->env[var + 1]) - 4));
+			free(env->env[var + 1]);
+            env->pwd = ft_substr(env->env[var], 7,
+                                 (ft_strlen(env->env[var]) - 7));
+			chdir(env->pwd);
+            env->env[var + 1] = ft_strjoin("PWD=", env->pwd);
+			free(env->env[var]);
+            env->env[var] = ft_strjoin("OLDPWD=", env->oldpwd);
 			return ;
 		}
 	}
 	printf("Minishell: cd: OLDPWD not set\n");
-	msh->oldpwd = NULL;
-	msh->pwd = NULL;
+    env->oldpwd = NULL;
+    env->pwd = NULL;
 }

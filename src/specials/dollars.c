@@ -69,7 +69,7 @@ void	ft_dollar_expansion(t_cmd *com, t_env *msh, int a_n, int xref)
 	else
 		dollars.final = ft_strdup("");
 	ft_new_com(&dollars, com, a_n, xref);
-	ft_freedollar_struct(&dollars);
+    ft_struct_free(&dollars);
 }
 
 bool	ft_check_dollars(t_cmds_all *table, int i, int x, t_env *msh)

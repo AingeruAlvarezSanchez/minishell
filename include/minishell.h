@@ -43,7 +43,7 @@ typedef struct s_cmd
 	char	**cmd;
 	char	*bin_path;
 	char	**path;
-	bool	is_absolute;
+	bool	absolute;
 }	t_cmd;
 
 typedef struct s_dollars
@@ -63,27 +63,27 @@ typedef struct s_cmds_all
 }	t_cmds_all;
 
 /* builtins */
+bool	ft_home_cd(t_cmd *cmd, t_env *env, int pos_cmd);
+bool	cd_extension(t_cmd *cmd, t_env *env);
 void	ft_echo(t_cmd *cmd);
 void	ft_pwd(void);
-void	ft_env(t_env *msh, t_cmd *command);
-int		ft_exit(t_cmds_all *table, int c_num, int count);
-int		ft_isexit(t_cmds_all *table, int c_num, int count);
-bool	ft_cd(t_cmd *command, t_env *msh, int count);
-bool	ft_check_unset(t_cmd *command, t_env *msh, int c_num, int count);
-int		ft_export_check(t_cmd *command, t_env *msh, int c_num, int count);
-bool	ft_check_variable(char *variable);
-bool	ft_already_in(char *variable, char **env);
-int		ft_parent_builtin(t_cmd *command, t_env *msh, int count, int c_num);
-int		ft_checkparent(t_cmd *command);
-bool	ft_child_builtin(t_cmd *command, t_env *msh);
+void	ft_env(t_env *env, t_cmd *cmd);
+int		ft_exit(t_cmds_all *cmds, int pos_cmd, int n_cmds);
+int		ft_is_exit(t_cmds_all *cmds, int pos_cmd, int n_cmds);
+bool	ft_check_unset(t_cmd *cmd, t_env *env, int n_cmds, int pos_cmd);
+int		ft_export_check(t_cmd *cmd, t_env *env, int n_cmds, int pos_cmd);
+bool	ft_check_variable(const char *var);
+bool	ft_already_in(char *var, char **cpy_env);
+int		ft_parent_builtin(t_cmd *cmd, t_env *env, int pos_cmd, int n_cmds);
+int		ft_checkparent(t_cmd *cmd);
+bool	ft_child_builtin(t_cmd *cmd, t_env *env);
 void	rl_replace_line(const char *text, int clear_undo);
-bool	cd_extension(t_cmd *command, t_env *msh);
-void	ft_getoldpwd(t_env *msh, char *route);
-void	ft_getnewpwd(t_env *msh);
-void	ft_previous_dir(t_env *msh);
-void	ft_firstoldpwd(t_env *msh);
-char	*ft_get_home(t_env *msh);
-void	ft_create_exp_var(char *variable, t_env *msh);
+//void	ft_save_oldpwd(t_env *env, char *route);
+void	ft_rewrite_pwd(t_env *env);
+void	ft_previous_dir(t_env *env);
+void	ft_oldpwd(t_env *env);
+//char	*ft_init_home(t_env *env);
+void	ft_create_exp_var(char *var, t_env *env);
 
 //ENVIROMENT
 char	**ft_dup_env(char **env);
@@ -109,19 +109,18 @@ bool	ft_check_char(t_cmd *com, int a_n, int i, char *refs);
 
 
 /* Execution */
-char	*ft_get_result(t_cmd *command, int i);
-bool	ft_isfinal(t_cmds_all *table, int i, int count, t_env *msh);
-bool	return_binary_path(const char *bin_path, char *binary_check);
-char	*reach_bin_path(t_cmd *command, t_env *msh);
+char	*ft_cpy_path(t_cmd *cmd, int pos);
+bool	ft_final_cmd(t_cmds_all *cmds, int pos_cmd, int n_cmd, t_env *env);
+bool	ft_is_bin_path(const char *path, char *binary);
+char	*ft_bin_path(t_cmd *cmd, t_env *env);
 void	*execute(t_cmds_all *table, t_env *msh);
 void	close_and_liberate_execution(t_cmds_all *table);
 
 
-
 /* Binary manage */
-char	**get_actual_path(t_env *msh);
-bool	gather_bin_path(t_cmds_all *table, t_env *msh);
-bool	ft_check_if_is_accesible(t_cmds_all *table, int iterate);
+char	**ft_rewrite_path(t_env *env);
+bool	ft_get_path(t_cmds_all *cmds, t_env *env);
+bool	ft_check_if_is_accesible(t_cmds_all *cmds, int pos_cmd);
 
 /* Signals */
 void	ft_check_signal(void);
@@ -138,7 +137,7 @@ void	ft_quotetrim(t_cmd *command, int i, int final, int j);
 
 /* Free memory */
 void	ft_free_commands(t_cmds_all *table);
-void	ft_freedollar_struct(t_dollars *dollars);
+void	ft_struct_free(t_dollars *dollar);
 
 //UTILS
 /* error*/
@@ -150,9 +149,7 @@ int		ft_process_quotes(char *raw_cmd);
 bool	str_contains(const char *cmd, char *str);
 bool	ft_str_has(char *command, char *str);
 void	string_to_lower(char *pnt);
-void	ft_freedollar_struct(t_dollars *dollars);
+void	ft_struct_free(t_dollars *dollar);
 bool	check_if_empty_command(char *str);
-
-
 
 #endif

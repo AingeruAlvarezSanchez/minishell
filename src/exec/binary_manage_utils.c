@@ -1,19 +1,27 @@
 #include "../../include/minishell.h"
 
-bool	ft_isfinal(t_cmds_all *table, int i, int count, t_env *msh)
+char	*ft_cpy_path(t_cmd *cmd, int pos)
 {
-	ft_isexit(table, i, count);
-	ft_parent_builtin(&table->cmds[i],
-		msh, count, i);
-	ft_free_commands(table);
-	return (true);
+	char	*path;
+
+    path = ft_strdup(cmd->path[pos]);
+	ft_doublefree(cmd->path);
+	return (path);
 }
 
-char	*ft_get_result(t_cmd *command, int i)
+/**
+ *
+ * @param cmds struct with commands
+ * @param pos_cmd actual position of command
+ * @param n_cmd number of commands in prompt
+ * @param env struct with environment
+ * @return 1
+ */
+bool	ft_final_cmd(t_cmds_all *cmds, int pos_cmd, int n_cmd, t_env *env)
 {
-	char	*result;
-
-	result = ft_strdup(command->path[i]);
-	ft_doublefree(command->path);
-	return (result);
+    ft_is_exit(cmds, pos_cmd, n_cmd);
+	ft_parent_builtin(&cmds->cmds[pos_cmd], env, n_cmd, pos_cmd);
+	ft_free_commands(cmds);
+	return (1);
 }
+

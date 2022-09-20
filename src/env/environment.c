@@ -1,29 +1,38 @@
 #include "../../include/minishell.h"
 
-static char	**return_heaped_env(bool flag, char **str)
+/**
+ * @param old_pwd flag to check if OLDPWD
+ * @param env environment taken from arguments
+ * @return
+ */
+static char	**ft_init_env(bool old_pwd, char **env)
 {
-	char	**result;
+	char	**aux;
 
-	if (flag == 1)
-		result = (char **)malloc(sizeof(char *) * (ft_doublestrlen(str)));
+	if (old_pwd == 1)
+        aux = (char **)malloc(sizeof(char *) * (ft_doublestrlen(env)));
 	else
-		result = (char **)malloc(sizeof(char *) * (ft_doublestrlen(str) + 1));
-	return (result);
+        aux = (char **)malloc(sizeof(char *) * (ft_doublestrlen(env) + 1));
+	return (aux);
 }
 
+/**
+ * @param env environment taken from arguments
+ * @return
+ */
 char	**ft_dup_env(char **env)
 {
 	char	**nw_env;
 	int		i;
-	bool	flag;
+	bool	old_pwd;
 
 	i = -1;
 	while (env[++i])
 	{
 		if (!ft_strncmp(env[i], "OLDPWD=", 7))
-            flag = 1;
+            old_pwd = 1;
 	}
-    nw_env = return_heaped_env(flag, env);
+    nw_env = ft_init_env(old_pwd, env);
 	if (!nw_env)
 		return (NULL);
 	i = -1;

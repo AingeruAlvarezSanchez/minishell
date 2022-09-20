@@ -1,99 +1,125 @@
 #include "../../include/minishell.h"
 
-static bool	ft_not_env(char *variable, t_env *msh)
+/**
+ * check if inside environment
+ * @param var is the name of exported variable
+ * @param env struct with environment
+ * @return 0 if inside env
+ */
+static bool	ft_not_env(char *var, t_env *env)
 {
 	int	i;
 
 	i = -1;
-	while (msh->env[++i])
+	while (env->env[++i])
 	{
-		if (!ft_strncmp(msh->env[i], variable, (ft_strlen(variable))))
-			return (false);
+		if (!ft_strncmp(env->env[i], var, (ft_strlen(var))))
+			return (0);
 	}
-	return (true);
+	return (1);
 }
 
-static void	ft_unset(char *variable, t_env *msh)
+/**
+ * @param var is the name of exported variable
+ * @param env struct with environment
+ */
+static void	ft_unset(char *var, t_env *env)
 {
+	int		x;
 	char	**tmp;
 	int		i;
-	int		x;
 
-	if (ft_not_env(variable, msh))
+	if (ft_not_env(var, env))
 		return ;
 	else
 	{
-		tmp = ft_doublestrdup(msh->env);
-		ft_doublefree(msh->env);
-		msh->env = (char **)malloc(sizeof(char *)
+		tmp = ft_doublestrdup(env->env);
+		ft_doublefree(env->env);
+        env->env = (char **)malloc(sizeof(char *)
                                    * (ft_doublestrlen(tmp)));
-		i = -1;
 		x = -1;
+		i = -1;
 		while (tmp[++i])
 		{
-			if (ft_strncmp(tmp[i], variable, ft_strlen(variable)))
-				msh->env[++x] = ft_strdup(tmp[i]);
+			if (ft_strncmp(tmp[i], var, ft_strlen(var)))
+                env->env[++x] = ft_strdup(tmp[i]);
 		}
-		msh->env[x + 1] = 0;
+        env->env[x + 1] = 0;
 	}
 	ft_doublefree(tmp);
 }
 
-
-static bool	ft_not_exp(char *variable, t_env *msh)
+/**
+ * @param var is the name of exported variable
+ * @param env struct with environment
+ * @return 0 if is in export environment
+ */
+static bool	ft_not_exp(char *var, t_env *env)
 {
     int	i;
 
     i = -1;
-    while (msh->exp[++i])
+    while (env->exp[++i])
     {
-        if (!ft_strncmp(msh->exp[i], variable, (ft_strlen(variable))))
-            return (false);
+        if (!ft_strncmp(env->exp[i], var, (ft_strlen(var))))
+            return (0);
     }
-    return (true);
+    return (1);
 }
 
-static void	ft_unset_exp(char *variable, t_env *msh)
+/**
+ * delete var from export environment
+ * @param var is the name of exported variable
+ * @param env struct with environment
+ */
+static void	ft_unset_exp(char *var, t_env *env)
 {
-    char	**tmp;
-    int		i;
     int		x;
+    int		i;
+    char	**aux;
 
-    if (ft_not_exp(variable, msh))
+    if (ft_not_exp(var, env))
         return ;
     else
     {
-        tmp = ft_doublestrdup(msh->exp);
-        ft_doublefree(msh->exp);
-        msh->exp = (char **)malloc(sizeof(char *)
-                                   * (ft_doublestrlen(tmp)));
+        aux = ft_doublestrdup(env->exp);
+        ft_doublefree(env->exp);
+        env->exp = (char **)malloc(sizeof(char *)
+                                   * (ft_doublestrlen(aux)));
         i = -1;
         x = -1;
-        while (tmp[++i])
+        while (aux[++i])
         {
-            if (ft_strncmp(tmp[i], variable, ft_strlen(variable)))
-                msh->exp[++x] = ft_strdup(tmp[i]);
+            if (ft_strncmp(aux[i], var, ft_strlen(var)))
+                env->exp[++x] = ft_strdup(aux[i]);
         }
-        msh->exp[x + 1] = 0;
+        env->exp[x + 1] = 0;
     }
-    ft_doublefree(tmp);
+    ft_doublefree(aux);
 }
 
-bool	ft_check_unset(t_cmd *command, t_env *msh, int c_num, int count)
+/**
+ * @param cmd struct with command
+ * @param env struct with environment
+ * @param n_cmds number of commands
+ * @param pos_cmd actual command
+ * @return
+ */
+bool	ft_check_unset(t_cmd *cmd, t_env *env, int n_cmds, int pos_cmd)
 {
-	int	i;
+	int	pos;
 
-	if (c_num != count - 1)
+	if (n_cmds != pos_cmd - 1)
 		return (1);
-	if (command->cmd[1])
+	if (cmd->cmd[1])
 	{
-		i = 0;
-		while (command->cmd[++i])
+        pos = 0;
+		while (cmd->cmd[++pos])
 		{
-			if (ft_check_variable(command->cmd[i]))
+			if (ft_check_variable(cmd->cmd[pos]))
             {
-				ft_unset(command->cmd[i], msh);
-                ft_unset_exp(command->cmd[i], msh);
+				ft_unset(cmd->cmd[pos], env);
+                ft_unset_exp(cmd->cmd[pos], env);
             }
 		}
 	}

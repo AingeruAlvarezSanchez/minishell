@@ -10,27 +10,27 @@ void	close_and_liberate_execution(t_cmds_all *table)
 		free(table->pi);
 	while (++i < table->n_cmds)
 	{
-		if (table->cmds[i].is_absolute && table->cmds[i].path)
+		if (table->cmds[i].absolute && table->cmds[i].path)
 			ft_doublefree(table->cmds[i].path);
 	}
 	ft_free_commands(table);
 }
 
-void	ft_freedollar_struct(t_dollars *dollars)
+void	ft_struct_free(t_dollars *dollar)
 {
-	free(dollars->beg);
-	free(dollars->final);
-	free(dollars->value);
-	free(dollars->result);
+	free(dollar->beg);
+	free(dollar->final);
+	free(dollar->value);
+	free(dollar->result);
 }
 
-bool	ft_check_if_is_accesible(t_cmds_all *table, int iterate)
+bool	ft_check_if_is_accesible(t_cmds_all *cmds, int pos_cmd)
 {
-	if (access(table->cmds[iterate].cmd[0], X_OK) == 0)
+	if (access(cmds->cmds[pos_cmd].cmd[0], X_OK) == 0)
 	{
-		table->cmds[iterate].bin_path
-			= ft_strdup(table->cmds[iterate].cmd[0]);
-		table->cmds[iterate].is_absolute = true;
+        cmds->cmds[pos_cmd].bin_path
+			= ft_strdup(cmds->cmds[pos_cmd].cmd[0]);
+        cmds->cmds[pos_cmd].absolute = true;
 		return (true);
 	}
 	return (false);

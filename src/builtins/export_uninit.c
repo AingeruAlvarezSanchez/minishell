@@ -12,89 +12,110 @@
 
 #include "../../include/minishell.h"
 
-bool	ft_already_in(char *variable, char **env)
+/**
+ * @param var is the name of exported variable
+ * @param cpy_env copy of the environment
+ * @return 1 if its inside env
+ */
+bool	ft_already_in(char *var, char **cpy_env)
 {
 	int		i;
-	char	*to_search;
+	char	*target;
 
 	i = 0;
-	while (variable[i] != '=')
+	while (var[i] != '=')
 		i++;
-	to_search = ft_substr(variable, 0, (i + 1));
-	while (env[++i])
+    target = ft_substr(var, 0, (i + 1));
+	while (cpy_env[++i])
 	{
-		if (!ft_strncmp(env[i], to_search, ft_strlen(to_search)))
+		if (!ft_strncmp(cpy_env[i], target, ft_strlen(target)))
 		{
-			free(to_search);
-			return (true);
+			free(target);
+			return (1);
 		}
 	}
-	free(to_search);
-	return (false);
+	free(target);
+	return (0);
 }
 
-bool	ft_already_exp(char *variable, char **env)
+/**
+ * @param var is the name of exported variable
+ * @param cpy_env copy of the environment
+ * @return 1 if its inside env
+ */
+bool	ft_already_exp(char *var, char **cpy_env)
 {
 	int		i;
-	char	*to_search;
+	char	*target;
 
-	i = 0;
-	while (variable[i] != '=')
+    i = 0;
+	while (var[i] != '=')
 		i++;
-	to_search = ft_substr(variable, 0, (i));
-	while (env[++i])
+    target = ft_substr(var, 0, (i));
+	while (cpy_env[++i])
 	{
-		if (!ft_strncmp(env[i], to_search, ft_strlen(to_search)))
+		if (!ft_strncmp(cpy_env[i], target, ft_strlen(target)))
 		{
-			free(to_search);
-			return (true);
+			free(target);
+			return (1);
 		}
 	}
-	free(to_search);
-	return (false);
+	free(target);
+	return (0);
 }
 
-static void	ft_replace_exp(char *variable, t_env *msh, char **tmp)
+/**
+ *
+ * @param var is the name of exported variable
+ * @param env struct with environment
+ * @param cpy_env copy of the environment
+ */
+static void	ft_replace_exp(char *var, t_env *env, char **cpy_env)
 {
-	int		x;
-	char	*to_search;
+	int		i;
+	char	*target;
 
-	x = 0;
-	while (variable[x] != '=')
-		x++;
-	to_search = ft_substr(variable, 0, (x));
-	msh->exp = (char **)malloc(sizeof(char *)
-                               * (ft_doublestrlen(tmp) + 1));
-	x = -1;
-	while (tmp[++x])
+    i = 0;
+	while (var[i] != '=')
+		i++;
+    target = ft_substr(var, 0, (i));
+    env->exp = (char **)malloc(sizeof(char *)
+                               * (ft_doublestrlen(cpy_env) + 1));
+    i = -1;
+	while (cpy_env[++i])
 	{
-		if (!ft_strncmp(tmp[x], to_search, ft_strlen(to_search)))
-			msh->exp[x] = ft_strdup(variable);
+		if (!ft_strncmp(cpy_env[i], target, ft_strlen(target)))
+            env->exp[i] = ft_strdup(var);
 		else
-			msh->exp[x] = ft_strdup(tmp[x]);
+            env->exp[i] = ft_strdup(cpy_env[i]);
 	}
-	free(to_search);
-	msh->exp[x] = 0;
+	free(target);
+    env->exp[i] = 0;
 }
 
-void	ft_create_exp_var(char *variable, t_env *msh)
+/**
+ * creates variable in export environment
+ * @param var is the name of exported variable
+ * @param env struct with environment
+ */
+void	ft_create_exp_var(char *var, t_env *env)
 {
-	char	**tmp;
+	char	**cpy_env;
 	int		i;
 
 	i = -1;
-	tmp = ft_doublestrdup(msh->exp);
-	ft_doublefree(msh->exp);
-	if (ft_already_exp(variable, tmp))
-		ft_replace_exp(variable, msh, tmp);
+    cpy_env = ft_doublestrdup(env->exp);
+	ft_doublefree(env->exp);
+	if (ft_already_exp(var, cpy_env))
+		ft_replace_exp(var, env, cpy_env);
 	else
 	{
-		msh->exp = (char **)malloc(sizeof(char *)
-                                   * (ft_doublestrlen(tmp) + 2));
-		while (tmp[++i])
-			msh->exp[i] = ft_strdup(tmp[i]);
-		msh->exp[i] = ft_strdup(variable);
-		msh->exp[i + 1] = 0;
+        env->exp = (char **)malloc(sizeof(char *)
+                                   * (ft_doublestrlen(cpy_env) + 2));
+		while (cpy_env[++i])
+            env->exp[i] = ft_strdup(cpy_env[i]);
+        env->exp[i] = ft_strdup(var);
+        env->exp[i + 1] = 0;
 	}
-	ft_doublefree(tmp);
+	ft_doublefree(cpy_env);
 }
