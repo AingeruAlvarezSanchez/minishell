@@ -1,77 +1,95 @@
 #include "../../include/minishell.h"
 #include <sys/wait.h>
 
-static void	ft_last_command(t_cmds_all *cmds)
+/**
+ * @param cmds struct with commands
+ */
+static void	ft_last_cmd(t_cmds_all *cmds)
 {
 	if (cmds->n_cmds == 2)
 	{
-		dup2(cmds->pi[0], 0);
-		close(cmds->pi[1]);
-		close(cmds->pi[0]);
+		dup2(cmds->pipes[0], 0);
+		close(cmds->pipes[1]);
+		close(cmds->pipes[0]);
 	}
 	else
 	{
-		dup2(cmds->unipipe, 0);
-		close(cmds->pi[1]);
-		close(cmds->pi[0]);
+		dup2(cmds->sngl_pipe, 0);
+		close(cmds->pipes[1]);
+		close(cmds->pipes[0]);
 	}
 }
 
-static void	dup_son_choose(int i, t_cmds_all *table)
+/**
+ *
+ * @param pos_cmd command actual position
+ * @param cmds struct with commands
+ */
+static void	ft_dupto_son(int pos_cmd, t_cmds_all *cmds)
 {
-	if (table->n_cmds == 0)
+	if (cmds->n_cmds == 0)
 	{
-		dup2(table->pi[1], 1);
-		close(table->pi[0]);
-		close(table->pi[1]);
+		dup2(cmds->pipes[1], 1);
+		close(cmds->pipes[0]);
+		close(cmds->pipes[1]);
 	}
-	else if (i == table->n_cmds - 1)
-		ft_last_command(table);
+	else if (pos_cmd == cmds->n_cmds - 1)
+        ft_last_cmd(cmds);
 	else
 	{
-		dup2(table->unipipe, 0);
-		dup2(table->pi[1], 1);
-		close(table->pi[0]);
-		close(table->pi[1]);
+		dup2(cmds->sngl_pipe, 0);
+		dup2(cmds->pipes[1], 1);
+		close(cmds->pipes[0]);
+		close(cmds->pipes[1]);
 	}
 }
 
-void	ft_childexec(t_env *msh, t_cmds_all *table, int i)
+/**
+ * @param env struct with environment
+ * @param cmds struct with commands
+ * @param pos_cmd command actual position
+ */
+static void	ft_child_ex(t_env *env, t_cmds_all *cmds, int pos_cmd)
 {
-	char	*tmp;
-	char	*tmp2;
+	char	*aux;
+	char	*aux2;
 
-	if (table->n_cmds > 1)
-		dup_son_choose(i, table);
-	if (!ft_child_builtin(&table->cmds[i], msh))
+	if (cmds->n_cmds > 1)
+		ft_dupto_son(pos_cmd, cmds);
+	if (!ft_child_builtin(&cmds->cmds[pos_cmd], env))
 		exit(0);
-	if (table->cmds[i].absolute)
-		execve(table->cmds[i].bin_path,
-               table->cmds[i].cmd, msh->env);
-	tmp = ft_strjoin("/", table->cmds[i].cmd[0]);
-	tmp2 = ft_strjoin(table->cmds[i].bin_path, tmp);
-	if (!access(tmp2, X_OK))
-		execve(ft_strjoin(table->cmds[i].bin_path,
-				ft_strjoin("/", table->cmds[i].cmd[0])),
-               table->cmds[i].cmd, msh->env);
-	perror(table->cmds[i].cmd[0]);
-	free(tmp);
-	free(tmp2);
+	if (cmds->cmds[pos_cmd].absolute)
+		execve(cmds->cmds[pos_cmd].bin_path,
+               cmds->cmds[pos_cmd].cmd, env->env);
+    aux = ft_strjoin("/", cmds->cmds[pos_cmd].cmd[0]);
+    aux2 = ft_strjoin(cmds->cmds[pos_cmd].bin_path, aux);
+	if (!access(aux2, X_OK))
+		execve(ft_strjoin(cmds->cmds[pos_cmd].bin_path,
+                          ft_strjoin("/", cmds->cmds[pos_cmd].cmd[0])),
+               cmds->cmds[pos_cmd].cmd, env->env);
+	perror(cmds->cmds[pos_cmd].cmd[0]);
+	free(aux);
+	free(aux2);
 }
 
-void	ft_exec_proccess(t_cmds_all *table, t_env *msh, int i)
+/**
+ * @param env struct with environment
+ * @param cmds struct with commands
+ * @param pos_cmd command actual position
+ */
+void	ft_exec_proc(t_cmds_all *cmds, t_env *env, int pos_cmd)
 {
-	pid_t	pid;
 	int		status;
+	pid_t	pid;
 
 	ft_check_signal();
 	pid = fork();
 	if (pid == 0)
-		ft_childexec(msh, table, i);
+        ft_child_ex(env, cmds, pos_cmd);
 	else
 	{
-		if (table->n_cmds > 1)
-			close(table->pi[1]);
+		if (cmds->n_cmds > 1)
+			close(cmds->pipes[1]);
 		wait(&status);
 		g_exit_status = WEXITSTATUS(status);
 		if (WIFSIGNALED(status))
@@ -79,36 +97,39 @@ void	ft_exec_proccess(t_cmds_all *table, t_env *msh, int i)
 			if (WTERMSIG(status))
 				g_exit_status = 128 + WTERMSIG(status);
 		}
-		if (table->n_cmds > 2)
+		if (cmds->n_cmds > 2)
 		{
-			table->unipipe = dup(table->pi[0]);
-			close(table->pi[0]);
-			pipe(table->pi);
+            cmds->sngl_pipe = dup(cmds->pipes[0]);
+			close(cmds->pipes[0]);
+			pipe(cmds->pipes);
 		}
 	}
 }
 
-void	*execute(t_cmds_all *table, t_env *msh)
+/**
+ * @param env struct with environment
+ * @param cmds struct with commands
+ * @return null if no path
+ */
+void	*ft_exec(t_cmds_all *cmds, t_env *env)
 {	
-	int		i;
+	int		pos_cmd;
 
-	if (ft_get_path(table, msh))
+	if (ft_get_path(cmds, env))
 		return (NULL);
-	if (table->n_cmds > 1)
+	if (cmds->n_cmds > 1)
 	{
-		table->pi = malloc(sizeof(int) * 2);
-		pipe(table->pi);
+        cmds->pipes = malloc(sizeof(int) * 2);
+		pipe(cmds->pipes);
 	}
-	table->unipipe = 3;
-	i = -1;
-	while (++i != table->n_cmds)
+    cmds->sngl_pipe = 3;
+    pos_cmd = -1;
+	while (++pos_cmd != cmds->n_cmds)
 	{
-		if (ft_parent_builtin(&table->cmds[i],
-                              msh, table->n_cmds, i)
-            || ft_is_exit(table, i, table->n_cmds))
+		if (ft_parent_builtin(&cmds->cmds[pos_cmd], env, cmds->n_cmds, pos_cmd) || ft_is_exit(cmds, pos_cmd, cmds->n_cmds))
 			continue ;
-		ft_exec_proccess(table, msh, i);
+        ft_exec_proc(cmds, env, pos_cmd);
 	}
-	close_and_liberate_execution(table);
+    ft_free_exec(cmds);
 	return (NULL);
 }

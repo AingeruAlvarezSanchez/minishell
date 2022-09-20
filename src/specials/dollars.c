@@ -43,50 +43,55 @@ void	ft_check_exceptions(t_cmd *com, t_dollars *d, int a_n, int xref)
                              (ft_strlen(com->cmd[a_n]) - xref));
 }
 
-void	ft_dollar_expansion(t_cmd *com, t_env *msh, int a_n, int xref)
+void	ft_dollar_expansion(t_cmd *cmd, t_env *env, int a_n, int xref)
 {
 	t_dollars	dollars;
 
-	dollars.value = ft_dollar_value(com, msh, a_n, xref);
-	dollars.beg = ft_substr(com->cmd[a_n], 0, xref);
+	dollars.value = ft_dollar_value(cmd, env, a_n, xref);
+	dollars.beg = ft_substr(cmd->cmd[a_n], 0, xref);
 	xref++;
-	if (com->cmd[a_n][xref] != '$')
+	if (cmd->cmd[a_n][xref] != '$')
 	{
-		while (com->cmd[a_n][xref] &&
-               !ft_check_char(com, a_n, xref, " \'$?@/:"))
+		while (cmd->cmd[a_n][xref] &&
+               !ft_check_char(cmd, a_n, xref, " \'$?@/:"))
 			xref++;
 	}
 	else
 		xref++;
-	if (xref < ft_strlen(com->cmd[a_n])
-		|| com->cmd[a_n][xref - 1] == '"')
+	if (xref < ft_strlen(cmd->cmd[a_n])
+        || cmd->cmd[a_n][xref - 1] == '"')
 	{
-		if (xref < ft_strlen(com->cmd[a_n]))
-			ft_check_exceptions(com, &dollars, a_n, xref);
-		else if (com->cmd[a_n][xref - 1] == '"')
+		if (xref < ft_strlen(cmd->cmd[a_n]))
+			ft_check_exceptions(cmd, &dollars, a_n, xref);
+		else if (cmd->cmd[a_n][xref - 1] == '"')
 			dollars.final = ft_strdup("\"");
 	}
 	else
 		dollars.final = ft_strdup("");
-	ft_new_com(&dollars, com, a_n, xref);
+	ft_new_com(&dollars, cmd, a_n, xref);
     ft_struct_free(&dollars);
 }
 
-bool	ft_check_dollars(t_cmds_all *table, int i, int x, t_env *msh)
+/**
+ *
+ * @param cmds struct with commands
+ * @param y command pos
+ * @param x variable pos
+ * @param env struct with environment
+ * @return 1 if dollar
+ */
+bool	ft_check_dollars(t_cmds_all *cmds, int y, int x, t_env *env)
 {
-	int	len;
-
-	len = ft_strlen(table->cmds[i].cmd[x]) - 1;
-	if (ft_strchr_pos(table->cmds[i].cmd[x], '$') >= 0
-			&& !ft_single_dollar(&table->cmds[i], x,
-                                 ft_strchr_pos(table->cmds[i].cmd[x], '$')))
+	if (ft_strchr_pos(cmds->cmds[y].cmd[x], '$') >= 0
+			&& !ft_single_dollar(&cmds->cmds[y], x,
+                                 ft_strchr_pos(cmds->cmds[y].cmd[x], '$')))
 	{
-		if (table->cmds[i].cmd[x][0] == '\''
-			&& table->cmds[i].cmd[x][len] == '\'')
-			return (false);
-		ft_dollar_expansion(&table->cmds[i], msh,
-                            x, ft_strchr_pos(table->cmds[i].cmd[x], '$'));
-		return (true);
+		if (cmds->cmds[y].cmd[x][0] == '\''
+            && cmds->cmds[y].cmd[x][ft_strlen(cmds->cmds[y].cmd[x]) - 1] == '\'')
+			return (0);
+		ft_dollar_expansion(&cmds->cmds[y], env,
+                            x, ft_strchr_pos(cmds->cmds[y].cmd[x], '$'));
+		return (1);
 	}
-	return (false);
+	return (0);
 }

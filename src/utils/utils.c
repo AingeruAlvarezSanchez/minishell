@@ -1,5 +1,17 @@
 #include "../../include/minishell.h"
 
+void	ft_strtolower(char *str)
+{
+    int		i;
+
+    i = 0;
+    while (str && str[i])
+    {
+        str[i] = ft_tolower(str[i]);
+        i++;
+    }
+}
+
 bool	str_contains(const char *cmd, char *str)
 {
 	int	i;
@@ -24,8 +36,7 @@ bool	str_contains(const char *cmd, char *str)
 	return (false);
 }
 
-
-bool	ft_str_has(char *command, char *str)
+bool	ft_str_has(char *cmd, char *str)
 {
     int	i;
     int	u;
@@ -34,13 +45,13 @@ bool	ft_str_has(char *command, char *str)
 
     i = 0;
     u = 0;
-    if (!str || !command)
+    if (!str || !cmd)
         return (false);
     maxlength = ft_strlen(str);
-    mlength = ft_strlen(command);
-    while (command[i])
+    mlength = ft_strlen(cmd);
+    while (cmd[i])
     {
-        if (command[i] == str[u])
+        if (cmd[i] == str[u])
         {
             u++;
             if (u == maxlength && mlength == maxlength)
@@ -54,16 +65,3 @@ bool	ft_str_has(char *command, char *str)
 }
 
 
-void	string_to_lower(char *pnt)
-{
-	int		i;
-	char	c;
-
-	i = 0;
-	while (pnt && pnt[i])
-	{
-        c = ft_tolower(pnt[i]);
-		pnt[i] = c;
-		i++;
-	}
-}

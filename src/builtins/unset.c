@@ -101,15 +101,15 @@ static void	ft_unset_exp(char *var, t_env *env)
 /**
  * @param cmd struct with command
  * @param env struct with environment
- * @param n_cmds number of commands
- * @param pos_cmd actual command
+ * @param pos_cmd number of commands
+ * @param n_cmds actual command
  * @return
  */
-bool	ft_check_unset(t_cmd *cmd, t_env *env, int n_cmds, int pos_cmd)
+bool	ft_check_unset(t_cmd *cmd, t_env *env, int pos_cmd, int n_cmds)
 {
 	int	pos;
 
-	if (n_cmds != pos_cmd - 1)
+	if (pos_cmd != n_cmds - 1)
 		return (1);
 	if (cmd->cmd[1])
 	{

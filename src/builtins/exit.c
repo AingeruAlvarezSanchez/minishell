@@ -14,23 +14,23 @@
 
 /**
  * @param cmds struct with commands
- * @param pos_cmd command position
- * @param n_cmds number of commands
+ * @param n_cmds command position
+ * @param pos_cmd number of commands
  */
-static void	ft_exit_with_arg(t_cmds_all *cmds, int pos_cmd, int n_cmds)
+static void	ft_exit_with_arg(t_cmds_all *cmds, int n_cmds, int pos_cmd)
 {
 	int	c;
 
     c = 0;
-	while (cmds->cmds[pos_cmd].cmd[1][c])
+	while (cmds->cmds[n_cmds].cmd[1][c])
 	{
-		if (ft_isalpha(cmds->cmds[pos_cmd].cmd[1][c]))
+		if (ft_isalpha(cmds->cmds[n_cmds].cmd[1][c]))
 		{
 			printf("Ejemplo₺ : %s %s\n",
-                   cmds->cmds[pos_cmd].cmd[1],
+                   cmds->cmds[n_cmds].cmd[1],
                    ": numeric argument required");
 			g_exit_status = 1;
-			if (n_cmds == 1)
+			if (pos_cmd == 1)
 			{
 				ft_free_commands(cmds);
 				exit(255);
@@ -38,9 +38,9 @@ static void	ft_exit_with_arg(t_cmds_all *cmds, int pos_cmd, int n_cmds)
 		}
 		c++;
 	}
-	g_exit_status = ft_atoi(cmds->cmds[pos_cmd].cmd[1]);
-	if (n_cmds == 1)
-		exit(ft_atoi(cmds->cmds[pos_cmd].cmd[1]));
+	g_exit_status = ft_atoi(cmds->cmds[n_cmds].cmd[1]);
+	if (pos_cmd == 1)
+		exit(ft_atoi(cmds->cmds[n_cmds].cmd[1]));
 }
 
 /**

@@ -1,21 +1,25 @@
 #include "../../include/minishell.h"
 
-char	*added_pipe(char *str)
+/**
+ * @param prompt string taken from prompt
+ * @return null if syntax error
+ */
+char	*ft_pipe_add(char *prompt)
 {	
-	if (str[0] == '|')
+	if (prompt[0] == '|')
 	{
-		printf("Minishell: sytax error near unexpected token '|'\n");
-		str = NULL;
+		printf("Ejemplo₺: sytax error near unexpected token '|'\n");
+        prompt = NULL;
 	}
-	if (ft_last_nopipe(str))
+	if (ft_last_nopipe(prompt))
 	{
-		while (ft_last_nopipe(str))
+		while (ft_last_nopipe(prompt))
 		{
-			if (ft_strlen(str) > 1)
-				str = ft_strjoin(str, readline("> "));
+			if (ft_strlen(prompt) > 1)
+                prompt = ft_strjoin(prompt, readline("> "));
 			else
-				str = readline("> ");
+                prompt = readline("> ");
 		}
 	}
-	return (str);
+	return (prompt);
 }

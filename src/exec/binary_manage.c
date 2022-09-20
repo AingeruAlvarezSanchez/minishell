@@ -8,23 +8,23 @@
  */
 bool	ft_get_path(t_cmds_all *cmds, t_env *env)
 {
-	int		pos;
+	int		pos_cmd;
 
-    pos = -1;
-	while (++pos != cmds->n_cmds)
+    pos_cmd = -1;
+	while (++pos_cmd != cmds->n_cmds)
 	{
-        cmds->cmds[pos].bin_path = ft_bin_path(&cmds->cmds[pos], env);
-		if (!ft_checkparent(&cmds->cmds[pos]))
+        cmds->cmds[pos_cmd].bin_path = ft_bin_path(&cmds->cmds[pos_cmd], env);
+		if (!ft_checkparent(&cmds->cmds[pos_cmd]))
 		{
-			if (pos == cmds->n_cmds - 1)
-				return (ft_final_cmd(cmds, pos, cmds->n_cmds, env));
+			if (pos_cmd == cmds->n_cmds - 1)
+				return (ft_final_cmd(cmds, pos_cmd, cmds->n_cmds, env));
 			continue ;
 		}
-		if (cmds->cmds[pos].bin_path == NULL)
+		if (cmds->cmds[pos_cmd].bin_path == NULL)
 		{
-			if (ft_check_if_is_accesible(cmds, pos))
+			if (ft_check_access(cmds, pos_cmd))
 				continue ;
-			printf("%s %s %s", "Minishell :", cmds->cmds[pos].cmd[0],
+			printf("%s %s %s", "Minishell :", cmds->cmds[pos_cmd].cmd[0],
                    ": cmd not found\n");
 			g_exit_status = 127;
 			ft_free_commands(cmds);
@@ -63,7 +63,7 @@ static void ft_init_path(t_cmd *cmd, t_env *env)
 
     cmd->path = ft_rewrite_path(env);
     cmd->absolute = false;
-	string_to_lower(cmd->cmd[0]);
+    ft_strtolower(cmd->cmd[0]);
 	i = -1;
 	while (cmd->cmd[++i])
 		ft_trim_algorithm(cmd, i);

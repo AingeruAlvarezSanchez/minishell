@@ -1,16 +1,23 @@
 #include "../../include/minishell.h"
 
-static char	*ft_check_value(t_env *msh, char *find, char *tmp)
+/**
+ *
+ * @param env
+ * @param find
+ * @param tmp
+ * @return
+ */
+static char	*ft_check_value(t_env *env, char *find, char *tmp)
 {
 	int	i;
 
 	i = -1;
-	while (msh->env[++i])
+	while (env->env[++i])
 	{
-		if (!ft_strncmp(msh->env[i], find, ft_strlen(find)))
+		if (!ft_strncmp(env->env[i], find, ft_strlen(find)))
 		{
-			tmp = ft_substr(msh->env[i], ft_strlen(find),
-                            (ft_strlen(msh->env[i]) - ft_strlen(find)));
+			tmp = ft_substr(env->env[i], ft_strlen(find),
+                            (ft_strlen(env->env[i]) - ft_strlen(find)));
 			free(find);
 			return (tmp);
 		}

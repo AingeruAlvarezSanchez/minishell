@@ -111,15 +111,15 @@ static void	ft_export(char *var, t_env *env)
  * -Checks if export has arguments
  * @param cmd struct with command
  * @param env struct with environment
- * @param n_cmds number of commands
- * @param pos_cmd actual command
+ * @param pos_cmd number of commands
+ * @param n_cmds actual command
  * @return
  */
-int	ft_export_check(t_cmd *cmd, t_env *env, int n_cmds, int pos_cmd)
+int	ft_export_check(t_cmd *cmd, t_env *env, int pos_cmd, int n_cmds)
 {
 	int	pos;
 
-	if (n_cmds != pos_cmd - 1)
+	if (pos_cmd != n_cmds - 1)
 		return (1);
 	if (cmd->cmd[1])
 	{

@@ -81,7 +81,7 @@ void	ft_free_commands(t_cmds_all *table)
 		table->cmds[i].cmd = NULL;
 		if (table->cmds[i].bin_path)
 		{
-			free(table->cmds[i].bin_path);//TODO:si metes el espacio raro lo que peta es esto de aqui
+			free(table->cmds[i].bin_path);
 		}
 		table->cmds[i].bin_path = NULL;
 	}
@@ -90,14 +90,14 @@ void	ft_free_commands(t_cmds_all *table)
 	free(table->cmds);
 }
 
-bool	ft_check_errors(char *str)
+bool	ft_check_errors(char *prompt)
 {
-	str = added_pipe(str);
-	if (str == NULL || !(ft_strlen(str) > 0))//TODO: WTF
+    prompt = ft_pipe_add(prompt);
+	if (prompt == NULL || !(ft_strlen(prompt) > 0))//TODO: WTF
 	{
         ft_print_err(11);
-		if (str)
-			free(str);
+		if (prompt)
+			free(prompt);
 		return (1);
 	}	
 	return (0);

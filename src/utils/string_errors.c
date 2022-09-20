@@ -1,61 +1,59 @@
 #include "../../include/minishell.h"
 
-bool	check_if_empty_command(char *str)
+static int	ft_get_pos(int pos, char *raw_cmd)
 {
 	int	i;
-	int	length;
-	int	u;
 
-	i = 0;
-	u = 0;
-	if (!str)
-		return (true);
-	length = ft_strlen(str);
-	while (str[i])
+	while (++pos < ft_strlen(raw_cmd))
 	{
-		if (str[i] <= 32)
-			u++;
-		i++;
-	}
-	if (u == length)
-		return (true);
-	return (false);
-}
-
-static int	get_position(int i, char *raw_cmd)
-{
-	int	x;
-
-	while (++i < ft_strlen(raw_cmd))
-	{
-		if (raw_cmd[i] == '\'' || raw_cmd[i] == '"')
+		if (raw_cmd[pos] == '\'' || raw_cmd[pos] == '"')
 		{
-			x = i + 1;
-			while (raw_cmd[x])
+            i = pos + 1;
+			while (raw_cmd[i])
 			{
-				if (raw_cmd[x] == raw_cmd[i])
+				if (raw_cmd[i] == raw_cmd[pos])
 				{
-					i = x;
+                    pos = i;
 					break ;
 				}
-				x++;
+				i++;
 			}
-			if (i == x)
+			if (pos == i)
 				continue ;
-			return (true);
+			return (1);
 		}
 	}
-	return (false);
+	return (0);
 }
 
 int	ft_process_quotes(char *raw_cmd)
-{	
-	int		i;
+{
+	int		pos;
 
-	i = -1;
+    pos = -1;
 	if (!raw_cmd)
         raw_cmd = NULL;
-	if (get_position(i, raw_cmd))
-		return (true);
-	return (false);
+	if (ft_get_pos(pos, raw_cmd))
+		return (1);
+	return (0);
+}
+
+bool	ft_check_null_cmd(char *cmd)
+{
+    int	i;
+    int	c;
+
+    c = 0;
+    i = 0;
+    if (!cmd)
+        return (1);
+    while (cmd[c])
+    {
+        if (cmd[c] <= 32)
+            i++;
+        c++;
+    }
+    if (i == ft_strlen(cmd))
+        return (1);
+    return (0);
 }
