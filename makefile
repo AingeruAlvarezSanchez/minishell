@@ -11,31 +11,26 @@ OBJS			= $(SRCS:.c=.o)
 all: $(NAME)
 
 SRCS			= src/main.c									\
-				src/env/environment.c							\
-				src/parse/parser.c								\
-				src/utils/error.c								\
-				src/utils/string_errors.c						\
+				src/exec/parser.c								\
+				src/utils/errors.c								\
+				src/utils/utils2.c								\
 				src/utils/utils.c								\
-				src/utils/free_things.c							\
+				src/utils/frees.c								\
 				src/builtins/unset.c							\
 				src/builtins/export.c							\
 				src/builtins/export_uninit.c					\
 				src/builtins/echo.c								\
 				src/builtins/cd.c								\
-				src/builtins/cd_utils.c							\
 				src/builtins/pwd.c								\
 				src/builtins/env.c								\
 				src/builtins/exit.c								\
-				src/builtins/check_builtins.c					\
+				src/builtins/builtins.c							\
 				src/exec/execute.c								\
-				src/exec/binary_manage.c						\
-				src/exec/binary_manage_utils.c					\
+				src/exec/binary.c								\
 				src/signals/signals.c							\
-				src/specials/redir.c							\
-				src/specials/pipes.c							\
-				src/specials/quotes.c							\
+				src/specials/specials.c							\
 				src/specials/dollars.c							\
-                src/specials/dollar_value.c						\
+                src/specials/dollar_val.c						\
 
 $(NAME) : $(OBJS)
 	@echo "Compiling"

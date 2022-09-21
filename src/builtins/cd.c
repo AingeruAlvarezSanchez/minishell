@@ -54,12 +54,12 @@ static char	*ft_init_home(t_env *env)
  */
 void	ft_oldpwd(t_env *env)
 {
-	int		i;
-	int		u;
 	char	**nw_env;
+	int		u;
+	int		i;
 
-	i = -1;
     u = 0;
+	i = -1;
     nw_env = ft_doublestrdup(env->env);
 	ft_doublefree(env->env);
     env->env = (char **)malloc(sizeof(char *)
@@ -80,32 +80,32 @@ void	ft_oldpwd(t_env *env)
  * @param env struct with environment
  * @return true if accesible
  */
-bool	cd_extension(t_cmd *cmd, t_env *env)
+bool	ft_cd(t_cmd *cmd, t_env *env)
 {
     ft_save_oldpwd(env, cmd->cmd[1]);
 	if (chdir(cmd->cmd[1]) == -1)
 	{
 		printf("cd: %s: No such file or directory\n", cmd->cmd[1]);
-		g_exit_status = 1;
+        g_exit = 1;
 		free(env->oldpwd);
-		return (true);
+		return (1);
 	}
     ft_rewrite_pwd(env);
-	return (false);
+	return (0);
 }
 
 /**
  * @param cmd struct with commands
  * @param env struct with environment
  * @param pos_cmd command position
- * @return true if first command
+ * @return 1 if first command
  */
 bool	ft_home_cd(t_cmd *cmd, t_env *env, int pos_cmd)
 {
 	char	*route;
 
 	if (pos_cmd != 1)
-		return (true);
+		return (1);
 	if (!cmd->cmd[1] || cmd->cmd[1][0] == '~')
 	{
         route = ft_init_home(env);
@@ -115,12 +115,12 @@ bool	ft_home_cd(t_cmd *cmd, t_env *env, int pos_cmd)
 		free(route);
 	}
 	else if (cmd->cmd[1][0] == '-')
-		ft_previous_dir(env);
+        ft_last_dir(env);
 	else
-		if (cd_extension(cmd, env))
+		if (ft_cd(cmd, env))
 			return (false);
 	free(env->oldpwd);
 	free(env->pwd);
-	g_exit_status = 0;
+    g_exit = 0;
 	return (false);
 }

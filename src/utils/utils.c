@@ -1,6 +1,18 @@
 #include "../../include/minishell.h"
 
-bool	str_contains(const char *cmd, char *str)
+void	ft_strtolower(char *str)
+{
+    int		i;
+
+    i = 0;
+    while (str && str[i])
+    {
+        str[i] = (char)ft_tolower(str[i]);
+        i++;
+    }
+}
+
+bool	ft_str_contains(const char *cmd, char *str)
 {
 	int	i;
 	int	u;
@@ -24,8 +36,7 @@ bool	str_contains(const char *cmd, char *str)
 	return (false);
 }
 
-
-bool	ft_str_has(char *command, char *str)
+bool	ft_str_has(char *cmd, char *str)
 {
     int	i;
     int	u;
@@ -34,13 +45,13 @@ bool	ft_str_has(char *command, char *str)
 
     i = 0;
     u = 0;
-    if (!str || !command)
+    if (!str || !cmd)
         return (false);
     maxlength = ft_strlen(str);
-    mlength = ft_strlen(command);
-    while (command[i])
+    mlength = ft_strlen(cmd);
+    while (cmd[i])
     {
-        if (command[i] == str[u])
+        if (cmd[i] == str[u])
         {
             u++;
             if (u == maxlength && mlength == maxlength)
@@ -53,17 +64,27 @@ bool	ft_str_has(char *command, char *str)
     return (false);
 }
 
-
-void	string_to_lower(char *pnt)
+char	*ft_cpy_path(t_cmd *cmd, int pos)
 {
-	int		i;
-	char	c;
+    char	*path;
 
-	i = 0;
-	while (pnt && pnt[i])
-	{
-        c = ft_tolower(pnt[i]);
-		pnt[i] = c;
-		i++;
-	}
+    path = ft_strdup(cmd->path[pos]);
+    ft_doublefree(cmd->path);
+    return (path);
+}
+
+/**
+ *
+ * @param cmds struct with commands
+ * @param pos_cmd actual position of command
+ * @param n_cmd number of commands in prompt
+ * @param env struct with environment
+ * @return 1
+ */
+bool	ft_final_cmd(t_cmds_all *cmds, int pos_cmd, int n_cmd, t_env *env)
+{
+    ft_is_exit(cmds, pos_cmd, n_cmd);
+    ft_parent_builtin(&cmds->cmds[pos_cmd], env, n_cmd, pos_cmd);
+    ft_free_commands(cmds);
+    return (1);
 }

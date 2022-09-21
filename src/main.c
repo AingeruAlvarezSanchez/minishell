@@ -13,46 +13,46 @@
 #include "../include/minishell.h"
 #include <termios.h>
 
-int	lexer(t_cmds_all *cmds, t_env *msh)
+static int	ft_check_special(t_cmds_all *cmds, t_env *env)
 {
-	int	i;
+	int	y;
 	int	x;
 
-	i = -1;
-	while (++i < cmds->n_cmds)
+    y = -1;
+	while (++y < cmds->n_cmds)
 	{
 		x = 0;
-		while (cmds->cmds[i].cmd[x])
+		while (cmds->cmds[y].cmd[x])
 		{
-			if (ft_check_dollars(cmds, i, x, msh))
+			if (ft_check_dollars(cmds, y, x, env))
 			{
 				x = 0;
 				continue ;
 			}
 			x++;
 		}
-		if (ft_has_redir(cmds->cmds[i].cmd[x]))
+		if (ft_has_redir(cmds->cmds[y].cmd[x]))
 			return (10);
 	}
 	return (1);
 }
 
-bool	ft_start_program(char *prompt, t_cmds_all *cmds, t_env *env)
+static bool	ft_start(char *prompt, t_cmds_all *cmds, t_env *env)
 {
 	if (ft_check_errors(prompt))
 		return (1);
 	if (!ft_print_err(ft_parser(prompt, cmds)))
 	{
-		if (!ft_print_err(lexer(cmds, env)))
+		if (!ft_print_err(ft_check_special(cmds, env)))
 		{
-			execute(cmds, env);
+            ft_exec(cmds, env);
 			return (0);
 		}
 	}
 	return (1);
 }
 
-bool	ft_readline(t_env *env, t_cmds_all *cmds, char *prompt)
+bool	ft_term(t_env *env, t_cmds_all *cmds, char *prompt)
 {
 	struct termios	termios;
 	struct termios	last;
@@ -62,7 +62,7 @@ bool	ft_readline(t_env *env, t_cmds_all *cmds, char *prompt)
     termios.c_lflag &= ~(ECHOCTL | ICANON);
 	if (ft_strlen(prompt) > 0)
 	{
-		if (ft_start_program(prompt, cmds, env))
+		if (ft_start(prompt, cmds, env))
 			return (1);
 	}
 	tcsetattr(STDIN_FILENO, TCSANOW, &last);
@@ -80,13 +80,13 @@ int	main(int argc, char **argv, char **environ)
 
     env.env = ft_dup_env(environ);
     env.exp = ft_doublestrdup(env.env);
-	g_exit_status = 0;
+    g_exit = 0;
 	while (1 && argv && argc)
 	{
 		ft_signals();
         prompt = readline("Ejemplo₺ ");
 		if (!prompt)
-			ft_signal_exit();
+            ft_sig_exit();
 		if (!prompt[0])
 		{
 			free(prompt);
@@ -95,7 +95,7 @@ int	main(int argc, char **argv, char **environ)
         aux = ft_strtrim(prompt, " ");
 		free(prompt);
 		add_history(aux);
-		if (ft_readline(&env, &cmds, aux))
+		if (ft_term(&env, &cmds, aux))
 		{
 			free(aux);
 			continue ;

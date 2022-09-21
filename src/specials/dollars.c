@@ -1,92 +1,121 @@
 #include "../../include/minishell.h"
 
-static void	ft_has_beg(t_dollars *dollars, t_cmd *cm, int an, int x)
+/**
+ * @param cmd struct with command
+ * @param dollar struct with dollar data
+ * @param x variable pos
+ * @param ref reference position
+ */
+static void	ft_has_beg(t_dollar *dollar, t_cmd *cmd, int x, int xref)
 {
-	if (dollars->value)
-		ft_valuebeg(dollars, cm, an, x);
-	else if (x < ft_strlen(cm->cmd[an]) || cm->cmd[an][x - 1] == '"')
-		dollars->result = ft_strjoin(dollars->beg, dollars->final);
+	if (dollar->val)
+		ft_valuebeg(dollar, cmd, x, xref);
+	else if (xref < ft_strlen(cmd->cmd[x]) || cmd->cmd[x][xref - 1] == '"')
+        dollar->result = ft_strjoin(dollar->pre, dollar->final);
 	else
-		dollars->result = ft_strjoin(dollars->beg, "");
+        dollar->result = ft_strjoin(dollar->pre, "");
 }
 
-static void	ft_new_com(t_dollars *dollars, t_cmd *com, int a_n, int xref)
+/**
+ * @param cmd struct with command
+ * @param dollar struct with dollar data
+ * @param x variable pos
+ * @param ref reference position
+ */
+static void	ft_new_com(t_dollar *dollar, t_cmd *cmd, int x, int xref)
 {
-	if (dollars->beg[0])
-		ft_has_beg(dollars, com, a_n, xref);
+	if (dollar->pre[0])
+		ft_has_beg(dollar, cmd, x, xref);
 	else
 	{
-		if (dollars->value)
+		if (dollar->val)
 		{
-			free(dollars->beg);
-			dollars->beg = ft_strdup(dollars->value);
-			if (xref < ft_strlen(com->cmd[a_n]))
-				dollars->result = ft_strjoin(dollars->beg, dollars->final);
+			free(dollar->pre);
+            dollar->pre = ft_strdup(dollar->val);
+			if (xref < ft_strlen(cmd->cmd[x]))
+                dollar->result = ft_strjoin(dollar->pre, dollar->final);
 			else
-				dollars->result = ft_strdup(dollars->beg);
+                dollar->result = ft_strdup(dollar->pre);
 		}
-		else if (dollars->final != NULL)
-			dollars->result = ft_strjoin("", dollars->final);
+		else if (dollar->final != NULL)
+            dollar->result = ft_strjoin("", dollar->final);
 	}
-	free(com->cmd[a_n]);
-	com->cmd[a_n] = ft_strdup(dollars->result);
+	free(cmd->cmd[x]);
+    cmd->cmd[x] = ft_strdup(dollar->result);
 }
 
-void	ft_check_exceptions(t_cmd *com, t_dollars *d, int a_n, int xref)
+/**
+ * @param cmd struct with command
+ * @param dollar struct with dollar data
+ * @param x variable pos
+ * @param ref reference position
+ */
+void	ft_check_exceptions(t_cmd *cmd, t_dollar *dollar, int x, int xref)
 {
-	if (ft_check_char(com, a_n, xref, "$?@/:")
-		&& (com->cmd[a_n][xref - 1] == '$'))
-		d->final = ft_substr(com->cmd[a_n], (xref + 1),
-                             (ft_strlen(com->cmd[a_n]) - (xref + 1)));
+	if (ft_check_char(cmd, x, xref, "$?@/:")
+		&& (cmd->cmd[x][xref - 1] == '$'))
+        dollar->final = ft_substr(cmd->cmd[x], (xref + 1),
+                                  (ft_strlen(cmd->cmd[x]) - (xref + 1)));
 	else
-		d->final = ft_substr(com->cmd[a_n], xref,
-                             (ft_strlen(com->cmd[a_n]) - xref));
+        dollar->final = ft_substr(cmd->cmd[x], xref,
+                                  (ft_strlen(cmd->cmd[x]) - xref));
 }
 
-void	ft_dollar_expansion(t_cmd *com, t_env *msh, int a_n, int xref)
+/**
+ * @param cmd struct with command
+ * @param env struct with environment
+ * @param x variable pos
+ * @param xref reference position
+ */
+void	ft_dollar_expansion(t_cmd *cmd, t_env *env, int x, int xref)
 {
-	t_dollars	dollars;
+	t_dollar	dollar;
 
-	dollars.value = ft_dollar_value(com, msh, a_n, xref);
-	dollars.beg = ft_substr(com->cmd[a_n], 0, xref);
+    dollar.val = ft_dollar_value(cmd, env, x, xref);
+    dollar.pre = ft_substr(cmd->cmd[x], 0, xref);
 	xref++;
-	if (com->cmd[a_n][xref] != '$')
+	if (cmd->cmd[x][xref] != '$')
 	{
-		while (com->cmd[a_n][xref] &&
-               !ft_check_char(com, a_n, xref, " \'$?@/:"))
+		while (cmd->cmd[x][xref] &&
+               !ft_check_char(cmd, x, xref, " \'$?@/:"))
 			xref++;
 	}
 	else
 		xref++;
-	if (xref < ft_strlen(com->cmd[a_n])
-		|| com->cmd[a_n][xref - 1] == '"')
+	if (xref < ft_strlen(cmd->cmd[x])
+        || cmd->cmd[x][xref - 1] == '"')
 	{
-		if (xref < ft_strlen(com->cmd[a_n]))
-			ft_check_exceptions(com, &dollars, a_n, xref);
-		else if (com->cmd[a_n][xref - 1] == '"')
-			dollars.final = ft_strdup("\"");
+		if (xref < ft_strlen(cmd->cmd[x]))
+			ft_check_exceptions(cmd, &dollar, x, xref);
+		else if (cmd->cmd[x][xref - 1] == '"')
+            dollar.final = ft_strdup("\"");
 	}
 	else
-		dollars.final = ft_strdup("");
-	ft_new_com(&dollars, com, a_n, xref);
-    ft_struct_free(&dollars);
+        dollar.final = ft_strdup("");
+	ft_new_com(&dollar, cmd, x, xref);
+    ft_struct_free(&dollar);
 }
 
-bool	ft_check_dollars(t_cmds_all *table, int i, int x, t_env *msh)
+/**
+ *
+ * @param cmds struct with commands
+ * @param y command pos
+ * @param x variable pos
+ * @param env struct with environment
+ * @return 1 if dollar
+ */
+bool	ft_check_dollars(t_cmds_all *cmds, int y, int x, t_env *env)
 {
-	int	len;
-
-	len = ft_strlen(table->cmds[i].cmd[x]) - 1;
-	if (ft_strchr_pos(table->cmds[i].cmd[x], '$') >= 0
-			&& !ft_single_dollar(&table->cmds[i], x,
-                                 ft_strchr_pos(table->cmds[i].cmd[x], '$')))
+	if (ft_strchr_pos(cmds->cmds[y].cmd[x], '$') >= 0
+			&& !ft_single_dollar(&cmds->cmds[y], x,
+                                 ft_strchr_pos(cmds->cmds[y].cmd[x], '$')))
 	{
-		if (table->cmds[i].cmd[x][0] == '\''
-			&& table->cmds[i].cmd[x][len] == '\'')
-			return (false);
-		ft_dollar_expansion(&table->cmds[i], msh,
-                            x, ft_strchr_pos(table->cmds[i].cmd[x], '$'));
-		return (true);
+		if (cmds->cmds[y].cmd[x][0] == '\''
+            && cmds->cmds[y].cmd[x][ft_strlen(cmds->cmds[y].cmd[x]) - 1] == '\'')
+			return (0);
+		ft_dollar_expansion(&cmds->cmds[y], env,
+                            x, ft_strchr_pos(cmds->cmds[y].cmd[x], '$'));
+		return (1);
 	}
-	return (false);
+	return (0);
 }

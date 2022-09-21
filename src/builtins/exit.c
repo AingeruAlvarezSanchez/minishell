@@ -29,7 +29,7 @@ static void	ft_exit_with_arg(t_cmds_all *cmds, int pos_cmd, int n_cmds)
 			printf("Ejemplo₺ : %s %s\n",
                    cmds->cmds[pos_cmd].cmd[1],
                    ": numeric argument required");
-			g_exit_status = 1;
+            g_exit = 1;
 			if (n_cmds == 1)
 			{
 				ft_free_commands(cmds);
@@ -38,7 +38,7 @@ static void	ft_exit_with_arg(t_cmds_all *cmds, int pos_cmd, int n_cmds)
 		}
 		c++;
 	}
-	g_exit_status = ft_atoi(cmds->cmds[pos_cmd].cmd[1]);
+    g_exit = ft_atoi(cmds->cmds[pos_cmd].cmd[1]);
 	if (n_cmds == 1)
 		exit(ft_atoi(cmds->cmds[pos_cmd].cmd[1]));
 }
@@ -64,7 +64,7 @@ int	ft_exit(t_cmds_all *cmds, int pos_cmd, int n_cmds)
 	if (pos > 2)
 	{
 		printf("Ejemplo₺ : Too many arguments\n");
-		g_exit_status = 1;
+        g_exit = 1;
 		return (0);
 	}
 	if (cmds->cmds[pos_cmd].cmd[1])
@@ -72,7 +72,7 @@ int	ft_exit(t_cmds_all *cmds, int pos_cmd, int n_cmds)
 	if (n_cmds == 1)
 	{
 		ft_free_commands(cmds);
-		g_exit_status = 0;
+        g_exit = 0;
 		exit(0);
 	}
 	return (0);
