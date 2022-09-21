@@ -31,7 +31,7 @@ static void	ft_dupto_son(int pos_cmd, t_cmds_all *cmds)
 		close(cmds->pipes[1]);
 	}
 	else if (pos_cmd == cmds->n_cmds - 1)
-        ft_last_cmd(cmds);
+		ft_last_cmd(cmds);
 	else
 	{
 		dup2(cmds->sngl_pipe, 0);

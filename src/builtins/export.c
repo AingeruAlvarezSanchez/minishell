@@ -80,7 +80,8 @@ bool	ft_check_variable(const char *var)
 	return (1);
 }
 
-/** @brief check if var has = to add in export_env or in enviroment
+/**
+  * @brief check if var has = to add in export_env or in enviroment
   * @param var is the name of exported variable
   * @param env struct with environment
   */
