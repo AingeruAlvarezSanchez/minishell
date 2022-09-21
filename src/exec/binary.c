@@ -37,7 +37,7 @@ bool	ft_get_path(t_cmds_all *cmds, t_env *env)
 			if (ft_check_access(cmds, pos_cmd))
 				continue ;
 			printf("%s %s %s", "Minishell:", cmds->cmds[pos_cmd].cmd[0],
-				":cmd not found\n");
+				":command not found\n");
 			g_exit = 127;
 			ft_free_commands(cmds);
 			return (1);

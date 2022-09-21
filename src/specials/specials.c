@@ -52,7 +52,7 @@ char	**ft_not_prev(char *tmp, int i, int f, t_cmd *command)
 	result = (char **)malloc(sizeof(char *) * 3);
 	result[0] = ft_strdup(tmp);
 	result[1] = ft_substr(command->cmd[i], (f + 1),
-                          ft_strlen(command->cmd[i]) - (f + 1));
+			ft_strlen(command->cmd[i]) - (f + 1));
 	result[2] = 0;
 	free(command->cmd[i]);
 	if (!result[0][0] && !result[1][0])
@@ -77,7 +77,7 @@ void	ft_quotetrim(t_cmd *cmd, int i, int final, int j)
 		str[1] = ft_strdup(tmp);
 		free(tmp);
 		str[2] = ft_substr(cmd->cmd[i], (final + 1),
-			ft_strlen(cmd->cmd[i]) - (final + 1));
+				ft_strlen(cmd->cmd[i]) - (final + 1));
 		str[3] = 0;
 		tmp = ft_strjoin(str[0], str[1]);
 		free(cmd->cmd[i]);

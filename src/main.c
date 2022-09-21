@@ -71,11 +71,25 @@ bool	ft_term(t_env *env, t_cmds_all *cmds, char *prompt)
 	return (0);
 }
 
-int	main (int argc, char **argv, char **environ)
+int	main2(t_env *env, char *prompt)
 {
 	char			*aux;
-	char			*prompt;
 	t_cmds_all		cmds;
+
+	aux = ft_strtrim(prompt, " ");
+	free(prompt);
+	add_history(aux);
+	if (ft_term(env, &cmds, aux))
+	{
+		return (1);
+		free(aux);
+	}
+	return (0);
+}
+
+int	main(int argc, char **argv, char **environ)
+{
+	char			*prompt;
 	t_env			env;
 
 	env.env = ft_dup_env(environ);
@@ -92,14 +106,8 @@ int	main (int argc, char **argv, char **environ)
 			free(prompt);
 			continue ;
 		}
-		aux = ft_strtrim(prompt, " ");
-		free(prompt);
-		add_history(aux);
-		if (ft_term(&env, &cmds, aux))
-		{
-			free(aux);
+		if (main2(&env, prompt))
 			continue ;
-		}
 	}
 	return (0);
 }

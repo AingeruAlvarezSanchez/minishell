@@ -118,4 +118,3 @@ bool	ft_check_null_cmd(char *cmd)
 		return (1);
 	return (0);
 }
-
