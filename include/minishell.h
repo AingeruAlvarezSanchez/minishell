@@ -40,7 +40,7 @@ typedef struct s_cmd
 
 typedef struct s_cmds_all
 {
-	t_cmd	    *cmds;
+	t_cmd		*cmds;
 	int			*pipes;
 	int			sngl_pipe;
 	int			n_cmds;
@@ -62,6 +62,8 @@ typedef struct s_env
 	char	**env;
 }	t_env;
 
+void	rl_replace_line(const char *text, int clear_undo);
+
 /*BUILTINS*/
 bool	ft_home_cd(t_cmd *cmd, t_env *env, int pos_cmd);
 bool	ft_cd(t_cmd *cmd, t_env *env);
@@ -77,7 +79,6 @@ bool	ft_already_in(char *var, char **cpy_env);
 int		ft_parent_builtin(t_cmd *cmd, t_env *env, int n_cmds, int pos_cmd);
 int		ft_checkparent(t_cmd *cmd);
 bool	ft_child_builtin(t_cmd *cmd, t_env *env);
-//void	rl_replace_line(const char *text, int clear_undo);
 void	ft_rewrite_pwd(t_env *env);
 void	ft_last_dir(t_env *env);
 void	ft_oldpwd(t_env *env);
