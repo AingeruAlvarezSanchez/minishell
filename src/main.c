@@ -21,15 +21,14 @@ static int	ft_check_special(t_cmds_all *cmds, t_env *env)
 	y = -1;
 	while (++y < cmds->n_cmds)
 	{
-		x = 0;
-		while (cmds->cmds[y].cmd[x])
+		x = -1;
+		while (cmds->cmds[y].cmd[++x])
 		{
 			if (ft_check_dollars(cmds, y, x, env))
 			{
-				x = 0;
+				x = -1;
 				continue ;
 			}
-			x++;
 		}
 		if (ft_has_redir(cmds->cmds[y].cmd[x]))
 			return (10);

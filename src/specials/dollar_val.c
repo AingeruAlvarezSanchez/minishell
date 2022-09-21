@@ -94,7 +94,9 @@ char	*ft_dollar_value(t_cmd *cmd, t_env *env, int x, int xref)
  */
 int	ft_single_dollar(t_cmd *cmd, int x, int c)
 {
-	if (!cmd->cmd[x][c + 1] && !ft_check_char(cmd, x, c + 1, " \"\'"))
+	if (!cmd->cmd[x][c + 1])
+		return (0);
+	if (!ft_check_char(cmd, x, c + 1, " \"\'"))
 		return (1);
 	return (0);
 }

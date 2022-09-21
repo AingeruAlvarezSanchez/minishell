@@ -23,7 +23,7 @@ bool	ft_already_in(char *var, char **cpy_env)
 	char	*target;
 
 	i = 0;
-	while (var[i] != '=' && var[i] !=0)
+	while (var[i] != '=' && var[i] != 0)
 		i++;
 	target = ft_substr(var, 0, (i + 1));
 	while (cpy_env[++i])

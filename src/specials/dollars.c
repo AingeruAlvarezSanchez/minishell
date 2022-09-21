@@ -119,7 +119,7 @@ void	ft_dollar_expansion(t_cmd *cmd, t_env *env, int x, int xref)
 bool	ft_check_dollars(t_cmds_all *cmds, int y, int x, t_env *env)
 {
 	if (ft_strchr_pos(cmds->cmds[y].cmd[x], '$') >= 0
-		&& !ft_single_dollar(&cmds->cmds[y], x,
+		&& ft_single_dollar(&cmds->cmds[y], x,
 			ft_strchr_pos(cmds->cmds[y].cmd[x], '$')))
 	{
 		if (cmds->cmds[y].cmd[x][0] == '\'' &&
