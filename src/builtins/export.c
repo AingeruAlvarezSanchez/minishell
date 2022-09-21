@@ -93,14 +93,19 @@ static void	ft_export(char *var, t_env *env)
 	if (ft_check_variable(var))
 	{
 		tmp = ft_doublestrdup(env->exp);
-		ft_doublefree(env->exp);
-		i = -1;
-		env->exp = (char **)malloc(sizeof(char *)
-				* (ft_doublestrlen(tmp) + 2));
-		while (tmp[++i])
-			env->exp[i] = ft_strdup(tmp[i]);
-		env->exp[i] = ft_strdup(var);
-		env->exp[i + 1] = 0;
+		if (!ft_already_in(var, tmp))
+		{
+			ft_doublefree(env->exp);
+			i = -1;
+			env->exp = (char **)malloc(sizeof(char *)
+					* (ft_doublestrlen(tmp) + 2));
+			while (tmp[++i])
+				env->exp[i] = ft_strdup(tmp[i]);
+			env->exp[i] = ft_strdup(var);
+			env->exp[i + 1] = 0;
+			ft_doublefree(tmp);
+			return ;
+		}
 		ft_doublefree(tmp);
 		return ;
 	}

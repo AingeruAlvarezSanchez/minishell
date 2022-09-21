@@ -23,7 +23,7 @@ bool	ft_already_in(char *var, char **cpy_env)
 	char	*target;
 
 	i = 0;
-	while (var[i] != '=')
+	while (var[i] != '=' && var[i] !=0)
 		i++;
 	target = ft_substr(var, 0, (i + 1));
 	while (cpy_env[++i])
@@ -52,7 +52,6 @@ bool	ft_already_exp(char *var, char **cpy_env)
 	while (var[i] != '=')
 		i++;
 	target = ft_substr(var, 0, (i));
-	printf("var: %s\n", var);
 	while (cpy_env[++i])
 	{
 		if (!ft_strncmp(cpy_env[i], target, ft_strlen(target)))
@@ -111,7 +110,6 @@ void	ft_create_exp_var(char *var, t_env *env)
 		ft_replace_exp(var, env, cpy_env);
 	else
 	{
-		printf("case 1\n");
 		env->exp = (char **)malloc(sizeof(char *)
 				* (ft_doublestrlen(cpy_env) + 2));
 		while (cpy_env[++i])
