@@ -123,6 +123,6 @@ bool	ft_check_unset(t_cmd *cmd, t_env *env, int pos_cmd, int n_cmds)
             }
 		}
 	}
-	g_exit_status = 0;
+    g_exit = 0;
 	return (0);
 }

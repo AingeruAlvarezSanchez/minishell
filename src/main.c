@@ -13,7 +13,7 @@
 #include "../include/minishell.h"
 #include <termios.h>
 
-int	ft_check_special(t_cmds_all *cmds, t_env *env)
+static int	ft_check_special(t_cmds_all *cmds, t_env *env)
 {
 	int	y;
 	int	x;
@@ -37,7 +37,7 @@ int	ft_check_special(t_cmds_all *cmds, t_env *env)
 	return (1);
 }
 
-static bool	ft_start_program(char *prompt, t_cmds_all *cmds, t_env *env)
+static bool	ft_start(char *prompt, t_cmds_all *cmds, t_env *env)
 {
 	if (ft_check_errors(prompt))
 		return (1);
@@ -61,7 +61,7 @@ static bool	ft_termios(t_env *env, t_cmds_all *cmds, char *prompt)
 	tcgetattr(STDIN_FILENO, &term);
     term.c_lflag &= ~(ECHOCTL | ICANON);
 	if (ft_strlen(prompt) > 0)
-		if (ft_start_program(prompt, cmds, env))
+		if (ft_start(prompt, cmds, env))
 			return (1);
 	tcsetattr(STDIN_FILENO, TCSANOW, &last);
 	if (prompt != NULL)
@@ -78,13 +78,13 @@ int	main(int argc, char **argv, char **environ)
 
     env.env = ft_dup_env(environ);
     env.exp = ft_doublestrdup(env.env);
-	g_exit_status = 0;
+    g_exit = 0;
 	while (1 && argv && argc)
 	{
 		ft_signals();
         prompt = readline("Ejemplo₺ ");
 		if (!prompt)
-			ft_signal_exit();
+            ft_sig_exit();
 		if (!prompt[0])
 		{
 			free(prompt);

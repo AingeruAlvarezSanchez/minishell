@@ -3,7 +3,7 @@
 /**
 Control D out of cat
  */
-void	ft_signal_exit(void)
+void	ft_sig_exit(void)
 {
 	write(1, "exit\n", 5);
 	exit(0);
@@ -22,7 +22,7 @@ void	ft_interactive(int signal)
         printf ("\n");
 }
 
-void	ft_check_signal(void)
+void	ft_check_sig(void)
 {
 	signal(SIGINT, ft_interactive);
 	signal(SIGQUIT, ft_interactive);
@@ -31,7 +31,7 @@ void	ft_check_signal(void)
 /**
  * SIGINT = control C out of cat
  */
-void	signal_manager(int signal)
+void	ft_manage_sig(int signal)
 {
 	if (rl_on_new_line() == -1)
 		exit (-1);
@@ -45,6 +45,6 @@ void	signal_manager(int signal)
 
 void	ft_signals(void)
 {
-	signal(SIGINT, signal_manager);
+    signal(SIGINT, ft_manage_sig);
 	signal(SIGQUIT, SIG_IGN);
 }

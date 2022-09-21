@@ -13,20 +13,20 @@ bool	ft_get_path(t_cmds_all *cmds, t_env *env)
     pos_cmd = -1;
 	while (++pos_cmd != cmds->n_cmds)
 	{
-        cmds->cmds[pos_cmd].bin_path = ft_bin_path(&cmds->cmds[pos_cmd], env);
+        cmds->cmds[pos_cmd].bin_pth = ft_bin_path(&cmds->cmds[pos_cmd], env);
 		if (!ft_checkparent(&cmds->cmds[pos_cmd]))
 		{
 			if (pos_cmd == cmds->n_cmds - 1)
 				return (ft_final_cmd(cmds, pos_cmd, cmds->n_cmds, env));
 			continue ;
 		}
-		if (cmds->cmds[pos_cmd].bin_path == NULL)
+		if (cmds->cmds[pos_cmd].bin_pth == NULL)
 		{
 			if (ft_check_access(cmds, pos_cmd))
 				continue ;
 			printf("%s %s %s", "Minishell :", cmds->cmds[pos_cmd].cmd[0],
                    ": cmd not found\n");
-			g_exit_status = 127;
+            g_exit = 127;
 			ft_free_commands(cmds);
 			return (1);
 		}		
@@ -34,7 +34,7 @@ bool	ft_get_path(t_cmds_all *cmds, t_env *env)
 	return (0);
 }
 
-bool	ft_is_bin_path(const char *path, char *binary)
+bool	ft_check_path(const char *path, char *binary)
 {
 	DIR				*dp;
 	struct dirent	*dirp;
@@ -83,7 +83,7 @@ char	**ft_rewrite_path(t_env *env)
 	i = 0;
 	while (env->env && env->env[++i])
 	{
-		if (env->env[i] && str_contains(env->env[i], "PATH="))
+		if (env->env[i] && FT_str_contains(env->env[i], "PATH="))
 		{
             aux = ft_strdup(env->env[i]);
             aux2 = ft_split(aux, '=');
@@ -112,7 +112,7 @@ char	*ft_bin_path(t_cmd *cmd, t_env *env)
 	{
 		while (cmd->path[pos])
 		{
-			if (ft_is_bin_path(cmd->path[pos], cmd->cmd[0]))
+			if (ft_check_path(cmd->path[pos], cmd->cmd[0]))
 				return (ft_cpy_path(cmd, pos));
             cmd->path[pos] = NULL;
 			pos++;

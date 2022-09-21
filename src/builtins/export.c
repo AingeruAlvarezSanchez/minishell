@@ -141,6 +141,6 @@ int	ft_export_check(t_cmd *cmd, t_env *env, int pos_cmd, int n_cmds)
 		while (env->exp[++pos])
 			printf("declare -x %s\n", env->exp[pos]);
 	}
-	return (g_exit_status = 0, 0);
+	return (g_exit = 0, 0);
 }
 

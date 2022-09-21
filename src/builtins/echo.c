@@ -19,7 +19,7 @@ static void	ft_exec_echo(t_cmd *cmd, int n)
 				write(1, " ", 1);
 		}
 	}
-	g_exit_status = 0;
+    g_exit = 0;
 }
 
 /**

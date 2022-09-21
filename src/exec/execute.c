@@ -59,12 +59,12 @@ static void	ft_child_ex(t_env *env, t_cmds_all *cmds, int pos_cmd)
 	if (!ft_child_builtin(&cmds->cmds[pos_cmd], env))
 		exit(0);
 	if (cmds->cmds[pos_cmd].absolute)
-		execve(cmds->cmds[pos_cmd].bin_path,
+		execve(cmds->cmds[pos_cmd].bin_pth,
                cmds->cmds[pos_cmd].cmd, env->env);
     aux = ft_strjoin("/", cmds->cmds[pos_cmd].cmd[0]);
-    aux2 = ft_strjoin(cmds->cmds[pos_cmd].bin_path, aux);
+    aux2 = ft_strjoin(cmds->cmds[pos_cmd].bin_pth, aux);
 	if (!access(aux2, X_OK))
-		execve(ft_strjoin(cmds->cmds[pos_cmd].bin_path,
+		execve(ft_strjoin(cmds->cmds[pos_cmd].bin_pth,
                           ft_strjoin("/", cmds->cmds[pos_cmd].cmd[0])),
                cmds->cmds[pos_cmd].cmd, env->env);
 	perror(cmds->cmds[pos_cmd].cmd[0]);
@@ -82,7 +82,7 @@ void	ft_exec_proc(t_cmds_all *cmds, t_env *env, int pos_cmd)
 	int		status;
 	pid_t	pid;
 
-	ft_check_signal();
+    ft_check_sig();
 	pid = fork();
 	if (pid == 0)
         ft_child_ex(env, cmds, pos_cmd);
@@ -91,11 +91,11 @@ void	ft_exec_proc(t_cmds_all *cmds, t_env *env, int pos_cmd)
 		if (cmds->n_cmds > 1)
 			close(cmds->pipes[1]);
 		wait(&status);
-		g_exit_status = WEXITSTATUS(status);
+        g_exit = WEXITSTATUS(status);
 		if (WIFSIGNALED(status))
 		{
 			if (WTERMSIG(status))
-				g_exit_status = 128 + WTERMSIG(status);
+                g_exit = 128 + WTERMSIG(status);
 		}
 		if (cmds->n_cmds > 2)
 		{

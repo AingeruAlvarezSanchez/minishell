@@ -4,7 +4,7 @@ bool	ft_check_access(t_cmds_all *cmds, int pos_cmd)
 {
 	if (access(cmds->cmds[pos_cmd].cmd[0], X_OK) == 0)
 	{
-        cmds->cmds[pos_cmd].bin_path
+        cmds->cmds[pos_cmd].bin_pth
 			= ft_strdup(cmds->cmds[pos_cmd].cmd[0]);
         cmds->cmds[pos_cmd].absolute = true;
 		return (true);
@@ -31,10 +31,10 @@ void	ft_free_exec(t_cmds_all *cmds)
 /**
  * @brief free dollar struct
  */
-void	ft_struct_free(t_dollars *dollar)
+void	ft_struct_free(t_dollar *dollar)
 {
-	free(dollar->beg);
+	free(dollar->pre);
+	free(dollar->last);
+	free(dollar->val);
 	free(dollar->final);
-	free(dollar->value);
-	free(dollar->result);
 }
