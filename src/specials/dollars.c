@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dollars.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/21 19:43:59 by ecorreia          #+#    #+#             */
+/*   Updated: 2022/09/21 19:43:59 by ecorreia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 /**
@@ -11,9 +23,9 @@ static void	ft_has_beg(t_dollar *dollar, t_cmd *cmd, int x, int xref)
 	if (dollar->val)
 		ft_valuebeg(dollar, cmd, x, xref);
 	else if (xref < ft_strlen(cmd->cmd[x]) || cmd->cmd[x][xref - 1] == '"')
-        dollar->result = ft_strjoin(dollar->pre, dollar->final);
+		dollar->result = ft_strjoin(dollar->pre, dollar->final);
 	else
-        dollar->result = ft_strjoin(dollar->pre, "");
+	dollar->result = ft_strjoin(dollar->pre, "");
 }
 
 /**
@@ -31,17 +43,17 @@ static void	ft_new_com(t_dollar *dollar, t_cmd *cmd, int x, int xref)
 		if (dollar->val)
 		{
 			free(dollar->pre);
-            dollar->pre = ft_strdup(dollar->val);
+		dollar->pre = ft_strdup(dollar->val);
 			if (xref < ft_strlen(cmd->cmd[x]))
-                dollar->result = ft_strjoin(dollar->pre, dollar->final);
+			dollar->result = ft_strjoin(dollar->pre, dollar->final);
 			else
-                dollar->result = ft_strdup(dollar->pre);
+				dollar->result = ft_strdup(dollar->pre);
 		}
 		else if (dollar->final != NULL)
-            dollar->result = ft_strjoin("", dollar->final);
+			dollar->result = ft_strjoin("", dollar->final);
 	}
 	free(cmd->cmd[x]);
-    cmd->cmd[x] = ft_strdup(dollar->result);
+	cmd->cmd[x] = ft_strdup(dollar->result);
 }
 
 /**
@@ -54,11 +66,11 @@ void	ft_check_exceptions(t_cmd *cmd, t_dollar *dollar, int x, int xref)
 {
 	if (ft_check_char(cmd, x, xref, "$?@/:")
 		&& (cmd->cmd[x][xref - 1] == '$'))
-        dollar->final = ft_substr(cmd->cmd[x], (xref + 1),
-                                  (ft_strlen(cmd->cmd[x]) - (xref + 1)));
+		dollar->final = ft_substr(cmd->cmd[x], (xref + 1),
+				(ft_strlen(cmd->cmd[x]) - (xref + 1)));
 	else
-        dollar->final = ft_substr(cmd->cmd[x], xref,
-                                  (ft_strlen(cmd->cmd[x]) - xref));
+		dollar->final = ft_substr(cmd->cmd[x], xref,
+				(ft_strlen(cmd->cmd[x]) - xref));
 }
 
 /**
@@ -71,29 +83,29 @@ void	ft_dollar_expansion(t_cmd *cmd, t_env *env, int x, int xref)
 {
 	t_dollar	dollar;
 
-    dollar.val = ft_dollar_value(cmd, env, x, xref);
-    dollar.pre = ft_substr(cmd->cmd[x], 0, xref);
+	dollar.val = ft_dollar_value(cmd, env, x, xref);
+	dollar.pre = ft_substr(cmd->cmd[x], 0, xref);
 	xref++;
 	if (cmd->cmd[x][xref] != '$')
 	{
 		while (cmd->cmd[x][xref] &&
-               !ft_check_char(cmd, x, xref, " \'$?@/:"))
+			!ft_check_char(cmd, x, xref, " \'$?@/:"))
 			xref++;
 	}
 	else
 		xref++;
 	if (xref < ft_strlen(cmd->cmd[x])
-        || cmd->cmd[x][xref - 1] == '"')
+		|| cmd->cmd[x][xref - 1] == '"')
 	{
 		if (xref < ft_strlen(cmd->cmd[x]))
 			ft_check_exceptions(cmd, &dollar, x, xref);
 		else if (cmd->cmd[x][xref - 1] == '"')
-            dollar.final = ft_strdup("\"");
+			dollar.final = ft_strdup("\"");
 	}
 	else
-        dollar.final = ft_strdup("");
+		dollar.final = ft_strdup("");
 	ft_new_com(&dollar, cmd, x, xref);
-    ft_struct_free(&dollar);
+	ft_struct_free(&dollar);
 }
 
 /**
@@ -107,14 +119,15 @@ void	ft_dollar_expansion(t_cmd *cmd, t_env *env, int x, int xref)
 bool	ft_check_dollars(t_cmds_all *cmds, int y, int x, t_env *env)
 {
 	if (ft_strchr_pos(cmds->cmds[y].cmd[x], '$') >= 0
-			&& !ft_single_dollar(&cmds->cmds[y], x,
-                                 ft_strchr_pos(cmds->cmds[y].cmd[x], '$')))
+		&& !ft_single_dollar(&cmds->cmds[y], x,
+			ft_strchr_pos(cmds->cmds[y].cmd[x], '$')))
 	{
-		if (cmds->cmds[y].cmd[x][0] == '\''
-            && cmds->cmds[y].cmd[x][ft_strlen(cmds->cmds[y].cmd[x]) - 1] == '\'')
+		if (cmds->cmds[y].cmd[x][0] == '\'' &&
+				cmds->cmds[y].cmd[x][ft_strlen(cmds->cmds[y].cmd[x]) - 1]
+						== '\'')
 			return (0);
-		ft_dollar_expansion(&cmds->cmds[y], env,
-                            x, ft_strchr_pos(cmds->cmds[y].cmd[x], '$'));
+		ft_dollar_expansion(&cmds->cmds[y],
+			env, x, ft_strchr_pos(cmds->cmds[y].cmd[x], '$'));
 		return (1);
 	}
 	return (0);

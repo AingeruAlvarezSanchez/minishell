@@ -18,7 +18,7 @@ static int	ft_check_special(t_cmds_all *cmds, t_env *env)
 	int	y;
 	int	x;
 
-    y = -1;
+	y = -1;
 	while (++y < cmds->n_cmds)
 	{
 		x = 0;
@@ -45,7 +45,7 @@ static bool	ft_start(char *prompt, t_cmds_all *cmds, t_env *env)
 	{
 		if (!ft_print_err(ft_check_special(cmds, env)))
 		{
-            ft_exec(cmds, env);
+			ft_exec(cmds, env);
 			return (0);
 		}
 	}
@@ -59,7 +59,7 @@ bool	ft_term(t_env *env, t_cmds_all *cmds, char *prompt)
 
 	tcgetattr(STDIN_FILENO, &last);
 	tcgetattr(STDIN_FILENO, &termios);
-    termios.c_lflag &= ~(ECHOCTL | ICANON);
+	termios.c_lflag &= ~(ECHOCTL | ICANON);
 	if (ft_strlen(prompt) > 0)
 	{
 		if (ft_start(prompt, cmds, env))
@@ -71,28 +71,28 @@ bool	ft_term(t_env *env, t_cmds_all *cmds, char *prompt)
 	return (0);
 }
 
-int	main(int argc, char **argv, char **environ)
+int	main (int argc, char **argv, char **environ)
 {
 	char			*aux;
 	char			*prompt;
-	t_cmds_all	    cmds;
-	t_env		    env;
+	t_cmds_all		cmds;
+	t_env			env;
 
-    env.env = ft_dup_env(environ);
-    env.exp = ft_doublestrdup(env.env);
-    g_exit = 0;
+	env.env = ft_dup_env(environ);
+	env.exp = ft_doublestrdup(env.env);
+	g_exit = 0;
 	while (1 && argv && argc)
 	{
 		ft_signals();
-        prompt = readline("Ejemplo₺ ");
+		prompt = readline("Ejemplo₺ ");
 		if (!prompt)
-            ft_sig_exit();
+			ft_sig_exit();
 		if (!prompt[0])
 		{
 			free(prompt);
 			continue ;
 		}
-        aux = ft_strtrim(prompt, " ");
+		aux = ft_strtrim(prompt, " ");
 		free(prompt);
 		add_history(aux);
 		if (ft_term(&env, &cmds, aux))

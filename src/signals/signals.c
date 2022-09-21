@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/21 19:50:53 by ecorreia          #+#    #+#             */
+/*   Updated: 2022/09/21 19:50:53 by ecorreia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 /**
@@ -16,10 +28,9 @@ void	ft_sig_exit(void)
 void	ft_interactive(int signal)
 {
 	if (signal == SIGQUIT)
-        printf ("Quit: 3\n");
-		//printf ("^\\Quit: 3\n");TODO:
+		printf ("Quit: 3\n");
 	else if (signal == SIGINT)
-        printf ("\n");
+		printf ("\n");
 }
 
 void	ft_check_sig(void)
@@ -45,6 +56,6 @@ void	ft_manage_sig(int signal)
 
 void	ft_signals(void)
 {
-    signal(SIGINT, ft_manage_sig);
+	signal(SIGINT, ft_manage_sig);
 	signal(SIGQUIT, SIG_IGN);
 }
