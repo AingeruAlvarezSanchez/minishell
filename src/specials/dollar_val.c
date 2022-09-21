@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dollar_val.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/21 18:54:37 by ecorreia          #+#    #+#             */
+/*   Updated: 2022/09/21 18:54:37 by ecorreia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 /**
@@ -7,8 +19,8 @@
  */
 static char	*ft_check_var(t_env *env, char *var)
 {
-    char    *tmp;
-	int	    i;
+	char	*tmp;
+	int		i;
 
 	i = -1;
 	while (env->env[++i])
@@ -16,7 +28,7 @@ static char	*ft_check_var(t_env *env, char *var)
 		if (!ft_strncmp(env->env[i], var, ft_strlen(var)))
 		{
 			tmp = ft_substr(env->env[i], ft_strlen(var),
-                            (ft_strlen(env->env[i]) - ft_strlen(var)));
+					(ft_strlen(env->env[i]) - ft_strlen(var)));
 			free(var);
 			return (tmp);
 		}
@@ -26,7 +38,6 @@ static char	*ft_check_var(t_env *env, char *var)
 }
 
 /**
- *
  * @param cmd struct with command
  * @param x command argument position
  * @param c char to check
@@ -37,7 +48,7 @@ bool	ft_check_char(t_cmd *cmd, int x, int c, const char *specials)
 {
 	int	i;
 
-    i = -1;
+	i = -1;
 	while (specials[++i])
 	{
 		if (cmd->cmd[x][c] == specials[i])
@@ -52,25 +63,25 @@ char	*ft_dollar_value(t_cmd *cmd, t_env *env, int x, int xref)
 	char	*var;
 	char	*aux;
 
-    c = xref + 1;
+	c = xref + 1;
 	if (ft_check_char(cmd, x, c, " \"\'$?@/:"))
 	{
 		if (cmd->cmd[x][c] == '?')
 		{
-            aux = ft_itoa(g_exit);
-            var = ft_strdup(aux);
+			aux = ft_itoa(g_exit);
+			var = ft_strdup(aux);
 			free(aux);
 		}
 		else if (cmd->cmd[x][c] == '$')
 			return (NULL);
 		else
-            var = ft_strdup("$");
+			var = ft_strdup("$");
 		return (var);
 	}
 	while (cmd->cmd[x][c] && !ft_check_char(cmd, x, c, " \"\'$?@/:"))
 		c++;
-    aux = ft_substr(cmd->cmd[x], (xref + 1), (c - (xref + 1)));
-    var = ft_strjoin(aux, "=");
+	aux = ft_substr(cmd->cmd[x], (xref + 1), (c - (xref + 1)));
+	var = ft_strjoin(aux, "=");
 	free(aux);
 	return (ft_check_var(env, var));
 }
@@ -85,7 +96,7 @@ int	ft_single_dollar(t_cmd *cmd, int x, int c)
 {
 	if (!cmd->cmd[x][c + 1] && !ft_check_char(cmd, x, c + 1, " \"\'"))
 		return (1);
-    return (0);
+	return (0);
 }
 
 /**
@@ -96,15 +107,15 @@ int	ft_single_dollar(t_cmd *cmd, int x, int c)
  */
 void	ft_valuebeg(t_dollar *dollar, t_cmd *cmd, int x, int xref)
 {
-    dollar->final = ft_strjoin(dollar->pre, dollar->val);
+	dollar->final = ft_strjoin(dollar->pre, dollar->val);
 	if (xref < ft_strlen(cmd->cmd[x]) || cmd->cmd[x][xref - 1] == '"')
 	{
 		free(dollar->pre);
 		if (cmd->cmd[x][xref - 1] == '"')
-            dollar->pre = ft_strjoin(dollar->final, "\"");
+			dollar->pre = ft_strjoin(dollar->final, "\"");
 		else
-            dollar->pre = ft_strjoin(dollar->final, dollar->last);
+			dollar->pre = ft_strjoin(dollar->final, dollar->last);
 		free(dollar->final);
-        dollar->final = ft_strdup(dollar->pre);
+		dollar->final = ft_strdup(dollar->pre);
 	}
 }

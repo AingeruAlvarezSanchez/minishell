@@ -1,5 +1,16 @@
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/21 18:47:16 by ecorreia          #+#    #+#             */
+/*   Updated: 2022/09/21 18:47:16 by ecorreia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "../../include/minishell.h"
 /**
  * check if inside environment
  * @param var is the name of exported variable
@@ -35,16 +46,16 @@ static void	ft_unset(char *var, t_env *env)
 	{
 		tmp = ft_doublestrdup(env->env);
 		ft_doublefree(env->env);
-        env->env = (char **)malloc(sizeof(char *)
-                                   * (ft_doublestrlen(tmp)));
+		env->env = (char **)malloc(sizeof(char *)
+				* (ft_doublestrlen(tmp)));
 		x = -1;
 		i = -1;
 		while (tmp[++i])
 		{
 			if (ft_strncmp(tmp[i], var, ft_strlen(var)))
-                env->env[++x] = ft_strdup(tmp[i]);
+				env->env[++x] = ft_strdup(tmp[i]);
 		}
-        env->env[x + 1] = 0;
+		env->env[x + 1] = 0;
 	}
 	ft_doublefree(tmp);
 }
@@ -56,15 +67,15 @@ static void	ft_unset(char *var, t_env *env)
  */
 static bool	ft_not_exp(char *var, t_env *env)
 {
-    int	i;
+	int	i;
 
-    i = -1;
-    while (env->exp[++i])
-    {
-        if (!ft_strncmp(env->exp[i], var, (ft_strlen(var))))
-            return (0);
-    }
-    return (1);
+	i = -1;
+	while (env->exp[++i])
+	{
+		if (!ft_strncmp(env->exp[i], var, (ft_strlen(var))))
+			return (0);
+	}
+	return (1);
 }
 
 /**
@@ -74,28 +85,28 @@ static bool	ft_not_exp(char *var, t_env *env)
  */
 static void	ft_unset_exp(char *var, t_env *env)
 {
-    int		x;
-    int		i;
-    char	**aux;
+	int		x;
+	int		i;
+	char	**aux;
 
-    if (ft_not_exp(var, env))
-        return ;
-    else
-    {
-        aux = ft_doublestrdup(env->exp);
-        ft_doublefree(env->exp);
-        env->exp = (char **)malloc(sizeof(char *)
-                                   * (ft_doublestrlen(aux)));
-        i = -1;
-        x = -1;
-        while (aux[++i])
-        {
-            if (ft_strncmp(aux[i], var, ft_strlen(var)))
-                env->exp[++x] = ft_strdup(aux[i]);
-        }
-        env->exp[x + 1] = 0;
-    }
-    ft_doublefree(aux);
+	if (ft_not_exp(var, env))
+		return ;
+	else
+	{
+		aux = ft_doublestrdup(env->exp);
+		ft_doublefree(env->exp);
+		env->exp = (char **)malloc(sizeof(char *)
+				* (ft_doublestrlen(aux)));
+		i = -1;
+		x = -1;
+		while (aux[++i])
+		{
+			if (ft_strncmp(aux[i], var, ft_strlen(var)))
+				env->exp[++x] = ft_strdup(aux[i]);
+		}
+		env->exp[x + 1] = 0;
+	}
+	ft_doublefree(aux);
 }
 
 /**
@@ -113,16 +124,16 @@ bool	ft_check_unset(t_cmd *cmd, t_env *env, int pos_cmd, int n_cmds)
 		return (1);
 	if (cmd->cmd[1])
 	{
-        pos = 0;
+		pos = 0;
 		while (cmd->cmd[++pos])
 		{
 			if (ft_check_variable(cmd->cmd[pos]))
-            {
+			{
 				ft_unset(cmd->cmd[pos], env);
-                ft_unset_exp(cmd->cmd[pos], env);
-            }
+				ft_unset_exp(cmd->cmd[pos], env);
+			}
 		}
 	}
-    g_exit = 0;
+	g_exit = 0;
 	return (0);
 }

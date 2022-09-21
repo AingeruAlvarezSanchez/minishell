@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   frees.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/21 18:59:13 by ecorreia          #+#    #+#             */
+/*   Updated: 2022/09/21 18:59:13 by ecorreia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 bool	ft_check_access(t_cmds_all *cmds, int pos_cmd)
 {
 	if (access(cmds->cmds[pos_cmd].cmd[0], X_OK) == 0)
 	{
-        cmds->cmds[pos_cmd].bin_pth
+		cmds->cmds[pos_cmd].bin_pth
 			= ft_strdup(cmds->cmds[pos_cmd].cmd[0]);
-        cmds->cmds[pos_cmd].absolute = true;
+		cmds->cmds[pos_cmd].absolute = true;
 		return (true);
 	}
 	return (false);
@@ -16,7 +28,7 @@ void	ft_free_exec(t_cmds_all *cmds)
 {
 	int	cmd;
 
-    cmd = -1;
+	cmd = -1;
 	close(cmds->sngl_pipe);
 	if (cmds->n_cmds > 1)
 		free(cmds->pipes);

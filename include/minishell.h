@@ -32,37 +32,38 @@ int		g_exit;
 
 typedef struct s_cmd
 {
-    bool	absolute;
-    char	**cmd;
-    char	**path;
-    char	*bin_pth;
+	bool		absolute;
+	char		**cmd;
+	char		**path;
+	char		*bin_pth;
 }	t_cmd;
 
 typedef struct s_cmds_all
 {
-    t_cmd	    *cmds;
-    int			*pipes;
-    int			sngl_pipe;
-    int			n_cmds;
+	t_cmd		*cmds;
+	int			*pipes;
+	int			sngl_pipe;
+	int			n_cmds;
 }	t_cmds_all;
 
 typedef struct s_dollar
 {
-    char	*final;
-    char	*pre;
-    char	*last;
-    char	*val;
+	char		*final;
+	char		*pre;
+	char		*last;
+	char		*val;
 }	t_dollar;
 
 typedef struct s_env
 {
-	char	*oldpwd;
-	char	*pwd;
-	char	**exp;
-	char	**env;
+	char		*oldpwd;
+	char		*pwd;
+	char		**exp;
+	char		**env;
 }	t_env;
 
-/* builtins */
+/*BUILTINS */
+void	rl_replace_line(const char *text, int clear_undo);
 bool	ft_home_cd(t_cmd *cmd, t_env *env, int pos_cmd);
 bool	ft_cd(t_cmd *cmd, t_env *env);
 void	ft_echo(t_cmd *cmd);

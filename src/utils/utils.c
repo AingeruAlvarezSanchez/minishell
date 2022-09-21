@@ -1,15 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/21 18:59:38 by ecorreia          #+#    #+#             */
+/*   Updated: 2022/09/21 18:59:38 by ecorreia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 void	ft_strtolower(char *str)
 {
-    int		i;
+	int		i;
 
-    i = 0;
-    while (str && str[i])
-    {
-        str[i] = ft_tolower(str[i]);
-        i++;
-    }
+	i = 0;
+	while (str && str[i])
+	{
+		str[i] = ft_tolower(str[i]);
+		i++;
+	}
 }
 
 bool	FT_str_contains(const char *cmd, char *str)
@@ -20,7 +32,7 @@ bool	FT_str_contains(const char *cmd, char *str)
 
 	i = 0;
 	u = 0;
-    length = ft_strlen(str);
+	length = ft_strlen(str);
 	while (cmd[i])
 	{
 		if (cmd[i] == str[u])
@@ -38,39 +50,39 @@ bool	FT_str_contains(const char *cmd, char *str)
 
 bool	ft_str_has(char *cmd, char *str)
 {
-    int	i;
-    int	u;
-    int	maxlength;
-    int	mlength;
+	int	i;
+	int	u;
+	int	maxlength;
+	int	mlength;
 
-    i = 0;
-    u = 0;
-    if (!str || !cmd)
-        return (false);
-    maxlength = ft_strlen(str);
-    mlength = ft_strlen(cmd);
-    while (cmd[i])
-    {
-        if (cmd[i] == str[u])
-        {
-            u++;
-            if (u == maxlength && mlength == maxlength)
-                return (true);
-        }
-        else
-            u = 0;
-        i++;
-    }
-    return (false);
+	i = 0;
+	u = 0;
+	if (!str || !cmd)
+		return (false);
+	maxlength = ft_strlen(str);
+	mlength = ft_strlen(cmd);
+	while (cmd[i])
+	{
+		if (cmd[i] == str[u])
+		{
+			u++;
+			if (u == maxlength && mlength == maxlength)
+				return (true);
+		}
+		else
+			u = 0;
+		i++;
+	}
+	return (false);
 }
 
 char	*ft_cpy_path(t_cmd *cmd, int pos)
 {
-    char	*path;
+	char	*path;
 
-    path = ft_strdup(cmd->path[pos]);
-    ft_doublefree(cmd->path);
-    return (path);
+	path = ft_strdup(cmd->path[pos]);
+	ft_doublefree(cmd->path);
+	return (path);
 }
 
 /**
@@ -83,8 +95,8 @@ char	*ft_cpy_path(t_cmd *cmd, int pos)
  */
 bool	ft_final_cmd(t_cmds_all *cmds, int n_cmds, int pos_cmd, t_env *env)
 {
-    ft_is_exit(cmds, pos_cmd, n_cmds);
-    ft_parent_builtin(&cmds->cmds[pos_cmd], env, pos_cmd, pos_cmd);
-    ft_free_commands(cmds);
-    return (1);
+	ft_is_exit(cmds, pos_cmd, n_cmds);
+	ft_parent_builtin(&cmds->cmds[pos_cmd], env, pos_cmd, pos_cmd);
+	ft_free_commands(cmds);
+	return (1);
 }

@@ -1,5 +1,16 @@
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/21 18:53:20 by ecorreia          #+#    #+#             */
+/*   Updated: 2022/09/21 18:53:20 by ecorreia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "../../include/minishell.h"
 /**
 Control D out of cat
  */
@@ -16,10 +27,10 @@ void	ft_sig_exit(void)
 void	ft_interactive(int signal)
 {
 	if (signal == SIGQUIT)
-        printf ("Quit: 3\n");
+		printf ("Quit: 3\n");
 		//printf ("^\\Quit: 3\n");TODO:
 	else if (signal == SIGINT)
-        printf ("\n");
+		printf ("\n");
 }
 
 void	ft_check_sig(void)
@@ -45,6 +56,6 @@ void	ft_manage_sig(int signal)
 
 void	ft_signals(void)
 {
-    signal(SIGINT, ft_manage_sig);
+	signal(SIGINT, ft_manage_sig);
 	signal(SIGQUIT, SIG_IGN);
 }

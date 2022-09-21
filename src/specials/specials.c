@@ -12,16 +12,16 @@ char	**ft_not_prev(char *tmp, int x, int next, t_cmd *cmd)
 {
 	char	**com;
 
-    com = (char **)malloc(sizeof(char *) * 3);
-    com[0] = ft_strdup(tmp);
-    com[1] = ft_substr(cmd->cmd[x], (next + 1),
-                       ft_strlen(cmd->cmd[x]) - (next + 1));
-    com[2] = 0;
+	com = (char **)malloc(sizeof(char *) * 3);
+	com[0] = ft_strdup(tmp);
+	com[1] = ft_substr(cmd->cmd[x], (next + 1),
+					ft_strlen(cmd->cmd[x]) - (next + 1));
+	com[2] = 0;
 	free(cmd->cmd[x]);
 	if (!com[0][0] && !com[1][0])
-        cmd->cmd[x] = ft_strdup("");
+		cmd->cmd[x] = ft_strdup("");
 	else
-        cmd->cmd[x] = ft_strjoin(com[0], com[1]);
+		cmd->cmd[x] = ft_strjoin(com[0], com[1]);
 	return (com);
 }
 
@@ -31,20 +31,19 @@ void	ft_trim_quot(t_cmd *cmd, int x, int next, int y)
 	char	**str;
 	char	*aux;
 
-    prev = ft_substr(cmd->cmd[x], 0, y);
-    aux = ft_substr(cmd->cmd[x], (y + 1), (next - (y + 1)));
+	prev = ft_substr(cmd->cmd[x], 0, y);
+	aux = ft_substr(cmd->cmd[x], (y + 1), (next - (y + 1)));
 	if (prev[0])
 	{
 		str = (char **)malloc(sizeof(char *) * 4);
 		str[0] = ft_strdup(prev);
 		str[1] = ft_strdup(aux);
 		free(aux);
-		str[2] = ft_substr(cmd->cmd[x], (next + 1),
-                           ft_strlen(cmd->cmd[x]) - (next + 1));
+		str[2] = ft_substr(cmd->cmd[x], (next + 1), ft_strlen(cmd->cmd[x]) - (next + 1));
 		str[3] = 0;
-        aux = ft_strjoin(str[0], str[1]);
+		aux = ft_strjoin(str[0], str[1]);
 		free(cmd->cmd[x]);
-        cmd->cmd[x] = ft_strjoin(aux, str[2]);
+		cmd->cmd[x] = ft_strjoin(aux, str[2]);
 	}
 	else
 		str = ft_not_prev(aux, x, next, cmd);

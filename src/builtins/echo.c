@@ -1,5 +1,16 @@
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/21 18:37:34 by ecorreia          #+#    #+#             */
+/*   Updated: 2022/09/21 18:37:34 by ecorreia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "../../include/minishell.h"
 /**
  * @param cmd struct with command
  * @param n is -n flag
@@ -19,7 +30,7 @@ static void	ft_exec_echo(t_cmd *cmd, int n)
 				write(1, " ", 1);
 		}
 	}
-    g_exit = 0;
+	g_exit = 0;
 }
 
 /**
@@ -30,7 +41,7 @@ void	ft_echo(t_cmd *cmd)
 {
 	int	c;
 
-    c = 1;
+	c = 1;
 	if (cmd->cmd[1] && !ft_strncmp(cmd->cmd[1], "-n", 2))
 	{
 		while (cmd->cmd[1][++c])
