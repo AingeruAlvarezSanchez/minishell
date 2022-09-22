@@ -32,11 +32,6 @@ void	ft_free_exec(t_cmds_all *cmds)
 	close(cmds->sngl_pipe);
 	if (cmds->n_cmds > 1)
 		free(cmds->pipes);
-	while (++cmd < cmds->n_cmds)
-	{
-		if (cmds->cmds[cmd].absolute && cmds->cmds[cmd].path)
-			ft_doublefree(cmds->cmds[cmd].path);
-	}
 	ft_free_commands(cmds);
 }
 

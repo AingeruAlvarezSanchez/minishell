@@ -80,8 +80,8 @@ int	main2(t_env *env, char *prompt)
 	add_history(aux);
 	if (ft_term(env, &cmds, aux))
 	{
-		return (1);
 		free(aux);
+		return (1);
 	}
 	return (0);
 }
@@ -91,6 +91,7 @@ int	main(int argc, char **argv, char **environ)
 	char			*prompt;
 	t_env			env;
 
+	printf("\nWelcome to Ejemplo\n\n");
 	env.env = ft_dup_env(environ);
 	env.exp = ft_doublestrdup(env.env);
 	g_exit = 0;
