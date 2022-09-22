@@ -126,17 +126,16 @@ char	*ft_bin_path(t_cmd *cmd, t_env *env)
 		{
 			if (ft_check_path(cmd->path[pos], cmd->cmd[0]))
 				return (ft_cpy_path(cmd, pos));
-			cmd->path[pos] = NULL;
 			pos++;
 		}
 		if (access(cmd->cmd[0], X_OK) == 0)
 		{
 			binary = ft_strdup(cmd->cmd[0]);
 			cmd->absolute = true;
+			ft_doublefree(cmd->path);
 			return (binary);
 		}
-	}
-	if (cmd->path)
 		ft_doublefree(cmd->path);
+	}
 	return (NULL);
 }

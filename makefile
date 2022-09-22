@@ -5,7 +5,7 @@ INCLUDE			= /include/minishell.h
 LIB				= include/Libft/libft.a
 READLINE_PATH	= ~/.brew/opt/readline
 READLINE		= -I$(READLINE_PATH)/include -lreadline -L $(READLINE_PATH)/lib
-FLAGS			=  -Wall -Wextra -Werror -g #-fsanitize=address -g3
+FLAGS			=  -Wall -Wextra -Werror -g3 #-fsanitize=address -g3
 OBJS			= $(SRCS:.c=.o)
 
 all: $(NAME)
